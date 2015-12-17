@@ -1,0 +1,26 @@
+{
+  "author": "Zac Bentley",
+  "bugs": {
+    "url": "https://github.com/zbentley/classeur-api-client/issues"
+  },
+  "dependencies": {
+    "lodash": "*",
+    "node-rest-client": "*",
+    "sprintf": "*"
+  },
+  "description": "Node.js client for the API of http://classeur.io/",
+  "homepage": "https://github.com/zbentley/classeur-api-client",
+  "keywords": [
+    "classeur",
+    "rest",
+    "api"
+  ],
+  "license": "MIT",
+  "main": "lib/classeur_api_client.js",
+  "name": "classeur-api-client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zbentley/classeur-api-client"
+  },
+  "version": "0.0.1"
+}
