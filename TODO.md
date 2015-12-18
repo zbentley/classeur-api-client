@@ -1,0 +1,6 @@
+- Use a different rest lib with better doc
+- Remove sprintf dep?
+- Tests
+- Doc
+	- nb: auth failure is silent; 404s ensue
+	- nb: multi-getters are o(n) query cost
