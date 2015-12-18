@@ -4,6 +4,7 @@
     "url": "https://github.com/zbentley/classeur-api-client/issues"
   },
   "dependencies": {
+    "async": "*",
     "lodash": "*",
     "node-rest-client": "*",
     "sprintf": "*"
