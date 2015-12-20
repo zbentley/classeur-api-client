@@ -1,6 +1,8 @@
-- Use a different rest lib with better doc
+- Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
 - Remove sprintf dep?
 - Tests
+- Lint/hint
 - Doc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
+	- nb: uses https for everything
