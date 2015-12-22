@@ -2,6 +2,7 @@
 - Remove sprintf dep?
 - Tests
 - Lint/hint
+- Default hostname
 - Doc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
