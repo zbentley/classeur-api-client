@@ -1,3 +1,6 @@
+- Remove plural methods and replace with varargs.
+- JSON.parse error handling
+- Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
 - Remove sprintf dep?
 - Tests
