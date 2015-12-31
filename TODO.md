@@ -1,8 +1,6 @@
-- Assert single args, and guarantee non-array return values, from the single getter functions.
 - JSON.parse error handling
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
-- Remove sprintf dep?
 - Tests
 - Lint/hint
 - Default hostname
