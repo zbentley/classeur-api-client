@@ -7,9 +7,14 @@
     "async": "*",
     "check-types": "*",
     "lodash": "*",
-    "node-rest-client": "*",
+    "node-rest-client": "*"
   },
   "description": "Node.js client for the API of http://classeur.io/",
+  "devDependencies": {
+    "should": "*",
+    "fs-extra": "*",
+    "eyes": "*"
+  },
   "homepage": "https://github.com/zbentley/classeur-api-client",
   "keywords": [
     "classeur",
@@ -22,6 +27,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/zbentley/classeur-api-client"
+  },
+  "scripts": {
+    "test": "node test/*-test.js"
   },
   "version": "0.0.1"
 }
