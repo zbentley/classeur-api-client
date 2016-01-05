@@ -17,7 +17,7 @@
     "api"
   ],
   "license": "MIT",
-  "main": "lib/classeur_api_client.js",
+  "main": "lib/classeur-api-client.js",
   "name": "classeur-api-client",
   "repository": {
     "type": "git",
