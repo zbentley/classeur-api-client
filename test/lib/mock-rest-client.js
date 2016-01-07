@@ -1,9 +1,23 @@
 'use strict';
 
-const _ = require('lodash');
+const _ = require('lodash'),
+	constants = require('./test-constants.js'),
+	eyes = require('eyes'),
+	p = _.bind(eyes.inspect, eyes),
+	EventEmitter = require('events');
 
-function successfulResponse(obj, cb) {
-	cb(JSON.encode(obj), {
+function hashify(array) {
+	let props = {};
+	_.each(array, function(prop) {
+		props[prop] = true;
+	});
+	return props;
+}
+
+function successfulResponse(array, overlay, cb) {
+	let props = hashify(array);
+	_.merge(props, overlay);
+	cb(JSON.stringify(props), {
 		statusCode: 200,
 		statusMessage: ""
 	});
@@ -11,9 +25,21 @@ function successfulResponse(obj, cb) {
 
 function notFoundResponse(cb) {
 	cb(null, {
-		response.statusCode: 400,
-		response.statusMessage: "FOOO"
+		statusCode: 400,
+		statusMessage: "Bad Request"
 	});
+}
+
+function stripIfStartsWith(str, target) {
+	if ( _.startsWith(str, target) ) {
+		return str.replace(target, "");
+	} else {
+		return false;
+	}
+}
+
+function pending() {
+	throw new Error("No tests for this function yet!");
 }
 
 module.exports = function(opts) {
@@ -21,26 +47,55 @@ module.exports = function(opts) {
 	this.apiKey = opts.apiKey;
 };
 
-module.expots.prototype.get = function(uri, args, cb) {
-	uri.replace(this.root, "");
-	if (_.starsWith(uri, "file")) {
-		// nonexistent => explicit 400
-		// everything else: return right fields.
-	} else if ( _.startsWith(uri, "folder") ) {
+module.exports.prototype.get = function(uri, opts, cb) {
+	let id;
+	uri = uri.replace(/.+?api[/]v1[/]/, "");
 
+	if ( id = stripIfStartsWith(uri, "files/") ) {
+		if ( id === constants.testFile ) {
+			const overlay = {
+				id: id,
+				content: hashify(constants.fileContentProperties)
+			};
+			successfulResponse(constants.fileProperties, overlay, cb);
+		} else {
+			notFoundResponse(cb);
+		}
+	} else if ( id = stripIfStartsWith(uri, "folders/") ) {
+		if ( id === constants.testFolder ) {
+			successfulResponse(constants.folderProperties, { id: id }, cb);
+		} else {
+			notFoundResponse(cb);
+		}
 	} else if ( _.startsWith(uri, "metadata/folders") ) {
+		pending();
 	} else if ( _.startsWith(uri, "metadata/files") ) {
+		pending();
 	} else if ( _.startsWith(uri, "metadata/users") ) {
+		const ids = opts.parameters.id.split(',');
+		let response;
+		if ( _.uniq(ids).length === 1 && _.uniq(ids)[0] === constants.credentials.userId ) {
+			response = _.map(ids, function(item) {
+				return {
+					id: item,
+					name: "name"
+				};
+			});
+		} else {
+			response = _.map(ids, function(item) {
+				return { id: item };
+			});
+			// TODO uncomment the below when user-not-found works correctly
+			// notFoundResponse(cb);
+		}
+		cb(JSON.stringify(response), {
+			statusCode: 200,
+			statusMessage: ""
+		});
 	} else if ( _.startsWith(uri, "users") ) {
+		pending();
 	} else {
 		throw new Error(`Unrecognized query: ${uri}, ${args}`);
 	}
+	return new EventEmitter();
 };
-
-let req = this.RestClient.get(this.root + path, args, function(data, response) {
-    if ( response.statusCode == 200 ) {
-        cb(null, JSON.parse(data));
-    } else {
-        cb(`Got an error (${response.statusCode}): ${response.statusMessage}`, null);
-    }
-});

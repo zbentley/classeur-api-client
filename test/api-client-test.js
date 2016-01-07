@@ -2,22 +2,11 @@
 
 const _ = require('lodash'),
     ApiClient = require('../lib/classeur-api-client'),
+    MockRestClient = require('./lib/mock-rest-client.js'),
     eyes = require('eyes'),
-    fs = require('fs-extra'),
     p = _.bind(eyes.inspect, eyes),
-    expect = require('chai').expect;
-
-// Testing constants:
-const
-    CREDENTIALS = fs.readJsonSync(require('path').join(__dirname, 'private', 'integration-test-resources.json')),
-    TEST_FILE = CREDENTIALS.existentFile,
-    TEST_FOLDER = CREDENTIALS.existentFolder,
-    FILE_CONTENT_PROPERTIES = ["text", "rev", "properties", "discussions"],
-    FILE_PROPERTIES = ["id", "name", "permission", "userId", "updated",  "content"],
-    FOLDER_FILES_PROPERTIES = ["id", "name", "updated", "userId"],
-    FOLDER_PROPERTIES = ["files", "id", "name", "updated"],
-    ERROR_STRING = "Got an error (400): Bad Request";
-
+    expect = require('chai').expect,
+    constants = require('./lib/test-constants.js');
 
 function shouldHaveProperties(obj, props) {
     _.each(props, function(prop) {
@@ -28,7 +17,7 @@ function shouldHaveProperties(obj, props) {
 function shouldAllBeFiles(array) {
     expect(array).to.be.an.Array;
     _.each(array, function(elt) {
-        shouldHaveProperties(elt, FOLDER_FILES_PROPERTIES);
+        shouldHaveProperties(elt, constants.folderFilesProperties);
     });
 }
 
@@ -36,16 +25,17 @@ function APIObjectShouldNotExist(func) {
     return function(done) {
         func(function(err, res){
             expect(res).to.not.exist;
-            expect(err).to.equal(ERROR_STRING);
+            expect(err).to.equal(constants.errorString);
             done();
         });
     };
 }
 
 describe("integration tests", function(){
-    let conn = new ApiClient(CREDENTIALS);
-    this.slow(2000);
-    this.timeout(10000);
+    let conn = new ApiClient(constants.credentials);
+    conn.RestClient = new MockRestClient(constants.credentials);
+    // this.slow(2000);
+    // this.timeout(10000);
     describe('constructor', function() {
         it('defaults host correctly', function () {
             expect(conn.root).to.equal("https://app.classeur.io/api/v1/");
@@ -53,11 +43,11 @@ describe("integration tests", function(){
     });
     describe('getFile', function() {
         it('returns file correctly', function (done) {
-            conn.getFile(TEST_FILE, function(err, res) {
+            conn.getFile(constants.testFile, function(err, res) {
                 expect(err).to.not.exist;
-                shouldHaveProperties(res, FILE_PROPERTIES);
-                shouldHaveProperties(res.content, FILE_CONTENT_PROPERTIES);
-                expect(res.id).to.equal(TEST_FILE);
+                shouldHaveProperties(res, constants.fileProperties);
+                shouldHaveProperties(res.content, constants.fileContentProperties);
+                expect(res.id).to.equal(constants.testFile);
                 return done();
             });
         });
@@ -69,34 +59,35 @@ describe("integration tests", function(){
                     expect(err).to.not.exist;
                     expect(res).to.be.an.Array;
                     expect(res).to.have.length(2);
-                    expect(res[0].id).to.equal(TEST_FILE);
+                    expect(res[0].id).to.equal(constants.testFile);
                     expect(res[0]).to.deep.equal(res[1]);
-                    shouldHaveProperties(res[0], FILE_PROPERTIES);
-                    shouldHaveProperties(res[0].content, FILE_CONTENT_PROPERTIES);
+                    shouldHaveProperties(res[0], constants.fileProperties);
+                    shouldHaveProperties(res[0].content, constants.fileContentProperties);
                     return done();
                 };
             };
         it('returns files correctly (array mode)', function (done) {
-            conn.getFiles([TEST_FILE, TEST_FILE], testExistent(done));
+            conn.getFiles([constants.testFile, constants.testFile], testExistent(done));
         });
-        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, [TEST_FILE, "nonexistent"])));
+        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, [constants.testFile, "nonexistent"])));
         it('returns files correctly (list mode)', function (done) {
-            conn.getFiles(TEST_FILE, TEST_FILE, testExistent(done));
+            conn.getFiles(constants.testFile, constants.testFile, testExistent(done));
         });
-        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, TEST_FILE, "nonexistent")));
+        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, constants.testFile, "nonexistent")));
     });
     describe('getFolder', function() {
         it('returns folder correctly', function (done) {
-            conn.getFolder(TEST_FOLDER, function(err, res) {
+            conn.getFolder(constants.testFolder, function(err, res) {
                 expect(err).to.not.exist;
-                shouldHaveProperties(res, FOLDER_PROPERTIES);
+                shouldHaveProperties(res, constants.folderProperties);
                 shouldAllBeFiles(res.files);
-                expect(res.id).to.equal(TEST_FOLDER);
+                expect(res.id).to.equal(constants.testFolder);
                 return done();
             });
         });
         it('handles nonexistent folders correctly ', APIObjectShouldNotExist(_.bind(conn.getFolder, conn, "nonexistent")));
     });
+
     describe('getFolders', function() {
         const testExistent = function(done) {
                 return function(err, res) {
@@ -104,31 +95,44 @@ describe("integration tests", function(){
                     expect(res).to.be.an.Array;
                     expect(res).to.have.length(2);
                     expect(res[0]).to.deep.equal(res[1]);
-                    shouldHaveProperties(res[0], FOLDER_PROPERTIES);
+                    shouldHaveProperties(res[0], constants.folderProperties);
                     shouldAllBeFiles(res[0].files);
-                    expect(res[0].id).to.equal(TEST_FOLDER);
+                    expect(res[0].id).to.equal(constants.testFolder);
                     return done();
                 };
             };
         it('returns folders correctly (array mode)', function (done) {
-            conn.getFolders([TEST_FOLDER, TEST_FOLDER], testExistent(done));
+            conn.getFolders([constants.testFolder, constants.testFolder], testExistent(done));
         });
-        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, [TEST_FOLDER, "nonexistent"])));
+        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, [constants.testFolder, "nonexistent"])));
         it('returns folders correctly (list mode)', function (done) {
-            conn.getFolders(TEST_FOLDER, TEST_FOLDER, testExistent(done));
+            conn.getFolders(constants.testFolder, constants.testFolder, testExistent(done));
         });
-        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, TEST_FOLDER, "nonexistent")));
+        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, constants.testFolder, "nonexistent")));
     });
     describe('getUserMetadata', function() {
         it('returns user correctly', function (done) {
-            conn.getUserMetadata(CREDENTIALS.userId, function(err, res) {
+            conn.getUserMetadata(constants.credentials.userId, function(err, res) {
                 expect(err).to.not.exist;
                 shouldHaveProperties(res, ["id", "name"]);
-                expect(res.id).to.equal(CREDENTIALS.userId);
+                expect(res.id).to.equal(constants.credentials.userId);
                 return done();
             });
         });
         // Skipping due to buggy "echo service"-like handling of bad metadata requests.
         it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, "nonexistent")));
+    });
+    describe('getUsersMetadata', function() {
+        it('returns users correctly', function (done) {
+            conn.getUsersMetadata(constants.credentials.userId, constants.credentials.userId, function(err, res) {
+                expect(err).to.not.exist;
+                shouldHaveProperties(res[0], ["id", "name"]);
+                expect(res[0]).to.deep.equal(res[1]);
+                expect(res[0].id).to.equal(constants.credentials.userId);
+                return done();
+            });
+        });
+        // Skipping due to buggy "echo service"-like handling of bad metadata requests.
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, "nonexistent")));
     });
 });

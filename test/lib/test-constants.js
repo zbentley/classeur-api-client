@@ -1,18 +1,18 @@
 'use strict';
 
 const fs = require('fs-extra'),
-	fromFile = fs.readJsonSync('./integration-test-resources.json'));
+	fromFile = fs.readJsonSync(require('path').join(__dirname, 'integration-test-resources.json'));
 
 module.exports = {
-    CREDENTIALS: {
+    credentials: {
     	userId: fromFile.userId,
     	apiKey: fromFile.apiKey
    	},
-    TEST_FILE: fromFile.existentFile,
-    TEST_FOLDER: fromFile.existentFolder,
-    FILE_CONTENT_PROPERTIES: ["text", "rev", "properties", "discussions"],
-    FILE_PROPERTIES: ["id", "name", "permission", "userId", "updated",  "content"],
-    FOLDER_FILES_PROPERTIES: ["id", "name", "updated", "userId"],
-    FOLDER_PROPERTIES: ["files", "id", "name", "updated"],
-    ERROR_STRING: "Got an error (400): Bad Request"
+    testFile: fromFile.existentFile,
+    testFolder: fromFile.existentFolder,
+    fileContentProperties: ["text", "rev", "properties", "discussions"],
+    fileProperties: ["id", "name", "permission", "userId", "updated",  "content"],
+    folderFilesProperties: ["id", "name", "updated", "userId"],
+    folderProperties: ["files", "id", "name", "updated"],
+    errorString: "Got an error (400): Bad Request"
 };
