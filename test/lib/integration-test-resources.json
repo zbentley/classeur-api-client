@@ -1,0 +1,7 @@
+{
+	"userId": "user id",
+	"apiKey": "api key",
+	"existentFile": "file id",
+	"existentFolder": "file id",
+	"existentEmptyFolder": "folder id"
+}
