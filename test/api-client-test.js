@@ -7,6 +7,8 @@ const _ = require('lodash'),
     p = _.bind(eyes.inspect, eyes),
     should = require('should'),
     CREDENTIALS = fs.readJsonSync(require('path').join(__dirname, 'private', 'integration-test-resources.json')),
+    TEST_FILE = CREDENTIALS.existentFile,
+    TEST_FOLDER = CREDENTIALS.existentFolder,
     FILE_CONTENT_PROPERTIES = ["text", "rev", "properties", "discussions"],
     FILE_PROPERTIES = ["id", "name", "permission", "userId", "updated",  "content"],
     FOLDER_FILES_PROPERTIES = ["id", "name", "updated", "userId"],
@@ -19,9 +21,6 @@ describe('constructor', function() {
     });
 });
 
-const fileName = "Pc4hVJnOqQj0auke8eV6",
-    folderName = "IFeJh0nJ1C6c6SVnRjH1";
-
 function allFiles(array) {
     array.should.be.an.Array;
     _.each(array, function(elt) {
@@ -33,7 +32,7 @@ describe('files', function() {
     let conn = new ApiClient(CREDENTIALS);
     describe('getFile', function() {
         it('returns file correctly', function (done) {
-            conn.getFile(fileName, function(err, res) {
+            conn.getFile(TEST_FILE, function(err, res) {
                 should.not.exist(err);
                 res.should.have.properties(FILE_PROPERTIES);
                 res.content.should.have.properties(FILE_CONTENT_PROPERTIES);
@@ -68,16 +67,16 @@ describe('files', function() {
                 };
             };
         it('returns files correctly (array mode)', function (done) {
-            conn.getFiles([fileName, fileName], testExistent(done));
+            conn.getFiles([TEST_FILE, TEST_FILE], testExistent(done));
         });
         it('handles nonexistent files correctly (array mode)', function (done) {
-             conn.getFiles([fileName, "nonexistent"], testNonexistent(done));
+             conn.getFiles([TEST_FILE, "nonexistent"], testNonexistent(done));
         });
         it('returns files correctly (list mode)', function (done) {
-            conn.getFiles(fileName, fileName, testExistent(done));
+            conn.getFiles(TEST_FILE, TEST_FILE, testExistent(done));
         });
         it('handles nonexistent files correctly (list mode)', function (done) {
-             conn.getFiles(fileName, "nonexistent", testNonexistent(done));
+             conn.getFiles(TEST_FILE, "nonexistent", testNonexistent(done));
         });
     });
 });
@@ -86,7 +85,7 @@ describe('folders', function() {
     let conn = new ApiClient(CREDENTIALS);
     describe('getFolder', function() {
         it('returns folder correctly', function (done) {
-            conn.getFolder(folderName, function(err, res) {
+            conn.getFolder(TEST_FOLDER, function(err, res) {
                 should.not.exist(err);
                 res.should.have.properties(FOLDER_PROPERTIES);
                 allFiles(res.files);
@@ -121,16 +120,16 @@ describe('folders', function() {
                 };
             };
         it('returns folders correctly (array mode)', function (done) {
-            conn.getFolders([folderName, folderName], testExistent(done));
+            conn.getFolders([TEST_FOLDER, TEST_FOLDER], testExistent(done));
         });
         it('handles nonexistent folders correctly (array mode)', function (done) {
-             conn.getFolders([folderName, "nonexistent"], testNonexistent(done));
+             conn.getFolders([TEST_FOLDER, "nonexistent"], testNonexistent(done));
         });
         it('returns folders correctly (list mode)', function (done) {
-            conn.getFolders(folderName, folderName, testExistent(done));
+            conn.getFolders(TEST_FOLDER, TEST_FOLDER, testExistent(done));
         });
         it('handles nonexistent folders correctly (list mode)', function (done) {
-             conn.getFolders(folderName, "nonexistent", testNonexistent(done));
+             conn.getFolders(TEST_FOLDER, "nonexistent", testNonexistent(done));
         });
     });
 });
