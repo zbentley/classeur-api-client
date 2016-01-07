@@ -1,10 +1,18 @@
 - JSON.parse error handling
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
-- Tests
 - Lint/hint
-- Default hostname
+- Return object instances with getters etc (tests can be simplified)
+- Use ES6 object type
 - Doc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
+- Tests
+	- Promisify all results
+	- Support input existentFile and existentFolder in the integration test json file
+	- DRY up a bit
+	- Assert returned IDs are equal as expected
+	- Use DI to enable real non-integration testing
+	- CI system
+	- Empty and full folders explicit tests
