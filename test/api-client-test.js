@@ -29,6 +29,8 @@ function allFiles(array) {
 }
 
 describe('files', function() {
+    this.slow(2000);
+    this.timeout(2000);
     let conn = new ApiClient(CREDENTIALS);
     describe('getFile', function() {
         it('returns file correctly', function (done) {
@@ -83,6 +85,8 @@ describe('files', function() {
 
 describe('folders', function() {
     let conn = new ApiClient(CREDENTIALS);
+    this.slow(2000);
+    this.timeout(2000);
     describe('getFolder', function() {
         it('returns folder correctly', function (done) {
             conn.getFolder(TEST_FOLDER, function(err, res) {
@@ -130,6 +134,30 @@ describe('folders', function() {
         });
         it('handles nonexistent folders correctly (list mode)', function (done) {
              conn.getFolders(TEST_FOLDER, "nonexistent", testNonexistent(done));
+        });
+    });
+});
+
+describe('user metadata', function() {
+    let conn = new ApiClient(CREDENTIALS);
+    this.slow(2000);
+    this.timeout(2000);
+    describe('getUserMetadata', function() {
+        it('returns user correctly', function (done) {
+            conn.getUserMetadata(CREDENTIALS.userId, function(err, res) {
+                should.not.exist(err);
+                res.should.have.properties(["id", "name"]);
+                res.id.should.equal(CREDENTIALS.userId);
+                return done();
+            });
+        });
+        // Skipping due to buggy "echo service"-like handling of bad metadata requests.
+        it.skip('handles nonexistent users correctly', function (done) {
+            conn.getUserMetadata("nonexistent", function(err, res) {
+                should.not.exist(res);
+                err.should.equal("Got an error (400): Bad Request");
+                return done();
+            });
         });
     });
 });

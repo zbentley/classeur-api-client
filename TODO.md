@@ -3,16 +3,17 @@
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
 - Lint/hint
 - Return object instances with getters etc (tests can be simplified)
-- Use ES6 object type
-- Doc
+- Use ES6 classes
+- JsDoc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
 - Tests
+	- Switch to chai/expectations for clarity
 	- Promisify all results
-	- Support input existentFile and existentFolder in the integration test json file
 	- DRY up a bit
 	- Assert returned IDs are equal as expected
 	- Use DI to enable real non-integration testing
+		- Split out integration and real unit tests.
 	- CI system
 	- Empty and full folders explicit tests
