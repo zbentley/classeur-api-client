@@ -27,4 +27,4 @@ build/Release
 node_modules
 
 # To prevent accidentally checking in real credentials:
-test/private
+test/private/
