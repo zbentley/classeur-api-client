@@ -11,10 +11,10 @@
   },
   "description": "Node.js client for the API of http://classeur.io/",
   "devDependencies": {
+    "chai": "*",
     "eyes": "*",
     "fs-extra": "*",
-    "mocha": "*",
-    "should": "*"
+    "mocha": "*"
   },
   "homepage": "https://github.com/zbentley/classeur-api-client",
   "keywords": [

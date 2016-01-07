@@ -9,11 +9,7 @@
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
 - Tests
-	- Switch to chai/expectations for clarity
-	- Promisify all results
-	- DRY up a bit
-	- Assert returned IDs are equal as expected
-	- Use DI to enable real non-integration testing
-		- Split out integration and real unit tests.
+	- Unit tests with DI
 	- CI system
 	- Empty and full folders explicit tests
+	- Support nonstandard hosts from integration config
