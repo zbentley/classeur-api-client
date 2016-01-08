@@ -32,7 +32,7 @@ function APIObjectShouldNotExist(func) {
 }
 
 describe("integration tests", function(){
-    let conn = new ApiClient(constants.credentials);
+    let conn = new ApiClient(constants.credentials.userId, constants.credentials.apiKey);
     conn.RestClient = new MockRestClient(constants.credentials);
     // this.slow(2000);
     // this.timeout(10000);
@@ -126,9 +126,28 @@ describe("integration tests", function(){
         it('returns users correctly', function (done) {
             conn.getUsersMetadata(constants.credentials.userId, constants.credentials.userId, function(err, res) {
                 expect(err).to.not.exist;
+                expect(res).to.be.an.Array;
                 shouldHaveProperties(res[0], ["id", "name"]);
                 expect(res[0]).to.deep.equal(res[1]);
                 expect(res[0].id).to.equal(constants.credentials.userId);
+                return done();
+            });
+        });
+        // Skipping due to buggy "echo service"-like handling of bad metadata requests.
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, "nonexistent")));
+    });
+    describe('getUsers', function() {
+        it('returns users correctly', function (done) {
+            conn.getUsers(function(err, res) {
+                if ( conn.RestClient instanceof MockRestClient ) {
+                    expect(err).to.not.exist;
+                    expect(res).to.be.an.Array;
+                    shouldHaveProperties(res[0], ["id", "name"]);
+                    expect(res[0].id).to.equal(constants.credentials.userId);
+                } else {
+                    // TODO get admin permissions so this can be tested.
+                    expect(err).to.equal("Got an error (403): Forbidden");
+                }
                 return done();
             });
         });

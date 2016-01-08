@@ -4,7 +4,11 @@ const _ = require('lodash'),
 	constants = require('./test-constants.js'),
 	eyes = require('eyes'),
 	p = _.bind(eyes.inspect, eyes),
-	EventEmitter = require('events');
+	EventEmitter = require('events'),
+	SUCCESS = {
+		statusCode: 200,
+		statusMessage: ""
+	};
 
 function hashify(array) {
 	let props = {};
@@ -17,10 +21,7 @@ function hashify(array) {
 function successfulResponse(array, overlay, cb) {
 	let props = hashify(array);
 	_.merge(props, overlay);
-	cb(JSON.stringify(props), {
-		statusCode: 200,
-		statusMessage: ""
-	});
+	cb(JSON.stringify(props), SUCCESS);
 }
 
 function notFoundResponse(cb) {
@@ -88,12 +89,12 @@ module.exports.prototype.get = function(uri, opts, cb) {
 			// TODO uncomment the below when user-not-found works correctly
 			// notFoundResponse(cb);
 		}
-		cb(JSON.stringify(response), {
-			statusCode: 200,
-			statusMessage: ""
-		});
+		cb(JSON.stringify(response), SUCCESS);
 	} else if ( _.startsWith(uri, "users") ) {
-		pending();
+		cb(JSON.stringify({
+			id: constants.credentials.userId,
+			name: "name"
+		}), SUCCESS);
 	} else {
 		throw new Error(`Unrecognized query: ${uri}, ${args}`);
 	}
