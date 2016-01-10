@@ -3,11 +3,16 @@
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
 - Lint/hint
 - Return object instances with getters etc (tests can be simplified)
-- Use ES6 classes
+- Assert metadata objects have more than just "id" property or throw a "not found"
+- Gruntify documentation generation, tests, etc.
 - JsDoc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
+	- JSDoc deduplicate via mustache self-templating plugin?
+	- Move all JSdoc settings into jsdoc.json
+	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
+	- Host on github pages
 - Tests
 	- Unit tests with DI
 	- CI system

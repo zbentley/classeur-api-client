@@ -14,7 +14,8 @@
     "chai": "*",
     "eyes": "*",
     "fs-extra": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "jsdoc": "*"
   },
   "homepage": "https://github.com/zbentley/classeur-api-client",
   "keywords": [
@@ -30,7 +31,8 @@
     "url": "https://github.com/zbentley/classeur-api-client"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "make_doc": "jsdoc -r lib/ -c doc/jsdoc.json"
   },
   "version": "0.0.1"
 }
