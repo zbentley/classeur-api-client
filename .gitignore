@@ -27,4 +27,4 @@ build/Release
 node_modules
 
 # Don't actually check in API keys
-test/asset/*.json
+test/asset/
