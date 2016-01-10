@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs-extra'),
-    fromFile = fs.readJsonSync(require('path').join(__dirname, 'integration-test-resources.json'));
+    fromFile = fs.readJsonSync(require('path').join(__dirname, '..', 'asset', 'integration-test-resources.json'));
 
 module.exports = {
     credentials: {
