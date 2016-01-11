@@ -5,6 +5,8 @@
 - Return object instances with getters etc (tests can be simplified)
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Gruntify documentation generation, tests, etc.
+- Make a lower-level API that exposes Buffers etc.
+- Use Chai for type assertions at runtime, too.
 - JsDoc
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
@@ -12,9 +14,7 @@
 	- JSDoc deduplicate via mustache self-templating plugin?
 	- Move all JSdoc settings into jsdoc.json
 	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
-	- Host on github pages
 - Tests
-	- Unit tests with DI
 	- CI system
 	- Empty and full folders explicit tests
 	- Support nonstandard hosts from integration config

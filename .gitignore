@@ -28,3 +28,7 @@ node_modules
 
 # Don't actually check in API keys
 test/asset/
+
+# OSX garbage
+.DS_Store
+**/.DS_Store
