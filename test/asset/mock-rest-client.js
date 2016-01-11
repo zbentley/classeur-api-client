@@ -7,7 +7,7 @@ const _ = require('lodash'),
     EventEmitter = require('events'),
     SUCCESS = {
         statusCode: 200,
-        statusMessage: ""
+        statusMessage: ''
     };
 
 function hashify(array) {
@@ -27,20 +27,20 @@ function successfulResponse(array, overlay, cb) {
 function notFoundResponse(cb) {
     cb(null, {
         statusCode: 400,
-        statusMessage: "Bad Request"
+        statusMessage: 'Bad Request'
     });
 }
 
 function stripIfStartsWith(str, target) {
     if ( _.startsWith(str, target) ) {
-        return str.replace(target, "");
+        return str.replace(target, '');
     } else {
         return false;
     }
 }
 
 function pending() {
-    throw new Error("No tests for this function yet!");
+    throw new Error('No tests for this function yet!');
 }
 
 module.exports = function(opts) {
@@ -50,9 +50,9 @@ module.exports = function(opts) {
 
 module.exports.prototype.get = function(uri, opts, cb) {
     let id;
-    uri = uri.replace(/.+?api[/]v1[/]/, "");
+    uri = uri.replace(/.+?api[/]v1[/]/, '');
 
-    if ( id = stripIfStartsWith(uri, "files/") ) {
+    if ( id = stripIfStartsWith(uri, 'files/') ) {
         if ( id === constants.testFile ) {
             const overlay = {
                 id: id,
@@ -62,24 +62,24 @@ module.exports.prototype.get = function(uri, opts, cb) {
         } else {
             notFoundResponse(cb);
         }
-    } else if ( id = stripIfStartsWith(uri, "folders/") ) {
+    } else if ( id = stripIfStartsWith(uri, 'folders/') ) {
         if ( id === constants.testFolder ) {
             successfulResponse(constants.folderProperties, { id: id }, cb);
         } else {
             notFoundResponse(cb);
         }
-    } else if ( _.startsWith(uri, "metadata/folders") ) {
+    } else if ( _.startsWith(uri, 'metadata/folders') ) {
         pending();
-    } else if ( _.startsWith(uri, "metadata/files") ) {
+    } else if ( _.startsWith(uri, 'metadata/files') ) {
         pending();
-    } else if ( _.startsWith(uri, "metadata/users") ) {
+    } else if ( _.startsWith(uri, 'metadata/users') ) {
         const ids = opts.parameters.id.split(',');
         let response;
         if ( _.uniq(ids).length === 1 && _.uniq(ids)[0] === constants.credentials.userId ) {
             response = _.map(ids, function(item) {
                 return {
                     id: item,
-                    name: "name"
+                    name: 'name'
                 };
             });
         } else {
@@ -90,10 +90,10 @@ module.exports.prototype.get = function(uri, opts, cb) {
             // notFoundResponse(cb);
         }
         cb(JSON.stringify(response), SUCCESS);
-    } else if ( _.startsWith(uri, "users") ) {
+    } else if ( _.startsWith(uri, 'users') ) {
         cb(JSON.stringify({
             id: constants.credentials.userId,
-            name: "name"
+            name: 'name'
         }), SUCCESS);
     } else {
         throw new Error(`Unrecognized query: ${uri}, ${args}`);

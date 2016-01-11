@@ -2,11 +2,11 @@
 
 const _ = require('lodash'),
     ApiClient = require('../lib/classeur-api-client'),
-    MockRestClient = require('./lib/mock-rest-client.js'),
+    MockRestClient = require('./asset/mock-rest-client.js'),
     eyes = require('eyes'),
     p = _.bind(eyes.inspect, eyes),
     expect = require('chai').expect,
-    constants = require('./lib/test-constants.js');
+    constants = require('./asset/test-constants.js');
 
 // Nasty global interaction as a way to get flags into the Mocha tests. It could
 // just as easily use environment variables.
@@ -48,7 +48,7 @@ describe(`${TEST_TYPE} tests`, function() {
 
     describe('constructor', function() {
         it('defaults host correctly', function () {
-            expect(conn.root).to.equal("https://app.classeur.io/api/v1/");
+            expect(conn.root).to.equal('https://app.classeur.io/api/v1/');
         });
     });
     describe('getFile', function() {
@@ -61,7 +61,7 @@ describe(`${TEST_TYPE} tests`, function() {
                 return done();
             });
         });
-        it('handles nonexistent files correctly', APIObjectShouldNotExist(_.bind(conn.getFile, conn, "nonexistent")));
+        it('handles nonexistent files correctly', APIObjectShouldNotExist(_.bind(conn.getFile, conn, 'nonexistent')));
     });
     describe('getFiles', function() {
         const testExistent = function(done) {
@@ -79,11 +79,11 @@ describe(`${TEST_TYPE} tests`, function() {
         it('returns files correctly (array mode)', function (done) {
             conn.getFiles([constants.testFile, constants.testFile], testExistent(done));
         });
-        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, [constants.testFile, "nonexistent"])));
+        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, [constants.testFile, 'nonexistent'])));
         it('returns files correctly (list mode)', function (done) {
             conn.getFiles(constants.testFile, constants.testFile, testExistent(done));
         });
-        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, constants.testFile, "nonexistent")));
+        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, constants.testFile, 'nonexistent')));
     });
     describe('getFolder', function() {
         it('returns folder correctly', function (done) {
@@ -95,7 +95,7 @@ describe(`${TEST_TYPE} tests`, function() {
                 return done();
             });
         });
-        it('handles nonexistent folders correctly ', APIObjectShouldNotExist(_.bind(conn.getFolder, conn, "nonexistent")));
+        it('handles nonexistent folders correctly ', APIObjectShouldNotExist(_.bind(conn.getFolder, conn, 'nonexistent')));
     });
 
     describe('getFolders', function() {
@@ -114,37 +114,37 @@ describe(`${TEST_TYPE} tests`, function() {
         it('returns folders correctly (array mode)', function (done) {
             conn.getFolders([constants.testFolder, constants.testFolder], testExistent(done));
         });
-        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, [constants.testFolder, "nonexistent"])));
+        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, [constants.testFolder, 'nonexistent'])));
         it('returns folders correctly (list mode)', function (done) {
             conn.getFolders(constants.testFolder, constants.testFolder, testExistent(done));
         });
-        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, constants.testFolder, "nonexistent")));
+        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, constants.testFolder, 'nonexistent')));
     });
     describe('getUserMetadata', function() {
         it('returns user correctly', function (done) {
             conn.getUserMetadata(constants.credentials.userId, function(err, res) {
                 expect(err).to.not.exist;
-                shouldHaveProperties(res, ["id", "name"]);
+                shouldHaveProperties(res, ['id', 'name']);
                 expect(res.id).to.equal(constants.credentials.userId);
                 return done();
             });
         });
-        // Skipping due to buggy "echo service"-like handling of bad metadata requests.
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, "nonexistent")));
+        // Skipping due to buggy 'echo service'-like handling of bad metadata requests.
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, 'nonexistent')));
     });
     describe('getUsersMetadata', function() {
         it('returns users correctly', function (done) {
             conn.getUsersMetadata(constants.credentials.userId, constants.credentials.userId, function(err, res) {
                 expect(err).to.not.exist;
                 expect(res).to.be.an.Array;
-                shouldHaveProperties(res[0], ["id", "name"]);
+                shouldHaveProperties(res[0], ['id', 'name']);
                 expect(res[0]).to.deep.equal(res[1]);
                 expect(res[0].id).to.equal(constants.credentials.userId);
                 return done();
             });
         });
-        // Skipping due to buggy "echo service"-like handling of bad metadata requests.
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, "nonexistent")));
+        // Skipping due to buggy 'echo service'-like handling of bad metadata requests.
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, 'nonexistent')));
     });
     describe('getUsers', function() {
         it('returns users correctly', function (done) {
@@ -152,11 +152,11 @@ describe(`${TEST_TYPE} tests`, function() {
                 if ( conn.RestClient instanceof MockRestClient ) {
                     expect(err).to.not.exist;
                     expect(res).to.be.an.Array;
-                    shouldHaveProperties(res[0], ["id", "name"]);
+                    shouldHaveProperties(res[0], ['id', 'name']);
                     expect(res[0].id).to.equal(constants.credentials.userId);
                 } else {
                     // TODO get admin permissions so this can be tested.
-                    expect(err).to.equal("Got an error (403): Forbidden");
+                    expect(err).to.equal('Got an error (403): Forbidden');
                 }
                 return done();
             });

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
@@ -15,11 +17,13 @@ module.exports = function(grunt) {
             }
         },
         mochaTest: {
+            options: {
+                reporter: 'spec',
+                // Clear the require cache, since we enable/disable integrations via require.
+                clearRequireCache: true,
+            },
             unit: {
                 options: {
-                    reporter: 'spec',
-                    // Clear the require cache, since we enable/disable integrations via require.
-                    clearRequireCache: true,
                     require: function() {
                         delete global._ZB_INTEGRATION_TEST;
                     }
@@ -28,9 +32,6 @@ module.exports = function(grunt) {
             },
             integration: {
                 options: {
-                    reporter: 'spec',
-                    // Clear the require cache, since we enable/disable integrations via require.
-                    clearRequireCache: true,
                     require: function() {
                         global._ZB_INTEGRATION_TEST = true;
                     }

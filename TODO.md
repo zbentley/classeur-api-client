@@ -6,12 +6,14 @@
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Make a lower-level API that exposes Buffers etc.
 - Use Chai for type assertions at runtime, too.
-- JsDoc
+- Documentation
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
 	- JSDoc deduplicate via mustache self-templating plugin?
 	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
+	- Upload to jsdoc via grunt: https://github.com/tschaub/grunt-gh-pages
+		- https://github.com/docstrap/docstrap
 - Tests
 	- CI system
 	- Empty and full folders explicit tests

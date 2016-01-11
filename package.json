@@ -36,7 +36,7 @@
     },
     "scripts": {
         "grunt": "grunt",
-        "test": "grunt mochaTest:unit"
+        "test": "grunt"
     },
     "version": "0.0.1"
 }

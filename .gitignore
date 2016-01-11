@@ -30,7 +30,7 @@ node_modules
 doc/generated/
 
 # Don't actually check in API keys
-test/asset/
+test/asset/private/
 
 # OSX garbage
 .DS_Store
