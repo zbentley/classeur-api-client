@@ -1,43 +1,42 @@
 {
-  "author": "Zac Bentley",
-  "bugs": {
-    "url": "https://github.com/zbentley/classeur-api-client/issues"
-  },
-  "dependencies": {
-    "async": "^1.5.2",
-    "check-types": "^5.1.0",
-    "lodash": "^3.10.1",
-    "node-rest-client": "^1.5.1"
-  },
-  "description": "Node.js client for the API of http://classeur.io/",
-  "devDependencies": {
-    "chai": "^3.4.1",
-    "eyes": "^0.1.8",
-    "fs-extra": "^0.26.4",
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
-    "grunt-jsdoc": "^1.1.0",
-    "grunt-mocha-test": "^0.12.7",
-    "jsdoc": "^3.4.0",
-    "mocha": "^2.3.4"
-  },
-  "homepage": "https://github.com/zbentley/classeur-api-client",
-  "keywords": [
-    "classeur",
-    "rest",
-    "api"
-  ],
-  "license": "MIT",
-  "main": "lib/classeur-api-client.js",
-  "name": "classeur-api-client",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zbentley/classeur-api-client"
-  },
-  "scripts": {
-    "grunt": "grunt",
-    "test": "grunt mochaTest:unit",
-    "make_doc": "jsdoc -r lib/ -c doc/jsdoc.json"
-  },
-  "version": "0.0.1"
+    "author": "Zac Bentley",
+    "bugs": {
+        "url": "https://github.com/zbentley/classeur-api-client/issues"
+    },
+    "dependencies": {
+        "async": "^1.5.2",
+        "check-types": "^5.1.0",
+        "lodash": "^3.10.1",
+        "node-rest-client": "^1.5.1"
+    },
+    "description": "Node.js client for the API of http://classeur.io/",
+    "devDependencies": {
+        "chai": "^3.4.1",
+        "eyes": "^0.1.8",
+        "fs-extra": "^0.26.4",
+        "grunt": "^0.4.5",
+        "grunt-cli": "^0.1.13",
+        "grunt-jsdoc": "^1.1.0",
+        "grunt-mocha-test": "^0.12.7",
+        "jsdoc": "^3.4.0",
+        "mocha": "^2.3.4"
+    },
+    "homepage": "https://github.com/zbentley/classeur-api-client",
+    "keywords": [
+        "classeur",
+        "rest",
+        "api"
+    ],
+    "license": "MIT",
+    "main": "lib/classeur-api-client.js",
+    "name": "classeur-api-client",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zbentley/classeur-api-client"
+    },
+    "scripts": {
+        "grunt": "grunt",
+        "test": "grunt mochaTest:unit"
+    },
+    "version": "0.0.1"
 }

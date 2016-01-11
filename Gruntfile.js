@@ -1,28 +1,44 @@
 module.exports = function(grunt) {
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-     mochaTest: {
-       unit: {
-         options: {
-           reporter: 'spec',
-           // Clear the require cache, since we enable/disable integrations via require.
-           clearRequireCache: true,
-           require: function() { delete global._ZB_INTEGRATION_TEST; }
-         },
-         src: ['test/**/*.js']
-       },
-       integration: {
-         options: {
-           reporter: 'spec',
-           // Clear the require cache, since we enable/disable integrations via require.
-           clearRequireCache: true,
-           require: function() { global._ZB_INTEGRATION_TEST = true; }
-         },
-         src: ['test/**/*.js']
-       }
-     }
-  });
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        jsdoc: {
+            dist: {
+                src: ['src/*.js', 'lib/**.js'],
+                options: {
+                    configure: "doc/jsdoc.json",
+                    recurse: true,
+                    encoding: "utf8",
+                    destination: "doc/generated"
+                }
+            }
+        },
+        mochaTest: {
+            unit: {
+                options: {
+                    reporter: 'spec',
+                    // Clear the require cache, since we enable/disable integrations via require.
+                    clearRequireCache: true,
+                    require: function() {
+                        delete global._ZB_INTEGRATION_TEST;
+                    }
+                },
+                src: ['test/**/*.js']
+            },
+            integration: {
+                options: {
+                    reporter: 'spec',
+                    // Clear the require cache, since we enable/disable integrations via require.
+                    clearRequireCache: true,
+                    require: function() {
+                        global._ZB_INTEGRATION_TEST = true;
+                    }
+                },
+                src: ['test/**/*.js']
+            }
+        }
+    });
 
-  grunt.registerTask('default', 'mochaTest:unit');
+    grunt.registerTask('default', 'mochaTest:unit');
 };
