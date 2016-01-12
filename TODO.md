@@ -8,6 +8,7 @@
 - Make a lower-level API that exposes Buffers etc.
 - Use Chai for type assertions at runtime, too.
 - Documentation
+	- separate section on pluralizable functions
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything

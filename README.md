@@ -35,7 +35,7 @@ This module provides an object-oriented interface to the Classeur API. Once it i
 
 ### Getting Files
 
-For more information on method arguments, return types, etc., see the full [API Documentation](TODO).
+For more information on method arguments, return types, etc., see the full [API Documentation](http://zbentley.github.io/classeur-api-client/latest/index.html#toc7__anchor).
 
 `ClasseurClient#GetFile` can be used to retrieve single files:
 
@@ -52,7 +52,7 @@ For more information on method arguments, return types, etc., see the full [API 
 		}
 	});
 
-[`ClasseurClient#getFiles`](TODO) or [`getFolders`](TODO) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
+[`ClasseurClient#getFiles`](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor) or [`getFolders`](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
 
 	myClient.getFiles(["id1", "id2", ... ], function(error, results) {
 		if ( error ) {
@@ -64,11 +64,11 @@ For more information on method arguments, return types, etc., see the full [API 
 		}
 	});
 
-`getFiles` and `getFolders` are [multisignature functions](TODO), which means they can also be called with lists of parameters, e.g. `GetFiles("id1", "id2", ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag). 
+`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles("id1", "id2", ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag). 
 
 ### Getting Metadata
 
-Metadata getters (e.g. [getUserMetadata](TODO), or [getFoldersMetadata](TODO)) work in much the same way as [`getFile`](TODO) and [`getFiles`](TODO). There are single versions:
+Metadata getters (e.g. [getUserMetadata](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [getFoldersMetadata](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
 
 	myClient.getUserMetadata("some user id", function(error, result) {
 		if ( error ) {
