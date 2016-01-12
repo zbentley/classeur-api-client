@@ -10,7 +10,7 @@ NPM package versions will follow [Semantic Versioning](http://semver.org/).
 
 # API Documentation
 
-API documentation is available at [http://zbentley.github.io/classeur-api-client/ClasseurClient.html](http://zbentley.github.io/classeur-api-client/ClasseurClient.html)
+API documentation is available at [http://zbentley.github.io/classeur-api-client](http://zbentley.github.io/classeur-api-client)
 
 That documentation is generated via [JSDoc](http://usejsdoc.org/) information written alongside this module's code. Bugs or issues with the documentation should be reported in the same way as issues with the module's functionality.
 
@@ -19,10 +19,6 @@ That documentation is generated via [JSDoc](http://usejsdoc.org/) information wr
     npm install classeur-api-client
 
 # Usage
-
-### Note on IDs:
-
-The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using `classeur-api-client`. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the "properties" windows of those objects in the Classeur UI.
 
 ### Getting Started
 
@@ -89,6 +85,10 @@ Metadata getters (e.g. [getUserMetadata](http://zbentley.github.io/classeur-api-
 			});
 		}
 	});
+
+### Note on IDs
+
+The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using `classeur-api-client`. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the "properties" windows of those objects in the Classeur UI.
 
 # Making Changes
 
