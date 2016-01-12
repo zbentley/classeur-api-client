@@ -3,16 +3,24 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        clean: {
+          doc: ["doc/generated"]
+        },
         jsdoc: {
             dist: {
-                src: ['src/*.js', 'lib/**.js'],
+                src: ['lib/', 'doc/*.md'],
                 options: {
                     configure: "doc/jsdoc.json",
                     recurse: true,
                     encoding: "utf8",
-                    destination: "doc/generated"
+                    destination: "doc/generated",
+                    package: "package.json",
+                    template : "node_modules/ink-docstrap/template",
+                    readme: "README.md"
                 }
             }
         },
@@ -41,5 +49,6 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('doc', ["clean:doc", "jsdoc"]);
     grunt.registerTask('default', 'mochaTest:unit');
 };

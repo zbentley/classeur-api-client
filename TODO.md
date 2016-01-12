@@ -1,3 +1,4 @@
+- Move files around so there aren't tons of extra folders.
 - JSON.parse error handling
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
@@ -13,9 +14,10 @@
 	- JSDoc deduplicate via mustache self-templating plugin?
 	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
 	- Upload to jsdoc via grunt: https://github.com/tschaub/grunt-gh-pages
-		- https://github.com/docstrap/docstrap
+	- "Built with" info.
+	- Footer/copyright/built with docstrap/jsdoc entry.
 - Tests
 	- CI system
 	- Empty and full folders explicit tests
 	- Support nonstandard hosts from integration config
-- Badgez: built with grunt, npm package, travis, cov, nodei.co
+- Badgez: built with grunt, npm package, travis, cov, nodei.co, stability
