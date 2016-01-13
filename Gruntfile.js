@@ -1,33 +1,66 @@
 'use strict';
 
+function branchDocumentationTasks(packageInfo, target) {
+    target = target || packageInfo.version;
+    const path = `doc/generated/versions/${target}`;
+    return {
+        jsdoc: {
+            src: ['lib/'],
+            options: {
+                configure: 'doc/jsdoc.json',
+                recurse: true,
+                encoding: 'utf8',
+                destination: path,
+                package: 'package.json',
+                template : 'node_modules/ink-docstrap/template',
+                readme: 'README.md'
+            }
+        },
+        pages: {
+            options: {
+                base: 'doc/generated',
+                only: ['doc/generated', '!doc/generated/versions', path]
+            },
+            src: ['**']
+        },
+        copy: {
+            cwd: `${path}/${packageInfo.name}/${packageInfo.version}`,
+            expand: true,
+            src: "**",
+            dest: path,
+        },
+        clean: ['doc/placeholder.jsdoc', `${path}/${packageInfo.name}/`],
+    };
+}
+
 module.exports = function(grunt) {
+    const packageInfo = grunt.file.readJSON('package.json');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-touch');
+    grunt.loadNpmTasks('grunt-gh-pages');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: packageInfo,
         clean: {
-          doc: ['doc/generated'],
-          placeholder: ['doc/placeholder.jsdoc']
+          'doc-all': ['doc/generated'],
+          'doc-current-version': branchDocumentationTasks(packageInfo).clean,
+          'doc-master':  branchDocumentationTasks(packageInfo, 'master').clean,
         },
         touch: {
-            src: ['doc/placeholder.jsdoc'],
+            'doc-placeholder': {
+                src: 'doc/placeholder.jsdoc'
+            }
+        },
+        copy: {
+            'doc-master': branchDocumentationTasks(packageInfo, 'master').copy,
+            'doc-current-version': branchDocumentationTasks(packageInfo).copy
         },
         jsdoc: {
-            main: {
-                src: ['lib/'],
-                options: {
-                    configure: 'doc/jsdoc.json',
-                    recurse: true,
-                    encoding: 'utf8',
-                    destination: 'doc/generated/lib',
-                    package: 'package.json',
-                    template : 'node_modules/ink-docstrap/template',
-                    readme: 'README.md'
-                }
-            },
+            master: branchDocumentationTasks(packageInfo, 'master').jsdoc,
+            'current-version': branchDocumentationTasks(packageInfo).jsdoc,
             index: {
                 src: ['doc/placeholder.jsdoc'],
                 options: {
@@ -39,6 +72,10 @@ module.exports = function(grunt) {
                     readme: 'doc/VersionIndex.md'
                 }
             }
+        },
+        'gh-pages': {
+            master: branchDocumentationTasks(packageInfo, 'master').pages,
+            'current-version': branchDocumentationTasks(packageInfo).pages
         },
         mochaTest: {
             options: {
@@ -65,6 +102,10 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('doc', ['clean:doc', 'touch', 'jsdoc:index', 'jsdoc:main', 'clean:placeholder']);
+    grunt.registerTask('doc:index', ['clean:doc-all', 'touch:doc-placeholder', 'jsdoc:index']);
+    grunt.registerTask('doc:master', ['doc:index', 'jsdoc:master', 'copy:doc-master', 'clean:doc-master']);
+    grunt.registerTask('doc:current-version', ['doc:index', 'jsdoc:current-version', 'copy:doc-current-version', 'clean:doc-current-version']);
+    grunt.registerTask('doc:master:push', ['doc:master', 'gh-pages:master']);
+    grunt.registerTask('doc:current-version:push', ['doc:current-version', 'gh-pages:current-version']);
     grunt.registerTask('default', 'mochaTest:unit');
 };

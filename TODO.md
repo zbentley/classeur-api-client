@@ -8,13 +8,13 @@
 - Make a lower-level API that exposes Buffers etc.
 - Use Chai for type assertions at runtime, too.
 - Documentation
+	- Github readme gets syntax highlighting
 	- separate section on pluralizable functions
 	- nb: auth failure is silent; 404s ensue
 	- nb: multi-getters are o(n) query cost
 	- nb: uses https for everything
 	- JSDoc deduplicate via mustache self-templating plugin?
 	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
-	- Upload to jsdoc via grunt: https://github.com/tschaub/grunt-gh-pages
 	- "Built with" info.
 	- Footer/copyright/built with docstrap/jsdoc entry.
 - Tests

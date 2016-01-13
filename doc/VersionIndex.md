@@ -12,7 +12,6 @@ NPM package versions will follow [Semantic Versioning](http://semver.org/).
 
 Each link below will take you to the README for the given package version:
 
-- [latest](latest/index.html)
-- [0.0.1](0.0.1/index.html)
-- [0.1.0](0.1.1/index.html)
-- [0.1.1](0.1.1/index.html)
+- [latest stable](versions/latest/index.html)
+- [0.1.1](versions/0.1.1/index.html)
+- [master](versions/master/index.html)
