@@ -29,6 +29,9 @@ node_modules
 # Don't actually check in API keys
 test/asset/private/
 
+# Old doc artifacts (should be autocleaned by grunt)
+doc/
+
 # OSX garbage
 .DS_Store
 **/.DS_Store
