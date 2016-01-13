@@ -4,7 +4,7 @@ Pull requests are welcome! Pull the [source code](https://github.com/zbentley/cl
 
 ### Unit Tests
 
-To run unit tests, do `npm test` or `grunt test:unit`.
+To run unit tests, do `npm test` or `grunt mochaTest:unit`.
 
 ### Integration Tests
 
@@ -13,7 +13,7 @@ To run integration tests, that actually talk to the API, do the following:
 1. Add information to `test/asset/private/integration-test-resources.json`.
 	- In addition to your Classeur user ID and API key, add the path to an existent file for `existentFile` and an existent folder _with at least one file in it_ to `existentFolder`.
 	- `existentEmptyFolder` can be left alone; it is not yet used.
-2. Run the tests against the real API: `grunt test:integration`.
+2. Run the tests against the real API: `grunt mochaTest:integration`.
 	- The tests are the same when run as unit tests or integration tests; the only difference is whether they run against a stubbed REST client or a real one.
 
 ### Documentation
