@@ -60,11 +60,11 @@ For more information on method arguments, return types, etc., see the full [API 
 		}
 	});
 
-`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles("id1", "id2", ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag). 
+`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles("id1", "id2", ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag).
 
 ### Getting Metadata
 
-Metadata getters (e.g. [getUserMetadata](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [getFoldersMetadata](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
+Metadata getters (e.g. [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [`getFoldersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
 
 	myClient.getUserMetadata("some user id", function(error, result) {
 		if ( error ) {

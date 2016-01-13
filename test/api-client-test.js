@@ -129,8 +129,9 @@ describe(`${TEST_TYPE} tests`, function() {
                 return done();
             });
         });
-        // Skipping due to buggy 'echo service'-like handling of bad metadata requests.
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, 'nonexistent')));
+        // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
+        // pending resolution of https://github.com/classeur/classeur/issues/74
+        it('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, 'nonexistent')));
     });
     describe('getUsersMetadata', function() {
         it('returns users correctly', function (done) {
@@ -143,8 +144,9 @@ describe(`${TEST_TYPE} tests`, function() {
                 return done();
             });
         });
-        // Skipping due to buggy 'echo service'-like handling of bad metadata requests.
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, 'nonexistent')));
+        // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
+        // pending resolution of https://github.com/classeur/classeur/issues/74
+        it('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, 'nonexistent')));
     });
     describe('getUsers', function() {
         it('returns users correctly', function (done) {

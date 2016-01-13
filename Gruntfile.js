@@ -105,7 +105,7 @@ module.exports = function(grunt) {
     grunt.registerTask('doc:index', ['clean:doc-all', 'touch:doc-placeholder', 'jsdoc:index']);
     grunt.registerTask('doc:master', ['doc:index', 'jsdoc:master', 'copy:doc-master', 'clean:doc-master']);
     grunt.registerTask('doc:current-version', ['doc:index', 'jsdoc:current-version', 'copy:doc-current-version', 'clean:doc-current-version']);
-    grunt.registerTask('doc:master:push', ['doc:master', 'gh-pages:master']);
-    grunt.registerTask('doc:current-version:push', ['doc:current-version', 'gh-pages:current-version']);
+    grunt.registerTask('doc:master:push', ['doc:master', 'gh-pages:master', 'clean:doc-all']);
+    grunt.registerTask('doc:current-version:push', ['doc:current-version', 'gh-pages:current-version', 'clean:doc-all']);
     grunt.registerTask('default', 'mochaTest:unit');
 };
