@@ -19,7 +19,7 @@ function branchDocumentationTasks(packageInfo, target) {
         pages: {
             options: {
                 base: 'doc/generated',
-                only: ['doc/generated', '!doc/generated/versions', path]
+                add: true
             },
             src: ['**']
         },
