@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>classeur-api-client Source: classeur-api-client/file.js</title>
+	<title>classeur-api-client Source: function-utils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -69,42 +69,87 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: classeur-api-client/file.js</h1>
+		<h1 class="page-title">Source: function-utils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Object representation of a Classeur file's content.
- * @typedef {Object} FileContent
- * @memberof module:classeur-api-client
- * @property {String} text - The text content of the file.
- * @property {Number} rev - The revision number of the file.
- * @property {Object} properties - File properties.
- * @property {Object[]} discussions - Array of objects, each representing a discussion entry regarding this file.
- */
+            class="sunlight-highlight-javascript linenums">'use strict';
+
+const _ = require('lodash'),
+    is = require('check-types').assert;
+
+
+
+function oneFunctionArgWithLength(length, func) {
+    is.function(func, `Expected a function, got ${typeof func} instead: ${func}`);
+    const fname = func.name;
+    is.greaterOrEqual(func.length, length, `Wrapped function ${fname} must accept at least ${length} arguments`);
+    return fname;
+}
+
+function argumentsWithCallback(arraylike, length, fname) {
+    let args = _.toArray(arraylike);
+    is.greaterOrEqual(args.length, length, `Function ${fname} called with ${args.length} arguments; requires at least ${length}`);
+    is.function(args[args.length - 1], `Function ${fname} cannot be called without a callback as its final argument`);
+    return args;
+}
 
 /**
- * Object representation of a Classeur file.
- * @typedef {Object} File
+ * Standard `function(error, result) { ... }` callbacks that get automatically wrapped so that either `error` or `result` must be `null`.
+ * @callback ScrubbedCallback
  * @memberof module:classeur-api-client
- * @property {String} id - The ID of the file.
- * @property {String} name - The name of the file, as visible in the Classeur UI.
- * @property {*} permission - Information on the access permissions of the file.
- * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
- * @property {ClasseurClient~FileContent} content - The content of the file.
+ * @param {?(Error|String)} error - An Error or error String, if an error occurred executing the function to which this callback was supplied, or `null` if the function was successful.
+ * @param {?*} result - Results of the function to which this callback was supplied, or `null` if the function was unsuccessful.
+ * - `result` will be `null` even if the function was _partially_ successful, and was supposed to return an Array; partial result arrays are removed.
  */
 
-/**
- * Object representation of a Classeur file's metadata.
- * @typedef {Object} FileMetadata
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the file.
- * @property {String} name - The name of the file, as visible in the Classeur UI.
- * @property {*} permission - Information on the access permissions of the file.
- * @property {String} userId - The ID of the user who owns the file.
- * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
- */</pre>
+module.exports.scrubArrayCallback = function(cb, wantarray) {
+    return function(err, res) {
+        if ( ! err ) {
+            is.array(res, `Expected an array, got ${typeof res} instead: ${res}`);
+            res = _.compact(res);
+            if ( res.length === 0 ) {
+                err = err || 'No results (should be 404, but API did not return an error)';
+            } else if ( ! wantarray ) {
+                res = res[0];
+            }
+        }
+        cb(err, err ? null : res);
+    };
+}
+
+// Simulates function(a, b, c, ...args, cb), or function(a, b, c, [args], cb).
+module.exports.restOrArrayAndCallback = function(wrapped) {
+    const fname = oneFunctionArgWithLength(2, wrapped);
+    return function() {
+        let args = argumentsWithCallback(arguments, 2, fname);
+        // Assumes the last two are an array and a callback.
+        const statics = args.splice(0, wrapped.length - 2),
+            cb = args.pop();
+
+        if ( ! ( args.length === 1 &amp;&amp; _.isArray(args[0]) ) ) {
+            args = [args];
+        }
+
+        _.spread(_.bind(wrapped, this))(statics.concat(args, cb));
+    };
+}
+
+// Asserts that a function only takes a single, non-array argument and a
+// callback in addition to its other arguments.
+module.exports.singleElementAndCallback = function(wrapped) {
+    const fname = oneFunctionArgWithLength(2, wrapped);
+    return function() {
+        let args = argumentsWithCallback(arguments, 2, fname);
+        const idx = args.length - 2;
+        is.not.array(args[idx], `Function ${fname} cannot be called with an array as the 2nd-to-last argument`);
+
+        args[idx] = [args[idx]];
+        _.spread(_.bind(wrapped, this))(args);
+    };
+}
+</pre>
     </article>
 </section>
 
@@ -147,7 +192,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on Tue Jan 12th 2016
+		on Wed Jan 13th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
