@@ -43,6 +43,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-ReleaseNotes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
 		</ul>
 		<div class="col-sm-3 col-md-3">
             <form class="navbar-form" role="search">
@@ -74,7 +81,7 @@
 
 
 
-    <h3>classeur-api-client 0.1.1</h3>
+    <h3>classeur-api-client 0.2.0</h3>
 
 
 
@@ -94,17 +101,17 @@
     <section class="readme-section">
         <article><h1>classeur-api-client</h1><p>Node.js client for the REST API of http://classeur.io/</p>
 <p><a href="http://classeur.io/">Classeur</a> is an online writing and collaboration platform by the authors of <a href="https://stackedit.io/">StackEdit</a>. In addition to a web and desktop UI, it provides a read-only REST API. <code>classeur-api-client</code> is a simple object-oriented <a href="https://nodejs.org">Node.js</a> library for interacting with that API.</p>
-<p><strong>This is alpha software:</strong> this is the first release of this client library. While I've done my best to write thorough unit and integration tests, there may be bugs, and the API is subject to change in future versions.</p>
-<p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<h1>API Documentation</h1><p>API documentation is available at <a href="http://zbentley.github.io/classeur-api-client">http://zbentley.github.io/classeur-api-client</a></p>
+<h1>Documentation and Sources</h1><p>API documentation is available at <a href="http://zbentley.github.io/classeur-api-client">http://zbentley.github.io/classeur-api-client</a>.</p>
+<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
 <p>That documentation is generated via <a href="http://usejsdoc.org/">JSDoc</a> information written alongside this module's code. Bugs or issues with the documentation should be reported in the same way as issues with the module's functionality.</p>
 <h1>Installation</h1><pre class="prettyprint source"><code>npm install classeur-api-client</code></pre><h1>Usage</h1><h3>Getting Started</h3><p>This module provides an object-oriented interface to the Classeur API. Once it is installed, you should be able to to write:</p>
-<pre class="prettyprint source"><code>const ClasseurClient = require('classeur-api-client');
+<pre class="prettyprint source lang-JavaScript"><code>const ClasseurClient = require('classeur-api-client');
 const myClient = new ClasseurClient({ userId: &quot;my id&quot;, apiKey: &quot;my key&quot; });</code></pre><p>...and be up and running.</p>
 <h3>Getting Files</h3><p>For more information on method arguments, return types, etc., see the full <a href="http://zbentley.github.io/classeur-api-client/versions/latest/index.html#toc7__anchor">API Documentation</a>.</p>
-<p><code>ClasseurClient#GetFile</code> can be used to retrieve single files:</p>
-<pre class="prettyprint source"><code>const fs = require('fs'),
-    myClient = new ClasseurClient({ userId: &quot;my id&quot;, apiKey: &quot;my key&quot; });
+<p><a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor"><code>ClasseurClient#GetFile</code></a> can be used to retrieve single files:</p>
+<pre class="prettyprint source lang-JavaScript"><code>const fs = require('fs');
+const myClient = new ClasseurClient({ userId: &quot;my id&quot;, apiKey: &quot;my key&quot; });
+
 myClient.getFile(&quot;some file ID&quot;, function(error, result) {
     if ( error ) {
         console.log(`Oh no! Something went wrong: ${error}`);
@@ -115,7 +122,7 @@ myClient.getFile(&quot;some file ID&quot;, function(error, result) {
         });
     }
 });</code></pre><p><a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor"><code>ClasseurClient#getFiles</code></a> or <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor"><code>getFolders</code></a> can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):</p>
-<pre class="prettyprint source"><code>myClient.getFiles([&quot;id1&quot;, &quot;id2&quot;, ... ], function(error, results) {
+<pre class="prettyprint source lang-JavaScript"><code>myClient.getFiles([&quot;id1&quot;, &quot;id2&quot;, ... ], function(error, results) {
     if ( error ) {
         console.log(`Oh no! Something went wrong: ${error}`);
     } else {
@@ -125,14 +132,14 @@ myClient.getFile(&quot;some file ID&quot;, function(error, result) {
     }
 });</code></pre><p><code>getFiles</code> and <code>getFolders</code> are multisignature functions, which means they can also be called with lists of parameters, e.g. <code>GetFiles(&quot;id1&quot;, &quot;id2&quot;, ..., function(error, result) { ... })</code>. This does not depend on ES6 <a href="https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag">rest parameters</a>.</p>
 <h3>Getting Metadata</h3><p>Metadata getters (e.g. <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor"><code>getUserMetadata</code></a>, or <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor"><code>getFoldersMetadata</code></a>) work in much the same way as <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor"><code>getFile</code></a> and <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor"><code>getFiles</code></a>. There are single versions:</p>
-<pre class="prettyprint source"><code>myClient.getUserMetadata(&quot;some user id&quot;, function(error, result) {
+<pre class="prettyprint source lang-JavaScript"><code>myClient.getUserMetadata(&quot;some user id&quot;, function(error, result) {
     if ( error ) {
         console.log(`Oh no! Something went wrong: ${error}`);
     } else {
         console.log(`User id ${result.id}'s real name is ${result.name}`);
     }
 });</code></pre><p>. . . and plural versions:</p>
-<pre class="prettyprint source"><code>myClient.getFilesMetadata([&quot;file id 1&quot;, &quot;file id 2&quot; ... ], function(error, result) {
+<pre class="prettyprint source lang-JavaScript"><code>myClient.getFilesMetadata([&quot;file id 1&quot;, &quot;file id 2&quot; ... ], function(error, result) {
     if ( error ) {
         console.log(`Oh no! Something went wrong: ${error}`);
     } else {
@@ -140,8 +147,9 @@ myClient.getFile(&quot;some file ID&quot;, function(error, result) {
             console.log(`File ${result.name} was last updated at ${result.updated}`);
         });
     }
-});</code></pre><h3>Note on IDs</h3><p>The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using <code>classeur-api-client</code>. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the &quot;properties&quot; windows of those objects in the Classeur UI.</p>
-<h1>Making Changes</h1><p>See the <a href="doc/DeveloperGuide.md">Developer's Guide</a> for more info.</p>
+});</code></pre><h3>Using IDs</h3><p>The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using <code>classeur-api-client</code>. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the &quot;properties&quot; windows of those objects in the Classeur UI.</p>
+<h1>Making Changes</h1><p>See the <a href="https://github.com/zbentley/classeur-api-client/blob/master/doc/DeveloperGuide.md">Developer's Guide</a> for more info.</p>
+<p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
 <h1>Bugs</h1><p>File a GitHub issue on the main repository.</p></article>
     </section>
 
@@ -190,7 +198,7 @@ myClient.getFile(&quot;some file ID&quot;, function(error, result) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on Wed Jan 13th 2016
+		on Fri Jan 15th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

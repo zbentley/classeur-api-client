@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>classeur-api-client Source: classeur-api-client/file.js</title>
+	<title>classeur-api-client Tutorial: Release Notes</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -74,50 +74,35 @@
 	<div class="col-md-12">
 	
 		<div id="main">
-			
+			<section class="tutorial-section">
 
-		<h1 class="page-title">Source: classeur-api-client/file.js</h1>
+<header>
     
-<section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Object representation of a Classeur file's content.
- * @typedef {Object} FileContent
- * @memberof module:classeur-api-client
- * @property {String} text - The text content of the file.
- * @property {Number} rev - The revision number of the file.
- * @property {Object} properties - File properties.
- * @property {Object[]} discussions - Array of objects, each representing a discussion entry regarding this file.
- */
 
-/**
- * Object representation of a Classeur file.
- * @typedef {Object} File
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the file.
- * @property {String} name - The name of the file, as visible in the Classeur UI.
- * @property {*} permission - Information on the access permissions of the file.
- * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
- * @property {ClasseurClient~FileContent} content - The content of the file.
- */
+    <h2>Release Notes</h2>
+</header>
 
-/**
- * Object representation of a Classeur file's metadata.
- * @typedef {Object} FileMetadata
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the file.
- * @property {String} name - The name of the file, as visible in the Classeur UI.
- * @property {*} permission - Information on the access permissions of the file.
- * @property {String} userId - The ID of the user who owns the file.
- * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
- */</pre>
-    </article>
+<article>
+    <h1>Release Notes</h1><h3>0.1.0</h3><ul>
+<li>Initial release.</li>
+</ul>
+<h3>0.1.1</h3><ul>
+<li>Documentation fixes.</li>
+<li>Added documentation build system.</li>
+</ul>
+<h3>0.2.0 (planned)</h3><ul>
+<li>Fully automated documentation build system.</li>
+<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
+<li>Handle JSON parsing/malformed-content errors.</li>
+<li>Typed error objects are now returned from all HTTP interactions.</li>
+<li>Use Chai for type assertions at runtime rather than a separate library.</li>
+<li>Improve test coverage and accuracy.</li>
+<li>Update lodash dependency.</li>
+<li>Update documentation.</li>
+</ul>
+</article>
+
 </section>
-
-
-
-
 
 		</div>
 	</div>
