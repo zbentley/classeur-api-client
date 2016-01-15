@@ -1,18 +1,13 @@
 - Move files around so there aren't tons of extra folders.
-- JSON.parse error handling
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
-- Use a different rest lib with better doc, maybe https://github.com/danwrong/restler
 - Lint/hint
 - Return object instances with getters etc (tests can be simplified)
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Make a lower-level API that exposes Buffers etc.
-- Use Chai for type assertions at runtime, too.
+- Figure out which node versions are supported.
 - Documentation
-	- Github readme gets syntax highlighting
 	- separate section on pluralizable functions
-	- nb: auth failure is silent; 404s ensue
-	- nb: multi-getters are o(n) query cost
-	- nb: uses https for everything
+		- nb: multi-getters are o(n) query cost
 	- JSDoc deduplicate via mustache self-templating plugin?
 	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
 	- "Built with" info.
@@ -21,4 +16,5 @@
 	- CI system
 	- Empty and full folders explicit tests
 	- Support nonstandard hosts from integration config
+	- Grunt verify no busted symlinks
 - Badgez: built with grunt, npm package, travis, cov, nodei.co, stability

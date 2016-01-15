@@ -3,10 +3,10 @@
 const _ = require('lodash'),
     ApiClient = require('../lib/classeur-api-client'),
     MockRestClient = require('./asset/mock-rest-client.js'),
-    eyes = require('eyes'),
-    p = _.bind(eyes.inspect, eyes),
     expect = require('chai').expect,
     constants = require('./asset/test-constants.js');
+
+// const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
 // Nasty global interaction as a way to get flags into the Mocha tests. It could
 // just as easily use environment variables.
@@ -20,7 +20,7 @@ function shouldHaveProperties(obj, props) {
 }
 
 function shouldAllBeFiles(array) {
-    expect(array).to.be.an.Array;
+    expect(array).to.be.instanceof(Array);
     _.each(array, function(elt) {
         shouldHaveProperties(elt, constants.folderFilesProperties);
     });
@@ -30,20 +30,21 @@ function APIObjectShouldNotExist(func) {
     return function(done) {
         func(function(err, res){
             expect(res).to.not.exist;
-            expect(err).to.equal(constants.errorString);
+            expect(err).to.be.instanceof(Error)
+            expect(err.response.statusCode).to.equal(400);
             done();
         });
     };
 }
 
-describe(`${TEST_TYPE} tests`, function() {
+describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
     let conn = new ApiClient(constants.credentials.userId, constants.credentials.apiKey);
 
     if ( TEST_TYPE === 'integration' ) {
         this.slow(2000);
         this.timeout(10000);
     } else {
-        conn.RestClient = new MockRestClient(constants.credentials);
+        conn._client = new MockRestClient(constants.credentials);
     }
 
     describe('constructor', function() {
@@ -67,7 +68,7 @@ describe(`${TEST_TYPE} tests`, function() {
         const testExistent = function(done) {
                 return function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res).to.be.an.Array;
+                    expect(res).to.be.instanceof(Array);
                     expect(res).to.have.length(2);
                     expect(res[0].id).to.equal(constants.testFile);
                     expect(res[0]).to.deep.equal(res[1]);
@@ -102,7 +103,7 @@ describe(`${TEST_TYPE} tests`, function() {
         const testExistent = function(done) {
                 return function(err, res) {
                     expect(err).to.not.exist;
-                    expect(res).to.be.an.Array;
+                    expect(res).to.be.instanceof(Array);
                     expect(res).to.have.length(2);
                     expect(res[0]).to.deep.equal(res[1]);
                     shouldHaveProperties(res[0], constants.folderProperties);
@@ -131,13 +132,13 @@ describe(`${TEST_TYPE} tests`, function() {
         });
         // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
         // pending resolution of https://github.com/classeur/classeur/issues/74
-        it('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, 'nonexistent')));
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, 'nonexistent')));
     });
     describe('getUsersMetadata', function() {
         it('returns users correctly', function (done) {
             conn.getUsersMetadata(constants.credentials.userId, constants.credentials.userId, function(err, res) {
                 expect(err).to.not.exist;
-                expect(res).to.be.an.Array;
+                expect(res).to.be.instanceof(Array);
                 shouldHaveProperties(res[0], ['id', 'name']);
                 expect(res[0]).to.deep.equal(res[1]);
                 expect(res[0].id).to.equal(constants.credentials.userId);
@@ -146,19 +147,19 @@ describe(`${TEST_TYPE} tests`, function() {
         });
         // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
         // pending resolution of https://github.com/classeur/classeur/issues/74
-        it('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, 'nonexistent')));
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, 'nonexistent')));
     });
     describe('getUsers', function() {
         it('returns users correctly', function (done) {
             conn.getUsers(function(err, res) {
-                if ( conn.RestClient instanceof MockRestClient ) {
+                if ( conn._client instanceof MockRestClient ) {
                     expect(err).to.not.exist;
-                    expect(res).to.be.an.Array;
+                    expect(res).to.be.instanceof(Array);
                     shouldHaveProperties(res[0], ['id', 'name']);
                     expect(res[0].id).to.equal(constants.credentials.userId);
                 } else {
                     // TODO get admin permissions so this can be tested.
-                    expect(err).to.equal('Got an error (403): Forbidden');
+                    expect(err.message).to.equal('Server error (403): Forbidden');
                 }
                 return done();
             });

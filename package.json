@@ -5,13 +5,12 @@
   },
   "dependencies": {
     "async": "^1.5.2",
-    "check-types": "^5.1.0",
-    "lodash": "^3.10.1",
-    "node-rest-client": "^1.5.1"
+    "chai": "^3.4.1",
+    "lodash": "^3.4.0 || ^4.0.0",
+    "restler": "^3.4.0"
   },
   "description": "Node.js client for the API of http://classeur.io/",
   "devDependencies": {
-    "chai": "^3.4.1",
     "eyes": "^0.1.8",
     "fs-extra": "^0.26.4",
     "grunt": "^0.4.5",

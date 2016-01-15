@@ -13,6 +13,5 @@ module.exports = {
     fileContentProperties: ['text', 'rev', 'properties', 'discussions'],
     fileProperties: ['id', 'name', 'permission', 'userId', 'updated',  'content'],
     folderFilesProperties: ['id', 'name', 'updated', 'userId'],
-    folderProperties: ['files', 'id', 'name', 'updated'],
-    errorString: 'Got an error (400): Bad Request'
+    folderProperties: ['files', 'id', 'name', 'updated']
 };
