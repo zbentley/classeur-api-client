@@ -39,7 +39,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client-ClasseurClient.html">classeur-api-client~ClasseurClient</a></li>
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
 				</ul>
 			</li>
 			
@@ -106,80 +106,14 @@
 const _ = require('lodash'),
     async = require('async'),
     restler = require('restler'),
-    functionUtils = require('./function-utils'),
-    errors = require('./classeur-api-client/error');
+    functionUtils = require('./lib/function-utils'),
+    errors = require('./lib/errors');
 
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
-function query(path, args, cb) {
-    _.merge(args, {
-        headers: {
-            'x-agent-info': 'github.com/zbentley/classeur-api-client'
-        },
-        username: this.userId,
-        password: this.apiKey,
-        parser: this._client.parsers.json
-    });
-
-    // _.once keeps the abort handler from calling the callback more than once.
-    cb = _.once(cb);
-    const request = this._client.get(this.root + path, args),
-        errorCallback = function(error) {
-            cb(error, null);
-            if ( ! request.aborted ) {
-                request.abort();
-            }
-        };
-
-    // Currying with arity prevents the response object from being passed
-    // to unsuspecting callbacks.
-    request.on('success', _.curry(cb, 2)(null));
-
-    request.on('fail', function(data, response) {
-        errorCallback(new errors.ServerError(request, data, response));
-    });
-
-    request.on('error', function(error){
-        errorCallback(new errors.ClientError(request, error));
-    });
-
-    request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
-        message: 'Request aborted'
-    })));
-
-    request.on('timeout', function(ms){
-        errorCallback(new errors.ClientError(request, {
-            message: 'Request timed out',
-            timeout: ms
-        }));
-    });
-}
-
-function multiQuery(type, wantArray, array, cb) {
-    const self = this;
-    async.map(
-        array,
-        function(item, cb) {
-            _.bind(query, self, type + item, {}, cb)();
-        },
-        functionUtils.scrubArrayCallback(cb, wantArray)
-    );
-}
-
-function metadataQuery(field, wantArray, ids, cb) {
-    _.bind(query, this)(
-        'metadata/' + field,
-        {
-            query: {
-                id: ids.join(','),
-            }
-        },
-        functionUtils.scrubArrayCallback(cb, wantArray)
-    );
-}
-
 /**
  * Constructs a new API client.
+ * @static
  * @param {String} userId - Classeur user ID string.
  * @param {String} apiKey - API Key string. Keep this secret.
  * @param {String} [host=app.classeur.io] - Fully qualified hostname to connect to. Connections will be made with HTTPS, regardless of whether the hostname is prefixed with `http://` or `https://`.
@@ -200,21 +134,21 @@ class ClasseurClient {
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * - One REST call is made (in parallel) per ID supplied.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
      */
     getFiles() {
-        functionUtils.restOrArrayAndCallback(multiQuery, this)('files/', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('files/', true, ...arguments);
     }
 
     /**
      * Retrieve a single file.
      * @param {String} id - Classeur file ID to retrieve.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [File]{@link module:classeur-api-client.File} object, or `null` on error.
      */
     getFile(id, cb) {
-        functionUtils.singleElementAndCallback(multiQuery, this)('files/', false, id, cb);
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('files/', false, id, cb);
     }
 
     /**
@@ -222,94 +156,163 @@ class ClasseurClient {
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder ID to retrieve.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * - One REST call is made (in parallel) per ID supplied.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
      */
     getFolders() {
-        functionUtils.restOrArrayAndCallback(multiQuery, this)('folders/', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('folders/', true, ...arguments);
     }
 
     /**
      * Retrieve a single folder.
      * @param {String} id - Classeur folder ID to retrieve.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [Folder]{@link module:classeur-api-client.Folder} object, or `null` on error.
      */
     getFolder(id, cb) {
-        functionUtils.singleElementAndCallback(multiQuery, this)('folders/', false, id, cb);
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('folders/', false, id, cb);
     }
 
     /**
      * Retrieve all users on the Classeur account to which the ClasseurClient is connected.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [User]{@link module:classeur-api-client.User} objects, or `null` on error.
      */
     getUsers(cb) {
-        _.bind(query, this)('users', {}, cb);
+        this.query('users', {}, cb);
     }
 
     /**
      * Retrieve metadata for one or more users.
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur user IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
      */
     getUsersMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('users', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('users', true, ...arguments);
     }
 
     /**
      * Retrieve metadata for one or more folders.
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
      */
     getFoldersMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('folders', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('folders', true, ...arguments);
     }
 
     /**
      * Retrieve metadata for one or more files.
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
      */
     getFilesMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('files', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('files', true, ...arguments);
     }
 
     /**
      * Retrieve metadata for a user.
      * @param {String} id - The Classeur user ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [UserMetadata]{@link module:classeur-api-client.UserMetadata} object, or `null` on error.
      */
     getUserMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('users', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('users', false, id, cb);
     }
 
     /**
      * Retrieve metadata for a file.
      * @param {String} id - The Classeur file ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [FileMetadata]{@link module:classeur-api-client.FileMetadata} object, or `null` on error.
      */
     getFileMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('files', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('files', false, id, cb);
     }
 
     /**
      * Retrieve metadata for a folder.
      * @param {String} id - The Classeur folder ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} object, or `null` on error.
      */
     getFolderMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('folders', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('folders', false, id, cb);
     }
+
+    /** @private */
+    metadataQuery(field, wantArray, ids, cb) {
+        this.query(
+            'metadata/' + field,
+            {
+                query: {
+                    id: ids.join(','),
+                }
+            },
+            functionUtils.scrubArrayCallback(cb, wantArray)
+        );
+    }
+
+    multiQuery(type, wantArray, array, cb) {
+        async.map(
+            array,
+            (item, cb) => { this.query(type + item, {}, cb) },
+            functionUtils.scrubArrayCallback(cb, wantArray)
+        );
+    }
+
+    query(path, args, cb) {
+        _.merge(args, {
+            headers: {
+                'x-agent-info': 'github.com/zbentley/classeur-api-client'
+            },
+            username: this.userId,
+            password: this.apiKey,
+            parser: this._client.parsers.json
+        });
+
+        // _.once keeps the abort handler from calling the callback more than once.
+        cb = _.once(cb);
+        const request = this._client.get(this.root + path, args),
+            errorCallback = function(error) {
+                cb(error, null);
+                if ( ! request.aborted ) {
+                    request.abort();
+                }
+            };
+
+        // Currying with arity prevents the response object from being passed
+        // to unsuspecting callbacks.
+        request.on('success', _.curry(cb, 2)(null));
+
+        request.on('fail', function(data, response) {
+            errorCallback(new errors.ServerError(request, data, response));
+        });
+
+        request.on('error', function(error){
+            errorCallback(new errors.ClientError(request, error));
+        });
+
+        request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
+            message: 'Request aborted'
+        })));
+
+        request.on('timeout', function(ms){
+            errorCallback(new errors.ClientError(request, {
+                message: 'Request timed out',
+                timeout: ms
+            }));
+        });
+    }
+    // Proxies for the error constructors so we don't have to add another module
+    // to the package.
+    static get ServerError() { return errors.ServerError; }
+    static get ClientError() { return errors.ClientError; }
 };
 
 module.exports = ClasseurClient;</pre>

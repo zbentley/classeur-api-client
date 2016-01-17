@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>classeur-api-client Modules</title>
+	<title>classeur-api-client Class: ClientError</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -76,14 +76,25 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Modules</h1>
+	<h1 class="page-title">Class: ClientError</h1>
 <section>
 
 <header>
     
         <h2>
+            <span class="ancestors"><a href="module-classeur-api-client.html">classeur-api-client</a>.</span>
         
+        ClientError
         </h2>
+        
+            <div class="class-description"><p>Object representation of an error that occurred on the client during or after the processing REST API operation.
+Example causes if a client error (and valid values for the <code>message</code> property) inclide:</p>
+<ul>
+<li>Request aborted</li>
+<li>Request timed out</li>
+<li>Corrupt/non-JSON-decodable content received</li>
+</ul>
+<p>ClientError instances sometimes wrap Restler errors. That means that, in addition to the properties listed below, ClientError instances can contain any properties that Restler attaches to its Error objects for <code>error</code>, <code>abort</code>, and <code>timeout</code> events.</p></div>
         
     
 </header>
@@ -93,8 +104,271 @@
     <div class="container-overview">
     
         
+<hr>
+<dt>
+    <h4 class="name" id="ClientError"><span class="type-signature"></span>new ClientError()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
+	
+    <dd>
+        <ul class="dummy">
+            <li>You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.</li>
+        </ul>
+    </dd>
+    
+    
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-97">line 97</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="https://github.com/danwrong/restler">restler documentation</a> for more info on possible Error contents.</p></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">const ClientError = require(&#x27;classeur-api-client&#x27;).ClientError;
+myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
+    if ( error instanceof ClientError ) {
+        console.log(error.message); // e.g. &#x27;JSON decoding failed!&#x27;
+        throw error;
+    }
+});</pre>
+
+
+    
+</dd>
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
 
         
+
+
+    <ul>
+        <li><p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a></p></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id="request">
+    <h4><span class="type-signature">&lt;readonly> </span>request<span class="type-signature"> :Request</span></h4>
+
+    
+    <p class="summary">The HTTP request object that caused the error.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A request object as returned by the <code>get</code> method of <a href="https://github.com/danwrong/restler">restler</a>.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Request</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
+	
+    <dd>
+        <ul class="dummy">
+            <li>This is usually not useful.</li>
+        </ul>
+    </dd>
+    
+    
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-129">line 129</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="https://github.com/danwrong/restler/blob/master/lib/restler.js">restler source</a> for the Request constructor.</p></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="timeout">
+    <h4><span class="type-signature">&lt;readonly, nullable> </span>timeout<span class="type-signature"> :Number</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>If a timeout occurred, this property will be set to the timeout threshold that was exceeded (in milliseconds). This property will only be set if a ClientError occurred due to a timeout.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Number</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
 <dl class="details">
     
 
@@ -125,42 +399,36 @@
 
 
 	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-111">line 111</a>
+			</li>
+		</ul>
+	</dd>
+	
 
 	
 
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="https://github.com/danwrong/restler/blob/master/lib/restler.js">restler source</a> for the Request constructor.</p></li>
+			</ul>
+	</dd>
 	
 
 	
 </dl>
 
 
-        
     
-    </div>
+</dd>
 
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-classeur-api-client.ClasseurClient.html">ClasseurClient</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-classeur-api-client.ClientError.html">ClientError</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-classeur-api-client.ServerError.html">ServerError</a></dt>
-            <dd></dd>
         </dl>
-    
-
-    
-
-    
-
     
 
     

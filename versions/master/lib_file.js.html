@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>classeur-api-client Tutorial: Other Versions</title>
+	<title>classeur-api-client Source: lib/file.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -74,32 +74,50 @@
 	<div class="col-md-12">
 	
 		<div id="main">
-			<section class="tutorial-section">
+			
 
-<header>
+		<h1 class="page-title">Source: lib/file.js</h1>
     
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * Object representation of a Classeur file's content.
+ * @typedef {Object} FileContent
+ * @memberof module:classeur-api-client
+ * @property {String} text - The text content of the file.
+ * @property {Number} rev - The revision number of the file.
+ * @property {Object} properties - File properties.
+ * @property {Object[]} discussions - Array of objects, each representing a discussion entry regarding this file.
+ */
 
-    <h2>Other Versions</h2>
-</header>
+/**
+ * Object representation of a Classeur file.
+ * @typedef {Object} File
+ * @memberof module:classeur-api-client
+ * @property {String} id - The ID of the file.
+ * @property {String} name - The name of the file, as visible in the Classeur UI.
+ * @property {*} permission - Information on the access permissions of the file.
+ * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
+ * @property {ClasseurClient~FileContent} content - The content of the file.
+ */
 
-<article>
-    <h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
-<p>API documentation is available at <a href="http://zbentley.github.io/classeur-api-client">http://zbentley.github.io/classeur-api-client</a>.</p>
-<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
-<p>Select a version of this library below to get started.</p>
-<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<p>Each link below will take you to the README for the given package version:</p>
-<ul>
-<li><a href="../../versions/latest/index.html">latest stable</a></li>
-<li><a href="../../versions/0.0.1/index.html">0.0.1</a></li>
-<li><a href="../../versions/0.1.1/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
-<li><a href="../../versions/0.1.1/index.html">0.1.1</a></li>
-<li><a href="../../versions/0.2.0/index.html">0.2.0</a></li>
-<li><a href="../../versions/master/index.html">master</a></li>
-</ul>
-</article>
-
+/**
+ * Object representation of a Classeur file's metadata.
+ * @typedef {Object} FileMetadata
+ * @memberof module:classeur-api-client
+ * @property {String} id - The ID of the file.
+ * @property {String} name - The name of the file, as visible in the Classeur UI.
+ * @property {*} permission - Information on the access permissions of the file.
+ * @property {String} userId - The ID of the user who owns the file.
+ * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
+ */</pre>
+    </article>
 </section>
+
+
+
+
 
 		</div>
 	</div>
