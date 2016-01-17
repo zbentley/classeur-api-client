@@ -28,73 +28,6 @@ const _ = require('lodash'),
 
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
-function query(path, args, cb) {
-    _.merge(args, {
-        headers: {
-            'x-agent-info': 'github.com/zbentley/classeur-api-client'
-        },
-        username: this.userId,
-        password: this.apiKey,
-        parser: this._client.parsers.json
-    });
-
-    // _.once keeps the abort handler from calling the callback more than once.
-    cb = _.once(cb);
-    const request = this._client.get(this.root + path, args),
-        errorCallback = function(error) {
-            cb(error, null);
-            if ( ! request.aborted ) {
-                request.abort();
-            }
-        };
-
-    // Currying with arity prevents the response object from being passed
-    // to unsuspecting callbacks.
-    request.on('success', _.curry(cb, 2)(null));
-
-    request.on('fail', function(data, response) {
-        errorCallback(new errors.ServerError(request, data, response));
-    });
-
-    request.on('error', function(error){
-        errorCallback(new errors.ClientError(request, error));
-    });
-
-    request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
-        message: 'Request aborted'
-    })));
-
-    request.on('timeout', function(ms){
-        errorCallback(new errors.ClientError(request, {
-            message: 'Request timed out',
-            timeout: ms
-        }));
-    });
-}
-
-function multiQuery(type, wantArray, array, cb) {
-    const self = this;
-    async.map(
-        array,
-        function(item, cb) {
-            _.bind(query, self, type + item, {}, cb)();
-        },
-        functionUtils.scrubArrayCallback(cb, wantArray)
-    );
-}
-
-function metadataQuery(field, wantArray, ids, cb) {
-    _.bind(query, this)(
-        'metadata/' + field,
-        {
-            query: {
-                id: ids.join(','),
-            }
-        },
-        functionUtils.scrubArrayCallback(cb, wantArray)
-    );
-}
-
 /**
  * Constructs a new API client.
  * @param {String} userId - Classeur user ID string.
@@ -121,7 +54,7 @@ class ClasseurClient {
      * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
      */
     getFiles() {
-        functionUtils.restOrArrayAndCallback(multiQuery, this)('files/', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('files/', true, ...arguments);
     }
 
     /**
@@ -131,7 +64,7 @@ class ClasseurClient {
      * - `result` will be a [File]{@link module:classeur-api-client.File} object, or `null` on error.
      */
     getFile(id, cb) {
-        functionUtils.singleElementAndCallback(multiQuery, this)('files/', false, id, cb);
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('files/', false, id, cb);
     }
 
     /**
@@ -143,7 +76,7 @@ class ClasseurClient {
      * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
      */
     getFolders() {
-        functionUtils.restOrArrayAndCallback(multiQuery, this)('folders/', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('folders/', true, ...arguments);
     }
 
     /**
@@ -153,7 +86,7 @@ class ClasseurClient {
      * - `result` will be a [Folder]{@link module:classeur-api-client.Folder} object, or `null` on error.
      */
     getFolder(id, cb) {
-        functionUtils.singleElementAndCallback(multiQuery, this)('folders/', false, id, cb);
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('folders/', false, id, cb);
     }
 
     /**
@@ -162,7 +95,7 @@ class ClasseurClient {
      * - `result` will be an Array of [User]{@link module:classeur-api-client.User} objects, or `null` on error.
      */
     getUsers(cb) {
-        _.bind(query, this)('users', {}, cb);
+        this.query('users', {}, cb);
     }
 
     /**
@@ -173,7 +106,7 @@ class ClasseurClient {
      * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
      */
     getUsersMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('users', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('users', true, ...arguments);
     }
 
     /**
@@ -184,7 +117,7 @@ class ClasseurClient {
      * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
      */
     getFoldersMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('folders', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('folders', true, ...arguments);
     }
 
     /**
@@ -195,7 +128,7 @@ class ClasseurClient {
      * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
      */
     getFilesMetadata() {
-        functionUtils.restOrArrayAndCallback(metadataQuery, this)('files', true, ...arguments);
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('files', true, ...arguments);
     }
 
     /**
@@ -205,7 +138,7 @@ class ClasseurClient {
      * - `result` will be a [UserMetadata]{@link module:classeur-api-client.UserMetadata} object, or `null` on error.
      */
     getUserMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('users', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('users', false, id, cb);
     }
 
     /**
@@ -215,7 +148,7 @@ class ClasseurClient {
      * - `result` will be a [FileMetadata]{@link module:classeur-api-client.FileMetadata} object, or `null` on error.
      */
     getFileMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('files', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('files', false, id, cb);
     }
 
     /**
@@ -225,7 +158,72 @@ class ClasseurClient {
      * - `result` will be a [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} object, or `null` on error.
      */
     getFolderMetadata(id, cb) {
-        functionUtils.singleElementAndCallback(metadataQuery, this)('folders', false, id, cb);
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('folders', false, id, cb);
+    }
+
+    /** @private */
+    metadataQuery(field, wantArray, ids, cb) {
+        this.query(
+            'metadata/' + field,
+            {
+                query: {
+                    id: ids.join(','),
+                }
+            },
+            functionUtils.scrubArrayCallback(cb, wantArray)
+        );
+    }
+
+    multiQuery(type, wantArray, array, cb) {
+        async.map(
+            array,
+            (item, cb) => { this.query(type + item, {}, cb) },
+            functionUtils.scrubArrayCallback(cb, wantArray)
+        );
+    }
+
+    query(path, args, cb) {
+        _.merge(args, {
+            headers: {
+                'x-agent-info': 'github.com/zbentley/classeur-api-client'
+            },
+            username: this.userId,
+            password: this.apiKey,
+            parser: this._client.parsers.json
+        });
+
+        // _.once keeps the abort handler from calling the callback more than once.
+        cb = _.once(cb);
+        const request = this._client.get(this.root + path, args),
+            errorCallback = function(error) {
+                cb(error, null);
+                if ( ! request.aborted ) {
+                    request.abort();
+                }
+            };
+
+        // Currying with arity prevents the response object from being passed
+        // to unsuspecting callbacks.
+        request.on('success', _.curry(cb, 2)(null));
+
+        request.on('fail', function(data, response) {
+            errorCallback(new errors.ServerError(request, data, response));
+        });
+
+        request.on('error', function(error){
+            errorCallback(new errors.ClientError(request, error));
+        });
+
+        request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
+            message: 'Request aborted'
+        })));
+
+        request.on('timeout', function(ms){
+            errorCallback(new errors.ClientError(request, {
+                message: 'Request timed out',
+                timeout: ms
+            }));
+        });
     }
 };
 
