@@ -4,12 +4,9 @@
 - Return object instances with getters etc (tests can be simplified)
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Make a lower-level API that exposes Buffers etc.
+- Make an API that supports partial results?
 - Figure out which node versions are supported.
 - Documentation
-	- separate section on pluralizable functions
-		- nb: multi-getters are o(n) query cost
-	- JSDoc deduplicate via mustache self-templating plugin?
-	- Figure out how to better represent variadic functions: maybe flag pluralized functions with multiple signatures via plugin/template?
 	- "Built with" info.
 	- Footer/copyright/built with docstrap/jsdoc entry.
 - Tests

@@ -6,7 +6,7 @@ Node.js client for the REST API of http://classeur.io/
 
 # Documentation and Sources
 
-API documentation is available at [http://zbentley.github.io/classeur-api-client](http://zbentley.github.io/classeur-api-client).
+API documentation is available at [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
 
 Source code for this package is avaiable at [https://github.com/zbentley/classeur-api-client](https://github.com/zbentley/classeur-api-client).
 
@@ -14,7 +14,9 @@ That documentation is generated via [JSDoc](http://usejsdoc.org/) information wr
 
 # Installation
 
-    npm install classeur-api-client
+```bash
+npm install classeur-api-client
+```
 
 # Usage
 
@@ -22,7 +24,7 @@ That documentation is generated via [JSDoc](http://usejsdoc.org/) information wr
 
 This module provides an object-oriented interface to the Classeur API. Once it is installed, you should be able to to write:
 
-```JavaScript
+```javascript
 const ClasseurClient = require('classeur-api-client');
 const myClient = new ClasseurClient({ userId: "my id", apiKey: "my key" });
 ```
@@ -35,7 +37,7 @@ For more information on method arguments, return types, etc., see the full [API 
 
 [`ClasseurClient#GetFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) can be used to retrieve single files:
 
-```JavaScript
+```javascript
 const fs = require('fs');
 const myClient = new ClasseurClient({ userId: "my id", apiKey: "my key" });
 
@@ -53,7 +55,7 @@ myClient.getFile("some file ID", function(error, result) {
 
 [`ClasseurClient#getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor) or [`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
 
-```JavaScript
+```javascript
 myClient.getFiles(["id1", "id2", ... ], function(error, results) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
@@ -71,7 +73,7 @@ myClient.getFiles(["id1", "id2", ... ], function(error, results) {
 
 Metadata getters (e.g. [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [`getFoldersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
 
-```JavaScript
+```javascript
 myClient.getUserMetadata("some user id", function(error, result) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
@@ -82,7 +84,7 @@ myClient.getUserMetadata("some user id", function(error, result) {
 ```
 . . . and plural versions:
 
-```JavaScript
+```javascript
 myClient.getFilesMetadata(["file id 1", "file id 2" ... ], function(error, result) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
@@ -98,16 +100,6 @@ myClient.getFilesMetadata(["file id 1", "file id 2" ... ], function(error, resul
 
 The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using `classeur-api-client`. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the "properties" windows of those objects in the Classeur UI.
 
-### Handling Errors
-
-Sometimes, the REST API returns an error to your [ScrubbedCallback](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#-static-ScrubbedCallback__anchor). The error could be any HTTP error code and short message (except 200, in which case error will be `null` and your data will be in the second argument), but the most common erroring behaviors and causes are here below.
-
-| Error Behavior   |      Cause      |
-|----------|:-------------:|
-| `400: Bad Request` |  Requested object not found, (occasinally) invalid credentials . |
-| `403: Forbidden` |    Invalid credentials.   |
-| col 3 is | right-aligned | 
-
 # Making Changes
 
 See the [Developer's Guide](https://github.com/zbentley/classeur-api-client/blob/master/doc/DeveloperGuide.md) for more info.
@@ -116,4 +108,4 @@ NPM package versions will follow [Semantic Versioning](http://semver.org/).
 
 # Bugs
 
-File a GitHub issue on the main repository.
+File a GitHub issue on the [main repository](https://github.com/zbentley/classeur-api-client).
