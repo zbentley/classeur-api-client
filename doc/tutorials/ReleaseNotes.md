@@ -7,7 +7,7 @@
 - Documentation fixes.
 - Added documentation build system.
 
-### 0.2.0
+### 0.2.0 (planned)
 - Fully automated documentation build system.
 - Switch to [Restler](https://github.com/danwrong/restler) for HTTP interaction.
 - Handle JSON parsing/malformed-content errors.

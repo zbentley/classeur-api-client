@@ -1,5 +1,18 @@
 'use strict';
 
+function versionIndexTemplate(path) {
+    return {
+        options: {
+            data: {
+                path: path
+            }
+        },
+        files: {
+            'doc/generated/tutorials/VersionIndex.md': ['doc/generator/VersionIndex.md.tpl'],
+        }
+    };
+}
+
 function branchDocumentationTasks(packageInfo, target) {
     target = target || packageInfo.version;
     const path = `doc/generated/versions/${target}`;
@@ -7,29 +20,23 @@ function branchDocumentationTasks(packageInfo, target) {
         jsdoc: {
             src: ['lib/'],
             options: {
-                configure: 'doc/jsdoc.json',
+                configure: 'doc/generator/jsdoc.json',
                 recurse: true,
                 encoding: 'utf8',
                 destination: path,
                 package: 'package.json',
                 template : 'node_modules/ink-docstrap/template',
-                readme: 'README.md'
+                readme: 'README.md',
+                tutorials: 'doc/generated/tutorials/'
             }
-        },
-        pages: {
-            options: {
-                base: 'doc/generated',
-                add: true
-            },
-            src: ['**']
         },
         copy: {
             cwd: `${path}/${packageInfo.name}/${packageInfo.version}`,
             expand: true,
-            src: "**",
+            src: '**',
             dest: path,
         },
-        clean: ['doc/placeholder.jsdoc', `${path}/${packageInfo.name}/`],
+        clean: [`${path}/${packageInfo.name}/`],
     };
 }
 
@@ -38,44 +45,55 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-touch');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-template');
 
     grunt.initConfig({
         pkg: packageInfo,
+        template: {
+            'index-root': versionIndexTemplate('./'),
+            'index-version': versionIndexTemplate('../../')
+        },
         clean: {
           'doc-all': ['doc/generated'],
+          'doc-tutorials': ['doc/generated/tutorials'],
           'doc-current-version': branchDocumentationTasks(packageInfo).clean,
           'doc-master':  branchDocumentationTasks(packageInfo, 'master').clean,
         },
-        touch: {
-            'doc-placeholder': {
-                src: 'doc/placeholder.jsdoc'
-            }
-        },
         copy: {
             'doc-master': branchDocumentationTasks(packageInfo, 'master').copy,
-            'doc-current-version': branchDocumentationTasks(packageInfo).copy
+            'doc-current-version': branchDocumentationTasks(packageInfo).copy,
+            'doc-index': {
+                cwd: 'doc/tutorials',
+                expand: true,
+                src: ['*.md', 'tutorials.json'],
+                dest: 'doc/generated/tutorials/',
+            }
         },
         jsdoc: {
             master: branchDocumentationTasks(packageInfo, 'master').jsdoc,
             'current-version': branchDocumentationTasks(packageInfo).jsdoc,
             index: {
-                src: ['doc/placeholder.jsdoc'],
+                src: ['doc/generator/index-placeholder.jsdoc'],
                 options: {
-                    configure: 'doc/jsdoc.json',
+                    configure: 'doc/generator/jsdoc.json',
                     recurse: false,
                     encoding: 'utf8',
                     destination: 'doc/generated',
                     template : 'node_modules/ink-docstrap/template',
-                    readme: 'doc/VersionIndex.md'
+                    readme: 'doc/generated/tutorials/VersionIndex.md',
+                    tutorials: 'doc/generated/tutorials/'
                 }
             }
         },
         'gh-pages': {
-            master: branchDocumentationTasks(packageInfo, 'master').pages,
-            'current-version': branchDocumentationTasks(packageInfo).pages
+            options: {
+                base: 'doc/generated',
+                add: true,
+                message: `Generated at NPM version ${packageInfo.version} on ${grunt.template.today('yyyy-mm-dd')}`,
+            },
+            src: ['**']
         },
         mochaTest: {
             options: {
@@ -85,7 +103,7 @@ module.exports = function(grunt) {
             },
             unit: {
                 options: {
-                    require: function() {
+                    require: () => {
                         delete global._ZB_INTEGRATION_TEST;
                     }
                 },
@@ -93,7 +111,7 @@ module.exports = function(grunt) {
             },
             integration: {
                 options: {
-                    require: function() {
+                    require: () => {
                         global._ZB_INTEGRATION_TEST = true;
                     }
                 },
@@ -102,10 +120,49 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('doc:index', ['clean:doc-all', 'touch:doc-placeholder', 'jsdoc:index']);
-    grunt.registerTask('doc:master', ['doc:index', 'jsdoc:master', 'copy:doc-master', 'clean:doc-master']);
-    grunt.registerTask('doc:current-version', ['doc:index', 'jsdoc:current-version', 'copy:doc-current-version', 'clean:doc-current-version']);
-    grunt.registerTask('doc:master:push', ['doc:master', 'gh-pages:master', 'clean:doc-all']);
-    grunt.registerTask('doc:current-version:push', ['doc:current-version', 'gh-pages:current-version', 'clean:doc-all']);
-    grunt.registerTask('default', 'mochaTest:unit');
+    grunt.registerTask('doc:index', [
+        // Remove all generated files.
+        'clean:doc-all',
+        // Render the version index template for the root (no relative links).
+        // This has the beneficial side effect of creating the doc target
+        // directory, `doc/generated` and `doc/generated/tutorials`.
+        'template:index-root',
+        // Copy the tutorials and their config file into `doc/generated/tutorials`.
+        'copy:doc-index',
+        // Generate documentation for an empty project (`index-empty.jsdoc`)
+        // using the version index template as the README. This makes a decent
+        // landing page without having to manually write any markup or menus.
+        // Laziness trumps elegance.
+        'jsdoc:index',
+        // Re-render the version index template (it's no longer needed for the
+        // landing page generation) with relative links that can be used by the
+        // per-version documentation.
+        'template:index-version'
+    ]);
+    grunt.registerTask('doc:master', [
+        'doc:index',
+        'jsdoc:master',
+        'copy:doc-master',
+        'clean:doc-master',
+        'clean:doc-tutorials'
+    ]);
+    grunt.registerTask('doc:current-version', [
+        'doc:index',
+        'jsdoc:current-version',
+        'copy:doc-current-version',
+        'clean:doc-current-version',
+        'clean:doc-tutorials'
+    ]);
+    grunt.registerTask('doc:master:push', [
+        'doc:master',
+        'gh-pages',
+        'clean:doc-all'
+    ]);
+    grunt.registerTask('doc:current-version:push', [
+        'doc:current-version',
+        'gh-pages',
+        'clean:doc-all'
+    ]);
+    grunt.registerTask('test:unit', 'mochaTest:unit');
+    grunt.registerTask('test:integration', 'mochaTest:integration');
 };

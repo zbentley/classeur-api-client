@@ -4,7 +4,7 @@ Pull requests are welcome! Pull the [source code](https://github.com/zbentley/cl
 
 ## Unit Tests
 
-To run unit tests, do `npm test` or `grunt mochaTest:unit`.
+To run unit tests, do `npm test` or `grunt test:unit`.
 
 ## Integration Tests
 
@@ -13,7 +13,7 @@ To run integration tests, that actually talk to the API, do the following:
 1. Add information to `test/asset/private/integration-test-resources.json`.
 	- In addition to your Classeur user ID and API key, add the path to an existent file for `existentFile` and an existent folder _with at least one file in it_ to `existentFolder`.
 	- `existentEmptyFolder` can be left alone; it is not yet used.
-2. Run the tests against the real API: `grunt mochaTest:integration`.
+2. Run the tests against the real API: `grunt test:integration`.
 	- The tests are the same when run as unit tests or integration tests; the only difference is whether they run against a stubbed REST client or a real one.
 
 ## Documentation
@@ -35,3 +35,4 @@ The index will live in `doc/generated/index.html`. Unless you build a version's 
 You can add `:push` to either the `doc:master` or `doc:current-version` Grunt task to push the resulting documentation product to GitHub pages.
 
 Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or `master`-named) folder you are targeting, depending on which Grunt task you're pushing with.
+<%- path %>
