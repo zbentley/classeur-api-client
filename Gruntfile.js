@@ -164,12 +164,12 @@ module.exports = function(grunt) {
     ]);
     grunt.registerTask('doc:master:push', [
         'doc:master',
-        'gh-pages',
+        'gh-pages:master',
         'clean:doc-all'
     ]);
     grunt.registerTask('doc:current-version:push', [
         'doc:current-version',
-        'gh-pages',
+        'gh-pages:current-version',
         'clean:doc-all'
     ]);
     grunt.registerTask('test:unit', 'mochaTest:unit');
