@@ -46,7 +46,7 @@
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-ReleaseNotes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
 				</ul>
 			</li>
 			
@@ -91,9 +91,9 @@
 * @example &lt;caption>Usage&lt;/caption>
 * const ClasseurClient = require('classeur-api-client');
 *
-* const myClient = new ClasseurClient({ userId: "my id", apiKey: "my key" });
+* const myClient = new ClasseurClient('my user id', 'my api key');
 *
-* myClient.getFile("some file id", function(error, result) {
+* myClient.getFile('some file id', function(error, result) {
 *     console.log(`Got a file called ${result.name}`);
 *     console.log(`...and some markdown: ${result.content.text}`);
 * });
@@ -144,12 +144,12 @@ function query(path, args, cb) {
     });
 
     request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
-        message: "Request aborted"
+        message: 'Request aborted'
     })));
 
     request.on('timeout', function(ms){
         errorCallback(new errors.ClientError(request, {
-            message: "Request timed out",
+            message: 'Request timed out',
             timeout: ms
         }));
     });
@@ -180,9 +180,9 @@ function metadataQuery(field, wantArray, ids, cb) {
 
 /**
  * Constructs a new API client.
- * @param {string} userId - Classeur user ID string.
- * @param {string} apiKey - API Key string. Keep this secret.
- * @param {string} [host=app.classeur.io] - Fully qualified hostname to connect to. Connections will be made with HTTPS, regardless of whether the hostname is prefixed with `http://` or `https://`.
+ * @param {String} userId - Classeur user ID string.
+ * @param {String} apiKey - API Key string. Keep this secret.
+ * @param {String} [host=app.classeur.io] - Fully qualified hostname to connect to. Connections will be made with HTTPS, regardless of whether the hostname is prefixed with `http://` or `https://`.
  */
 class ClasseurClient {
     constructor(userId, apiKey, host) {
@@ -193,17 +193,20 @@ class ClasseurClient {
         this.userId = userId;
         this.apiKey = apiKey;
     }
+
     /**
      * Retrieve one or more files.
      * @method
      * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * - One REST call is made (in parallel) per ID supplied.
      * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
      * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
-     * @see [Plural functions]{@link } for more information on functions that can be called with an array or multiple arguments.
      */
     getFiles() {
         functionUtils.restOrArrayAndCallback(multiQuery, this)('files/', true, ...arguments);
     }
+
     /**
      * Retrieve a single file.
      * @param {String} id - Classeur file ID to retrieve.
@@ -216,13 +219,9 @@ class ClasseurClient {
 
     /**
      * Retrieve one or more folders.
-     * @param {String[]} &amp;#91;ids&amp;#93; - Array of Classeur folder IDs to retrieve.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
-     * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
-     *//**
-     * Like {@link ClasseurClient#getFolders}, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.
-     * @variation 2
-     * @param {...String} &amp;hellip;ids - Classeur folder IDs to retrieve.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder ID to retrieve.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * - One REST call is made (in parallel) per ID supplied.
      * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
      * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
      */
@@ -251,14 +250,9 @@ class ClasseurClient {
 
     /**
      * Retrieve metadata for one or more users.
-     * @param {String[]} &amp;#91;ids&amp;#93; - Array of Classeur user IDs for which to retrieve metadata.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur user IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
-     * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
-     *//**
-     * Like {@link ClasseurClient#getUsersMetadata}, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.
-     * @variation 2
-     * @param {...String} &amp;hellip;ids - Classeur user IDs for which to retrieve metadata.
-     * @param [callback]{module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
      * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
      */
     getUsersMetadata() {
@@ -267,13 +261,8 @@ class ClasseurClient {
 
     /**
      * Retrieve metadata for one or more folders.
-     * @param {String[]} &amp;#91;ids&amp;#93; - Array of Classeur folder IDs for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
-     * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
-     *//**
-     * Like {@link ClasseurClient#getUsersMetadata}, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.
-     * @variation 2
-     * @param {...String} &amp;hellip;ids - Classeur folder IDs for which to retrieve metadata.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
      * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
      */
@@ -283,13 +272,8 @@ class ClasseurClient {
 
     /**
      * Retrieve metadata for one or more files.
-     * @param {String[]} &amp;#91;ids&amp;#93; - Array of Classeur file IDs for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
-     * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
-     *//**
-     * Like {@link ClasseurClient#getUsersMetadata}, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.
-     * @variation 2
-     * @param {...String} &amp;hellip;ids - Classeur file IDs for which to retrieve metadata.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
      * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
      */
@@ -328,7 +312,6 @@ class ClasseurClient {
     }
 };
 
-/** exported thing */
 module.exports = ClasseurClient;</pre>
     </article>
 </section>

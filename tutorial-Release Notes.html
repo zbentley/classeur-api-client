@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>classeur-api-client Source: classeur-api-client/folder.js</title>
+	<title>classeur-api-client Tutorial: Release Notes</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,20 +28,6 @@
 	</div>
 	<div class="navbar-collapse collapse" id="topNavigation">
 		<ul class="nav navbar-nav">
-			
-			<li class="dropdown">
-				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client-ClasseurClient.html">classeur-api-client~ClasseurClient</a></li>
-				</ul>
-			</li>
 			
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
@@ -74,50 +60,35 @@
 	<div class="col-md-12">
 	
 		<div id="main">
-			
+			<section class="tutorial-section">
 
-		<h1 class="page-title">Source: classeur-api-client/folder.js</h1>
+<header>
     
-<section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Object representation of a Classeur file entry in a folder.
- * @typedef {Object} FolderFileEntry
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the file.
- * @property {String} name - The name of the file, as visible in the Classeur UI.
- * @property {String} userId - The ID of the user who owns the file.
- * @property {Number} updated - Timestamp (since epoch): the last time the file was updated.
- */
 
-/**
- * Object representation of a Classeur folder.
- * @typedef {Object} Folder
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the folder.
- * @property {String} name - The name of the folder, as visible in the Classeur UI.
- * @property {String} userId - The ID of the user who owns the folder.
- * @property {Number} updated - Timestamp (since epoch): the last time the folder was updated.
- * @property {ClasseurClient~FolderFileEntry[]} files - List of objects, each representing a file contained within the folder.
- */
+    <h2>Release Notes</h2>
+</header>
 
-/**
- * Object representation of a Classeur folder's metadata.
- * @typedef {Object} FolderMetadata
- * @memberof module:classeur-api-client
- * @property {String} id - The ID of the folder.
- * @property {String} name - The name of the folder, as visible in the Classeur UI.
- * @property {String} userId - The ID of the user who owns the folder.
- * @property {Number} updated - Timestamp (since epoch): the last time the folder was updated.
- */
-</pre>
-    </article>
+<article>
+    <h1>Release Notes</h1><h3>0.1.0</h3><ul>
+<li>Initial release.</li>
+</ul>
+<h3>0.1.1</h3><ul>
+<li>Documentation fixes.</li>
+<li>Added documentation build system.</li>
+</ul>
+<h3>0.2.0 (planned)</h3><ul>
+<li>Fully automated documentation build system.</li>
+<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
+<li>Handle JSON parsing/malformed-content errors.</li>
+<li>Typed error objects are now returned from all HTTP interactions.</li>
+<li>Use Chai for type assertions at runtime rather than a separate library.</li>
+<li>Improve test coverage and accuracy.</li>
+<li>Update lodash dependency.</li>
+<li>Update documentation.</li>
+</ul>
+</article>
+
 </section>
-
-
-
-
 
 		</div>
 	</div>

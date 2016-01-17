@@ -46,7 +46,7 @@
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-ReleaseNotes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
 				</ul>
 			</li>
 			
@@ -86,6 +86,7 @@
 const _ = require('lodash'),
     expect = require('chai').expect,
     errors = require('./classeur-api-client/error');
+
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
 function oneFunctionArgWithLength(length, func) {
@@ -104,19 +105,17 @@ function argumentsWithCallback(arraylike, length, fname) {
 
 /**
  * Standard `function(error, result) { ... }` callbacks that get automatically wrapped so that either `error` or `result` must be `null`.
+ * - **Write your callbacks like you normally would; they will be scrubbed automatically.** Code in scrubbed callbacks does not have to worry about cases in which both arguments passed to the callback will be non-`null`; at least one will always be `null` (callbacks that expect `null` as a result will still work).
  * @callback ScrubbedCallback
  * @memberof module:classeur-api-client
- * @param {?(Error|String)} error - An Error or error String, if an error occurred executing the function to which this callback was supplied, or `null` if the function was successful.
- * @param {?*} result - Results of the function to which this callback was supplied, or `null` if the function was unsuccessful.
- * - `result` will be `null` even if the function was _partially_ successful, and was supposed to return an Array; partial result arrays are removed.
+ * @param {?(Error)} error - An Error or error String, if an error occurred executing the function to which this callback was supplied, or `null` if the function was successful.
+ * - All functions in this module will supply an instance of `Error` (or a subclass) to their callback; there is no need to check for String-type errors.
+ * @param {?*} result - Result of the function to which this callback was supplied, or `null` if the function was unsuccessful.
+ * - For type information of `result`, see the documentation for the function to which the callback was passed.
+ * - `result` will be `null` even if the function was _partially_ successful, and was supposed to return an Array; partial result arrays are not supported.
  */
 
- /**
-  * STUFF ABOUT PLURALS
-  * @name Plural Functions
-  * @memberof module:classeur-api-client
-  */
-
+// The function that does the callback scrubbing.
 module.exports.scrubArrayCallback = function(cb, wantarray) {
     return function(err, res) {
         if ( ! err ) {

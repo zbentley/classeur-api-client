@@ -46,7 +46,7 @@
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-ReleaseNotes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
 				</ul>
 			</li>
 			
@@ -82,7 +82,7 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-classeur-api-client.html">module:classeur-api-client</a>~</span>
+            <span class="ancestors"><a href="module-classeur-api-client.html">classeur-api-client</a>~</span>
         
         ClasseurClient
         </h2>
@@ -148,7 +148,7 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
 
@@ -184,7 +184,7 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
 
@@ -220,7 +220,7 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
 
@@ -475,7 +475,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-130">line 130</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-133">line 133</a>
 			</li>
 		</ul>
 	</dd>
@@ -640,7 +640,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-233">line 233</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-217">line 217</a>
 			</li>
 		</ul>
 	</dd>
@@ -748,7 +748,11 @@
 
             
 
-            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.</p></td>
+            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.</p>
+<ul>
+<li>See <a href="tutorial-Plural Functions.html">Plural Functions</a> for more information on functions that can be called with an array or with variadic arguments.</li>
+<li>One REST call is made (in parallel) per ID supplied.</li>
+</ul></td>
         </tr>
 
     
@@ -828,65 +832,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-121">line 121</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li><p>Plural functions objects, or <code>null</code> on error.</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-213">line 213</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-123">line 123</a>
 			</li>
 		</ul>
 	</dd>
@@ -919,7 +865,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getFilesMetadata2"><span class="type-signature"></span>getFilesMetadata(&hellip;ids, callback)</h4>
+    <h4 class="name" id="getFilesMetadata"><span class="type-signature"></span>getFilesMetadata(&hellip;ids|&#91;ids&#93;, callback)</h4>
     
     
 </dt>
@@ -927,7 +873,7 @@
 
     
     <div class="description">
-        <p>Like ClasseurClient#getUsersMetadata, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.</p>
+        <p>Retrieve metadata for one or more files.</p>
     </div>
     
 
@@ -964,13 +910,16 @@
 
         <tr>
             
-                <td class="name"><code>&hellip;ids</code></td>
+                <td class="name"><code>&hellip;ids|&#91;ids&#93;</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String></span>
 
 
 
@@ -991,7 +940,10 @@
 
             
 
-            <td class="description last"><p>Classeur file IDs for which to retrieve metadata.</p></td>
+            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur file IDs for which to retrieve metadata.</p>
+<ul>
+<li>See <a href="tutorial-Plural Functions.html">Plural Functions</a> for more information on functions that can be called with an array or with variadic arguments.</li>
+</ul></td>
         </tr>
 
     
@@ -1071,7 +1023,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-213">line 213</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-197">line 197</a>
 			</li>
 		</ul>
 	</dd>
@@ -1236,7 +1188,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-156">line 156</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-155">line 155</a>
 			</li>
 		</ul>
 	</dd>
@@ -1401,7 +1353,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-243">line 243</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-227">line 227</a>
 			</li>
 		</ul>
 	</dd>
@@ -1434,7 +1386,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getFolders"><span class="type-signature"></span>getFolders(&#91;ids&#93;, callback)</h4>
+    <h4 class="name" id="getFolders"><span class="type-signature"></span>getFolders(&hellip;ids|&#91;ids&#93;, callback)</h4>
     
     
 </dt>
@@ -1465,171 +1417,6 @@
         <th>Type</th>
 
         
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>&#91;ids&#93;</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array of Classeur folder IDs to retrieve.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-classeur-api-client.html#.ScrubbedCallback">module:classeur-api-client.ScrubbedCallback</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Called with <code>(error, result)</code>.</p>
-<ul>
-<li><code>result</code> will be an Array of <a href="module-classeur-api-client.html#.Folder">Folder</a> objects, or <code>null</code> on error.</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-146">line 146</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getFolders2"><span class="type-signature"></span>getFolders(&hellip;ids, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Like ClasseurClient#getFolders, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
         <th>Argument</th>
         
 
@@ -1644,13 +1431,16 @@
 
         <tr>
             
-                <td class="name"><code>&hellip;ids</code></td>
+                <td class="name"><code>&hellip;ids|&#91;ids&#93;</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String></span>
 
 
 
@@ -1671,7 +1461,11 @@
 
             
 
-            <td class="description last"><p>Classeur folder IDs to retrieve.</p></td>
+            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur folder ID to retrieve.</p>
+<ul>
+<li>See <a href="tutorial-Plural Functions.html">Plural Functions</a> for more information on functions that can be called with an array or with variadic arguments.</li>
+<li>One REST call is made (in parallel) per ID supplied.</li>
+</ul></td>
         </tr>
 
     
@@ -1751,7 +1545,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-146">line 146</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-145">line 145</a>
 			</li>
 		</ul>
 	</dd>
@@ -1784,7 +1578,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getFoldersMetadata"><span class="type-signature"></span>getFoldersMetadata(&#91;ids&#93;, callback)</h4>
+    <h4 class="name" id="getFoldersMetadata"><span class="type-signature"></span>getFoldersMetadata(&hellip;ids|&#91;ids&#93;, callback)</h4>
     
     
 </dt>
@@ -1815,171 +1609,6 @@
         <th>Type</th>
 
         
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>&#91;ids&#93;</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array of Classeur folder IDs for which to retrieve metadata.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-classeur-api-client.html#.ScrubbedCallback">module:classeur-api-client.ScrubbedCallback</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Called with <code>(error, result)</code>.</p>
-<ul>
-<li><code>result</code> will be an Array of <a href="module-classeur-api-client.html#.FolderMetadata">FolderMetadata</a> objects, or <code>null</code> on error.</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-197">line 197</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getFoldersMetadata2"><span class="type-signature"></span>getFoldersMetadata(&hellip;ids, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Like ClasseurClient#getUsersMetadata, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
         <th>Argument</th>
         
 
@@ -1994,13 +1623,16 @@
 
         <tr>
             
-                <td class="name"><code>&hellip;ids</code></td>
+                <td class="name"><code>&hellip;ids|&#91;ids&#93;</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String></span>
 
 
 
@@ -2021,7 +1653,10 @@
 
             
 
-            <td class="description last"><p>Classeur folder IDs for which to retrieve metadata.</p></td>
+            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur folder IDs for which to retrieve metadata.</p>
+<ul>
+<li>See <a href="tutorial-Plural Functions.html">Plural Functions</a> for more information on functions that can be called with an array or with variadic arguments.</li>
+</ul></td>
         </tr>
 
     
@@ -2101,7 +1736,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-197">line 197</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-186">line 186</a>
 			</li>
 		</ul>
 	</dd>
@@ -2266,7 +1901,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-223">line 223</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-207">line 207</a>
 			</li>
 		</ul>
 	</dd>
@@ -2407,7 +2042,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-165">line 165</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-164">line 164</a>
 			</li>
 		</ul>
 	</dd>
@@ -2440,7 +2075,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUsersMetadata"><span class="type-signature"></span>getUsersMetadata(&#91;ids&#93;, callback)</h4>
+    <h4 class="name" id="getUsersMetadata"><span class="type-signature"></span>getUsersMetadata(&hellip;ids|&#91;ids&#93;, callback)</h4>
     
     
 </dt>
@@ -2471,6 +2106,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -2483,12 +2120,15 @@
 
         <tr>
             
-                <td class="name"><code>&#91;ids&#93;</code></td>
+                <td class="name"><code>&hellip;ids|&#91;ids&#93;</code></td>
             
 
             <td class="type">
             
                 
+<span class="param-type">String</span>
+|
+
 <span class="param-type">Array.&lt;String></span>
 
 
@@ -2497,10 +2137,23 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Array of Classeur user IDs for which to retrieve metadata.</p></td>
+            <td class="description last"><p>An Array of strings, or multiple string arguments, each representing a Classeur user IDs for which to retrieve metadata.</p>
+<ul>
+<li>See <a href="tutorial-Plural Functions.html">Plural Functions</a> for more information on functions that can be called with an array or with variadic arguments.</li>
+</ul></td>
         </tr>
 
     
@@ -2520,6 +2173,14 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -2572,194 +2233,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-181">line 181</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getUsersMetadata2"><span class="type-signature"></span>getUsersMetadata(&hellip;ids, <span class="optional">callback</span>)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Like ClasseurClient#getUsersMetadata, but with spread: accepts a variable number of folder IDs in the arguments, instead of an Array.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>&hellip;ids</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                    &lt;repeatable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Classeur user IDs for which to retrieve metadata.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-classeur-api-client.html#.ScrubbedCallback">module:classeur-api-client.ScrubbedCallback</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback - Called with <code>(error, result)</code>.</p>
-<ul>
-<li><code>result</code> will be an Array of <a href="module-classeur-api-client.html#.UserMetadata">UserMetadata</a> objects, or <code>null</code> on error.</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="classeur-api-client.js.html">classeur-api-client.js</a>,
-				 <a href="classeur-api-client.js.html#sunlight-1-line-181">line 181</a>
+				 <a href="classeur-api-client.js.html#sunlight-1-line-175">line 175</a>
 			</li>
 		</ul>
 	</dd>
