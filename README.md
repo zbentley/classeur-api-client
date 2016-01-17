@@ -102,7 +102,7 @@ The REST API operates only by ID. You cannot get any information by human-visibl
 
 # Making Changes
 
-See the [Developer's Guide](https://github.com/zbentley/classeur-api-client/blob/master/doc/DeveloperGuide.md) for more info.
+See the [Developer's Guide](https://github.com/zbentley/classeur-api-client/blob/master/doc/tutorials/DeveloperGuide.md) for more info.
 
 NPM package versions will follow [Semantic Versioning](http://semver.org/).
 

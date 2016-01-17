@@ -43,7 +43,7 @@ function branchDocumentationTasks(target) {
             options: {
                 base: 'doc/generated',
                 add: true,
-                message: `Generate documentation on <%= grunt.template.today('yyyy-mm-dd HH:MM') %> (doc version ${target}; pkg version ${version})`,
+                message: `Generated on <%= grunt.template.today('yyyy-mm-dd HH:MM') %> (doc: ${target}; pkg: ${version})`,
             },
             src: ['**']
         }
@@ -101,8 +101,8 @@ module.exports = function(grunt) {
             }
         },
         'gh-pages': {
-            master: docTasksMaster.pages,
-            'current-version': docTasksCurrent.pages
+            master: docTasksMaster.push,
+            'current-version': docTasksCurrent.push
         },
         mochaTest: {
             options: {
