@@ -5,6 +5,8 @@
 - Make a lower-level API that exposes Buffers etc.
 - Make an API that supports partial results?
 - Figure out which node versions are supported.
+- Documentation
+	- 3 things are needed to release now: version index change, release notes, and symlink. There should be only one.
 - Tests
 	- CI system
 	- Empty and full folders explicit tests
