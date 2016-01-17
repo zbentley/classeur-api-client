@@ -19,9 +19,5 @@
     "inverseNav": true,
     "protocol": "html://",
     "methodHeadingReturns": false
-  },
-  "markdown": {
-    "parser": "gfm",
-    "hardwrap": true
   }
 }

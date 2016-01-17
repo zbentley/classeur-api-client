@@ -13,8 +13,10 @@ function versionIndexTemplate(path) {
     };
 }
 
-function branchDocumentationTasks(packageInfo, target) {
-    target = target || packageInfo.version;
+function branchDocumentationTasks(target) {
+    const version = '<%= pkg.version %>',
+        name = '<%= pkg.name %>';
+    target = target || version;
     const path = `doc/generated/versions/${target}`;
     return {
         jsdoc: {
@@ -31,17 +33,28 @@ function branchDocumentationTasks(packageInfo, target) {
             }
         },
         copy: {
-            cwd: `${path}/${packageInfo.name}/${packageInfo.version}`,
+            cwd: `${path}/${name}/${version}`,
             expand: true,
             src: '**',
             dest: path,
         },
-        clean: [`${path}/${packageInfo.name}/`],
+        clean: [`${path}/${name}/`],
+        push: {
+            options: {
+                base: 'doc/generated',
+                add: true,
+                message: `Generate documentation on <%= grunt.template.today('yyyy-mm-dd HH:MM') %> (doc version ${target}; pkg version ${version})`,
+            },
+            src: ['**']
+        }
     };
 }
 
 module.exports = function(grunt) {
-    const packageInfo = grunt.file.readJSON('package.json');
+    const packageInfo = grunt.file.readJSON('package.json'),
+        docTasksCurrent = branchDocumentationTasks(),
+        docTasksMaster = branchDocumentationTasks('master');
+
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -58,12 +71,12 @@ module.exports = function(grunt) {
         clean: {
           'doc-all': ['doc/generated'],
           'doc-tutorials': ['doc/generated/tutorials'],
-          'doc-current-version': branchDocumentationTasks(packageInfo).clean,
-          'doc-master':  branchDocumentationTasks(packageInfo, 'master').clean,
+          'doc-master':  docTasksMaster.clean,
+          'doc-current-version': docTasksCurrent.clean
         },
         copy: {
-            'doc-master': branchDocumentationTasks(packageInfo, 'master').copy,
-            'doc-current-version': branchDocumentationTasks(packageInfo).copy,
+            'doc-master': docTasksMaster.copy,
+            'doc-current-version': docTasksCurrent.copy,
             'doc-index': {
                 cwd: 'doc/tutorials',
                 expand: true,
@@ -72,8 +85,8 @@ module.exports = function(grunt) {
             }
         },
         jsdoc: {
-            master: branchDocumentationTasks(packageInfo, 'master').jsdoc,
-            'current-version': branchDocumentationTasks(packageInfo).jsdoc,
+            master: docTasksMaster.jsdoc,
+            'current-version': docTasksCurrent.jsdoc,
             index: {
                 src: ['doc/generator/index-placeholder.jsdoc'],
                 options: {
@@ -88,18 +101,14 @@ module.exports = function(grunt) {
             }
         },
         'gh-pages': {
-            options: {
-                base: 'doc/generated',
-                add: true,
-                message: `Generated at NPM version ${packageInfo.version} on ${grunt.template.today('yyyy-mm-dd')}`,
-            },
-            src: ['**']
+            master: docTasksMaster.pages,
+            'current-version': docTasksCurrent.pages
         },
         mochaTest: {
             options: {
                 reporter: 'spec',
                 // Clear the require cache, since we enable/disable integrations via require.
-                clearRequireCache: true,
+                clearRequireCache: true
             },
             unit: {
                 options: {

@@ -35,4 +35,3 @@ The index will live in `doc/generated/index.html`. Unless you build a version's 
 You can add `:push` to either the `doc:master` or `doc:current-version` Grunt task to push the resulting documentation product to GitHub pages.
 
 Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or `master`-named) folder you are targeting, depending on which Grunt task you're pushing with.
-<%- path %>
