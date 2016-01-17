@@ -20,7 +20,7 @@ function branchDocumentationTasks(target) {
     const path = `doc/generated/versions/${target}`;
     return {
         jsdoc: {
-            src: ['lib/'],
+            src: ['classeur-api-client.js', 'lib/'],
             options: {
                 configure: 'doc/generator/jsdoc.json',
                 recurse: true,

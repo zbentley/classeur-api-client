@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash'),
-    ApiClient = require('../lib/classeur-api-client'),
+    ApiClient = require('../classeur-api-client'),
     MockRestClient = require('./asset/mock-rest-client'),
     expect = require('chai').expect,
     constants = require('./asset/test-constants');

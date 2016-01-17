@@ -23,8 +23,8 @@
 const _ = require('lodash'),
     async = require('async'),
     restler = require('restler'),
-    functionUtils = require('./function-utils'),
-    errors = require('./classeur-api-client/error');
+    functionUtils = require('./lib/function-utils'),
+    errors = require('./lib/errors');
 
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 

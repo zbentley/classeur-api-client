@@ -2,7 +2,7 @@
 
 const _ = require('lodash'),
     expect = require('chai').expect,
-    errors = require('../lib/classeur-api-client/error');
+    errors = require('../lib/errors');
 
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 

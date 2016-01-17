@@ -1,4 +1,3 @@
-- Move files around so there aren't tons of extra folders.
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Lint/hint
 - Return object instances with getters etc (tests can be simplified)
