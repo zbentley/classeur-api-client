@@ -2,11 +2,11 @@
 
 const _ = require('lodash'),
     ApiClient = require('../lib/classeur-api-client'),
-    MockRestClient = require('./asset/mock-rest-client.js'),
+    MockRestClient = require('./asset/mock-rest-client'),
     expect = require('chai').expect,
-    constants = require('./asset/test-constants.js');
+    constants = require('./asset/test-constants');
 
-// const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
+const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
 // Nasty global interaction as a way to get flags into the Mocha tests. It could
 // just as easily use environment variables.

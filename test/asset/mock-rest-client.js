@@ -104,10 +104,10 @@ module.exports = class MockRestClient {
             }
             this.deferredEmit('success', response, SUCCESS);
         } else if ( _.startsWith(uri, 'users') ) {
-            this.deferredEmit('success', {
+            this.deferredEmit('success', [{
                 id: constants.credentials.userId,
                 name: 'name'
-            }, SUCCESS);
+            }], SUCCESS);
         } else {
             throw new Error(`Unrecognized query: ${uri}, ${args}`);
         }

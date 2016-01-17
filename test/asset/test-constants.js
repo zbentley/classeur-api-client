@@ -1,7 +1,7 @@
 'use strict';
 
-const fs = require('fs-extra'),
-    fromFile = fs.readJsonSync(require('path').join(__dirname, 'private', 'integration-test-resources.json'));
+const grunt = require('grunt'),
+    fromFile = grunt.file.readJSON(require('path').join(__dirname, 'private', 'integration-test-resources.json'));
 
 module.exports = {
     credentials: {
