@@ -41,5 +41,5 @@
     "grunt": "grunt",
     "test": "grunt test:unit"
   },
-  "version": "0.2.0"
+  "version": "0.2.1"
 }

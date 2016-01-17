@@ -19,3 +19,6 @@
 - Improve test coverage and accuracy.
 - Update lodash dependency.
 - Update documentation.
+
+### 0.2.1
+- Fix broken package manifest.
