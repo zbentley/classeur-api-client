@@ -2,6 +2,9 @@
   "plugins": [
     "plugins/markdown"
   ],
+  "markdown": {
+      "tags": ["extends", "augments"]
+  },
   "templates": {
     "logoFile": "",
     "cleverLinks": false,
@@ -10,7 +13,6 @@
     "outputSourceFiles": true,
     "outputSourcePath": true,
     "systemName": "classeur-api-client",
-    "footer": "",
     "copyright": "Copyright Zac Bentley © 2015-2016",
     "theme": "united",
     "linenums": true,

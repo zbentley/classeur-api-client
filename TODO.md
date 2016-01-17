@@ -5,9 +5,6 @@
 - Make a lower-level API that exposes Buffers etc.
 - Make an API that supports partial results?
 - Figure out which node versions are supported.
-- Documentation
-	- "Built with" info.
-	- Footer/copyright/built with docstrap/jsdoc entry.
 - Tests
 	- CI system
 	- Empty and full folders explicit tests

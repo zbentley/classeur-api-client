@@ -30,6 +30,7 @@ const _ = require('lodash'),
 
 /**
  * Constructs a new API client.
+ * @static
  * @param {String} userId - Classeur user ID string.
  * @param {String} apiKey - API Key string. Keep this secret.
  * @param {String} [host=app.classeur.io] - Fully qualified hostname to connect to. Connections will be made with HTTPS, regardless of whether the hostname is prefixed with `http://` or `https://`.
@@ -50,7 +51,7 @@ class ClasseurClient {
      * @param {...(String|String[])} &hellip;ids|&#91;ids&#93; - An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * - One REST call is made (in parallel) per ID supplied.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
      */
     getFiles() {
@@ -60,7 +61,7 @@ class ClasseurClient {
     /**
      * Retrieve a single file.
      * @param {String} id - Classeur file ID to retrieve.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [File]{@link module:classeur-api-client.File} object, or `null` on error.
      */
     getFile(id, cb) {
@@ -72,7 +73,7 @@ class ClasseurClient {
      * @param {...(String|String[])} &hellip;ids|&#91;ids&#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder ID to retrieve.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
      * - One REST call is made (in parallel) per ID supplied.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
      */
     getFolders() {
@@ -82,7 +83,7 @@ class ClasseurClient {
     /**
      * Retrieve a single folder.
      * @param {String} id - Classeur folder ID to retrieve.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [Folder]{@link module:classeur-api-client.Folder} object, or `null` on error.
      */
     getFolder(id, cb) {
@@ -91,7 +92,7 @@ class ClasseurClient {
 
     /**
      * Retrieve all users on the Classeur account to which the ClasseurClient is connected.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [User]{@link module:classeur-api-client.User} objects, or `null` on error.
      */
     getUsers(cb) {
@@ -102,7 +103,7 @@ class ClasseurClient {
      * Retrieve metadata for one or more users.
      * @param {...(String|String[])} &hellip;ids|&#91;ids&#93; - An Array of strings, or multiple string arguments, each representing a Classeur user IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
      */
     getUsersMetadata() {
@@ -113,7 +114,7 @@ class ClasseurClient {
      * Retrieve metadata for one or more folders.
      * @param {...(String|String[])} &hellip;ids|&#91;ids&#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
      */
     getFoldersMetadata() {
@@ -124,7 +125,7 @@ class ClasseurClient {
      * Retrieve metadata for one or more files.
      * @param {...(String|String[])} &hellip;ids|&#91;ids&#93; - An Array of strings, or multiple string arguments, each representing a Classeur file IDs for which to retrieve metadata.
      * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
      */
     getFilesMetadata() {
@@ -134,7 +135,7 @@ class ClasseurClient {
     /**
      * Retrieve metadata for a user.
      * @param {String} id - The Classeur user ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [UserMetadata]{@link module:classeur-api-client.UserMetadata} object, or `null` on error.
      */
     getUserMetadata(id, cb) {
@@ -144,7 +145,7 @@ class ClasseurClient {
     /**
      * Retrieve metadata for a file.
      * @param {String} id - The Classeur file ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [FileMetadata]{@link module:classeur-api-client.FileMetadata} object, or `null` on error.
      */
     getFileMetadata(id, cb) {
@@ -154,7 +155,7 @@ class ClasseurClient {
     /**
      * Retrieve metadata for a folder.
      * @param {String} id - The Classeur folder ID for which to retrieve metadata.
-     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
      * - `result` will be a [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} object, or `null` on error.
      */
     getFolderMetadata(id, cb) {
@@ -225,6 +226,10 @@ class ClasseurClient {
             }));
         });
     }
+    // Proxies for the error constructors so we don't have to add another module
+    // to the package.
+    static get ServerError() { return errors.ServerError; }
+    static get ClientError() { return errors.ClientError; }
 };
 
 module.exports = ClasseurClient;

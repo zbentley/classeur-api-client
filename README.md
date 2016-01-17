@@ -26,7 +26,7 @@ This module provides an object-oriented interface to the Classeur API. Once it i
 
 ```javascript
 const ClasseurClient = require('classeur-api-client');
-const myClient = new ClasseurClient({ userId: "my id", apiKey: "my key" });
+const myClient = new ClasseurClient({ userId: 'my id', apiKey: 'my key' });
 ```
 
 ...and be up and running.
@@ -39,14 +39,14 @@ For more information on method arguments, return types, etc., see the full [API 
 
 ```javascript
 const fs = require('fs');
-const myClient = new ClasseurClient({ userId: "my id", apiKey: "my key" });
+const myClient = new ClasseurClient({ userId: 'my id', apiKey: 'my key' });
 
-myClient.getFile("some file ID", function(error, result) {
+myClient.getFile('some file ID', function(error, result) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
 	} else {
 		console.log(`Saving file ${result.name}...`);
-		fs.writeFile("/path/to/file.md", result.content.text, function(error, result) {
+		fs.writeFile('/path/to/file.md', result.content.text, function(error, result) {
 		...
 		});
 	}
@@ -56,7 +56,7 @@ myClient.getFile("some file ID", function(error, result) {
 [`ClasseurClient#getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor) or [`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
 
 ```javascript
-myClient.getFiles(["id1", "id2", ... ], function(error, results) {
+myClient.getFiles(['id1', 'id2', ... ], function(error, results) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
 	} else {
@@ -67,14 +67,14 @@ myClient.getFiles(["id1", "id2", ... ], function(error, results) {
 });
 ```
 
-`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles("id1", "id2", ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag).
+`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles('id1', 'id2', ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag).
 
 ### Getting Metadata
 
 Metadata getters (e.g. [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [`getFoldersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
 
 ```javascript
-myClient.getUserMetadata("some user id", function(error, result) {
+myClient.getUserMetadata('some user id', function(error, result) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
 	} else {
@@ -85,7 +85,7 @@ myClient.getUserMetadata("some user id", function(error, result) {
 . . . and plural versions:
 
 ```javascript
-myClient.getFilesMetadata(["file id 1", "file id 2" ... ], function(error, result) {
+myClient.getFilesMetadata(['file id 1', 'file id 2' ... ], function(error, result) {
 	if ( error ) {
 		console.log(`Oh no! Something went wrong: ${error}`);
 	} else {
@@ -98,7 +98,7 @@ myClient.getFilesMetadata(["file id 1", "file id 2" ... ], function(error, resul
 
 ### Using IDs
 
-The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using `classeur-api-client`. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the "properties" windows of those objects in the Classeur UI.
+The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using `classeur-api-client`. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the 'properties' windows of those objects in the Classeur UI.
 
 # Making Changes
 

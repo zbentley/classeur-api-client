@@ -45,11 +45,12 @@ module.exports = class MockRestClient {
 
     notFoundResponse() {
         this.deferredEmit('fail', {
-            statusCode: 400,
-            statusMessage: 'Bad Request'
+            status: 404,
+            reason: 'File not found',
+            error: 'not_found'
         }, {
-            statusCode: 400,
-            statusMessage: 'Bad Request'
+            statusCode: 404,
+            statusMessage: 'File not found'
         });
     }
 
