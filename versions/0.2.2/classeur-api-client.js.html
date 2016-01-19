@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>classeur-api-client Source: classeur-api-client.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-api-client</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: classeur-api-client.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">'use strict';
+
+/**
+* Node.js client for the REST API of [Classeur](http://classeur.io/).
+*
+* @example &lt;caption>Installation&lt;/caption>
+* npm install classeur-api-client
+* @example &lt;caption>Usage&lt;/caption>
+* const ClasseurClient = require('classeur-api-client');
+*
+* const myClient = new ClasseurClient('my user id', 'my api key');
+*
+* myClient.getFile('some file id', function(error, result) {
+*     console.log(`Got a file called ${result.name}`);
+*     console.log(`...and some markdown: ${result.content.text}`);
+* });
+* @see The [ClasseurClient]{@link module:classeur-api-client~ClasseurClient} class for API usage information.
+* @see The [README](index.html) for an overview and more usage examples.
+* @see The [source code]{@link https://github.com/zbentley/classeur-api-client} on GitHub.
+* @see [classeur-downloader]{@link http://zbentley.github.io/classeur-downloader/versions/latest} for an example use case for this module.
+* @module classeur-api-client
+*/
+
+const _ = require('lodash'),
+    async = require('async'),
+    restler = require('restler'),
+    functionUtils = require('./lib/function-utils'),
+    errors = require('./lib/errors');
+
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+
+/**
+ * Constructs a new API client.
+ * @static
+ * @param {String} userId - Classeur user ID string.
+ * @param {String} apiKey - API Key string. Keep this secret.
+ * @param {String} [host=app.classeur.io] - Fully qualified hostname to connect to. Connections will be made with HTTPS, regardless of whether the hostname is prefixed with `http://` or `https://`.
+ */
+class ClasseurClient {
+    constructor(userId, apiKey, host) {
+        host = host || 'app.classeur.io';
+        host.replace(/\Ahttps?:[/][/]/g, '');
+        this._client = restler; // Stored for dependency injection in testing.
+        this.root = `https://${host}/api/v1/`;
+        this.userId = userId;
+        this.apiKey = apiKey;
+    }
+
+    /**
+     * Retrieve one or more files.
+     * @method
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file ID to retrieve.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * - One REST call is made (in parallel) per ID supplied.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
+     */
+    getFiles() {
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('files/', true, ...arguments);
+    }
+
+    /**
+     * Retrieve a single file.
+     * @param {String} id - Classeur file ID to retrieve.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be a [File]{@link module:classeur-api-client.File} object, or `null` on error.
+     */
+    getFile(id, cb) {
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('files/', false, id, cb);
+    }
+
+    /**
+     * Retrieve one or more folders.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder ID to retrieve.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * - One REST call is made (in parallel) per ID supplied.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [Folder]{@link module:classeur-api-client.Folder} objects, or `null` on error.
+     */
+    getFolders() {
+        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('folders/', true, ...arguments);
+    }
+
+    /**
+     * Retrieve a single folder.
+     * @param {String} id - Classeur folder ID to retrieve.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be a [Folder]{@link module:classeur-api-client.Folder} object, or `null` on error.
+     */
+    getFolder(id, cb) {
+        functionUtils.singleElementAndCallback(this.multiQuery, this)('folders/', false, id, cb);
+    }
+
+    /**
+     * Retrieve all users on the Classeur account to which the ClasseurClient is connected.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [User]{@link module:classeur-api-client.User} objects, or `null` on error.
+     */
+    getUsers(cb) {
+        this.query('users', {}, cb);
+    }
+
+    /**
+     * Retrieve metadata for one or more users.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur user IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [UserMetadata]{@link module:classeur-api-client.UserMetadata} objects, or `null` on error.
+     */
+    getUsersMetadata() {
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('users', true, ...arguments);
+    }
+
+    /**
+     * Retrieve metadata for one or more folders.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur folder IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} objects, or `null` on error.
+     */
+    getFoldersMetadata() {
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('folders', true, ...arguments);
+    }
+
+    /**
+     * Retrieve metadata for one or more files.
+     * @param {...(String|String[])} &amp;hellip;ids|&amp;#91;ids&amp;#93; - An Array of strings, or multiple string arguments, each representing a Classeur file IDs for which to retrieve metadata.
+     * - See {@tutorial Plural Functions} for more information on functions that can be called with an array or with variadic arguments.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be an Array of [FileMetadata]{@link module:classeur-api-client.FileMetadata} objects, or `null` on error.
+     */
+    getFilesMetadata() {
+        functionUtils.restOrArrayAndCallback(this.metadataQuery, this)('files', true, ...arguments);
+    }
+
+    /**
+     * Retrieve metadata for a user.
+     * @param {String} id - The Classeur user ID for which to retrieve metadata.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be a [UserMetadata]{@link module:classeur-api-client.UserMetadata} object, or `null` on error.
+     */
+    getUserMetadata(id, cb) {
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('users', false, id, cb);
+    }
+
+    /**
+     * Retrieve metadata for a file.
+     * @param {String} id - The Classeur file ID for which to retrieve metadata.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be a [FileMetadata]{@link module:classeur-api-client.FileMetadata} object, or `null` on error.
+     */
+    getFileMetadata(id, cb) {
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('files', false, id, cb);
+    }
+
+    /**
+     * Retrieve metadata for a folder.
+     * @param {String} id - The Classeur folder ID for which to retrieve metadata.
+     * @param {module:classeur-api-client.ScrubbedCallback} callback - Called with `(error, result)`. See [ScrubbedCallback]{@link module:classeur-api-client.ScrubbedCallback} for more info.
+     * - `result` will be a [FolderMetadata]{@link module:classeur-api-client.FolderMetadata} object, or `null` on error.
+     */
+    getFolderMetadata(id, cb) {
+        functionUtils.singleElementAndCallback(this.metadataQuery, this)('folders', false, id, cb);
+    }
+
+    /** @private */
+    metadataQuery(field, wantArray, ids, cb) {
+        this.query(
+            'metadata/' + field,
+            {
+                query: {
+                    id: ids.join(','),
+                }
+            },
+            functionUtils.scrubArrayCallback(cb, wantArray, ids.length)
+        );
+    }
+
+    multiQuery(type, wantArray, array, cb) {
+        async.map(
+            array,
+            (item, cb) => { this.query(type + item, {}, cb) },
+            functionUtils.scrubArrayCallback(cb, wantArray, array.length)
+        );
+    }
+
+    query(path, args, cb) {
+        _.merge(args, {
+            headers: {
+                'x-agent-info': 'github.com/zbentley/classeur-api-client'
+            },
+            username: this.userId,
+            password: this.apiKey,
+            parser: this._client.parsers.json
+        });
+
+        // _.once keeps the abort handler from calling the callback more than once.
+        cb = _.once(cb);
+        const request = this._client.get(this.root + path, args),
+            errorCallback = function(error) {
+                cb(error, null);
+                if ( ! request.aborted ) {
+                    request.abort();
+                }
+            };
+
+        // Currying with arity prevents the response object from being passed
+        // to unsuspecting callbacks.
+        request.on('success', _.curry(cb, 2)(null));
+
+        request.on('fail', function(data, response) {
+            errorCallback(new errors.ServerError(request, data, response));
+        });
+
+        request.on('error', function(error){
+            errorCallback(new errors.ClientError(request, error));
+        });
+
+        request.on('abort', _.partial(errorCallback, new errors.ClientError(request, {
+            message: 'Request aborted'
+        })));
+
+        request.on('timeout', function(ms){
+            errorCallback(new errors.ClientError(request, {
+                message: 'Request timed out',
+                timeout: ms
+            }));
+        });
+    }
+    // Proxies for the error constructors so we don't have to add another module
+    // to the package.
+    static get ServerError() { return errors.ServerError; }
+    static get ClientError() { return errors.ClientError; }
+};
+
+module.exports = ClasseurClient;</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Tue Jan 19th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

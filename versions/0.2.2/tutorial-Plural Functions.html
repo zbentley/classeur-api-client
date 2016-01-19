@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>classeur-api-client Tutorial: Plural Functions</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-api-client</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			<section class="tutorial-section">
+
+<header>
+    
+
+    <h2>Plural Functions</h2>
+</header>
+
+<article>
+    <h1>Plural Functions</h1><p>In this module, there are several functions that operate over multiple things. For example, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor"><code>getFiles</code></a> operates over multiple file IDs, and <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUsersMetadata__anchor"><code>getUsersMetadata</code></a> operates over multiple user IDs and metadata objects.</p>
+<p>Each such function can be called in one of two ways: with an array of things to operate on, or with a list of arguments. I call these 'Plural Functions'.</p>
+<p>Calling a function with one or the other signature does not affect its internal behavior or its return types in any way. Callbacks that expect an array of results will still receive that array, regardless of the signature used for the function to which a callback is passed.</p>
+<p>If you don't need to operate on multiple things, all plural functions have a single version, named without the plural (e.g. <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor"><code>getFile</code></a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor"><code>getFiles</code></a>, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUsersMetadata__anchor"><code>getUserMetadata</code></a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor"><code>getUsersMetadata</code></a>, etc.). The singular versions don't return arrays to their callbacks; they just return the single JSON object corresponding to the supplied ID.</p>
+<h3>Examples</h3><p><a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor"><code>getFolders</code></a> is a plural function. It has two signatures:</p>
+<ol>
+<li><p>One with arrays of IDs:</p>
+<pre class="prettyprint source lang-javascript"><code>getFolders(new Array(id1, id2, ...), function(error, results) { ... })</code></pre></li>
+<li><p>...and one with variadic IDs, <code>...ids</code>:</p>
+<pre class="prettyprint source lang-javascript"><code>getFolders(id1, id2, ..., function(error, results) { ... })</code></pre></li>
+</ol>
+<p>It can be called like this:</p>
+<pre class="prettyprint source lang-javascript"><code>// new Array('folder id 1', 'folder id 2', 'folder id 3'), Array.of, or any other constructor would work just as well.
+clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error, results) => {
+    if ( error ) console.log(`Got an error: ${error}`);
+    if ( results ) results.forEach((result) => { console.log(`Got a result: ${result}`)});
+})</code></pre><p>...or like this:</p>
+<pre class="prettyprint source lang-javascript"><code>clientInstance.getFolders('folder id 1', 'folder id 2', 'folder id 3', (error, results) => {
+    if ( error ) console.log(`Got an error: ${error}`);
+    if ( results ) results.forEach((result) => { console.log(`Got a result: ${result}`)});
+})</code></pre><p>Both snippets do exactly the same thing.</p>
+<p>The above examples use ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">template strings</a>. Follow those links if either syntax is unfamiliar to you.</p>
+<h3>Why?</h3><p>Functions on a general-purpose, public API should follow the 'don't make me think' school of usability design.</p>
+<p>While (in my impression) conventions for various projects/frameworks/environments lean in favor of passing Arrays of arguments to functions rather than variadic argument sections, that convention is far from universal (and the introduction of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest parameters</a> makes it poteltially likely to change).</p>
+<p>APIs and utility code in general should not dictate coding style more than absolutely necessary. It should document behavior as clearly as possible, and then get out of the way and let users code in whatever style is most familiar and useful to them. When you import a new module, read the manual, and start writing code, the last thing you want is to write a function call and then stop, scratch your head, and wonder 'does this take an array or an argument list?' Even if the documentation (or failure of tests) clearly indicates one or the other, the very act of stopping development, wondering if something is correct, and then getting sidetracked while you research or test your assumption functions a lot like a hardware interrupt; it's something that should be avoided if possible. Developers have only so much time and cognitive bandwidth; why waste it worrying on which of several equally-semantically-sensible call syntaxes to use when the answer can be 'whatever you want' without loss of functionality?</p>
+<h3>Does this require <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">ES6 Rest Parameters</a>?</h3><p>No. It just simulates them. Once rest parameters are more widely supported, that might change.</p>
+</article>
+
+</section>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Tue Jan 19th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
