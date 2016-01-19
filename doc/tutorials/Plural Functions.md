@@ -1,16 +1,16 @@
 # Plural Functions
 
-In this module, there are several functions that operate over multiple things. For example, [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor) operates over multiple file IDs, and [`getUsersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUsersMetadata__anchor) operates over multiple user IDs and metadata objects.
+In this module, there are several functions that operate over multiple things. For example, [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor) operates over multiple file IDs, and [`getUsersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor) operates over multiple user IDs and metadata objects.
 
 Each such function can be called in one of two ways: with an array of things to operate on, or with a list of arguments. I call these 'Plural Functions'.
 
 Calling a function with one or the other signature does not affect its internal behavior or its return types in any way. Callbacks that expect an array of results will still receive that array, regardless of the signature used for the function to which a callback is passed.
 
-If you don't need to operate on multiple things, all plural functions have a single version, named without the plural (e.g. [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) is the singular version of [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor), [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUsersMetadata__anchor) is the singular version of [`getUsersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), etc.). The singular versions don't return arrays to their callbacks; they just return the single JSON object corresponding to the supplied ID.
+If you don't need to operate on multiple things, all plural functions have a single version, named without the plural (e.g. [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFile__anchor) is the singular version of [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor), [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor) is the singular version of [`getUsersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUserMetadata__anchor), etc.). The singular versions don't return arrays to their callbacks; they just return the single JSON object corresponding to the supplied ID.
 
 ### Examples
 
-[`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor) is a plural function. It has two signatures:
+[`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFolders__anchor) is a plural function. It has two signatures:
 
 1. One with arrays of IDs:
 ```javascript
@@ -56,3 +56,5 @@ APIs and utility code in general should not dictate coding style more than absol
 ### Does this require [ES6 Rest Parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)?
 
 No. It just simulates them. Once rest parameters are more widely supported, that might change.
+
+As of this writing, [rest parameters are not enabled in NodeJS by default without additional flags](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag).

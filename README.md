@@ -33,9 +33,9 @@ const myClient = new ClasseurClient({ userId: 'my id', apiKey: 'my key' });
 
 ### Getting Files
 
-For more information on method arguments, return types, etc., see the full [API Documentation](http://zbentley.github.io/classeur-api-client/versions/latest/index.html#toc7__anchor).
+For more information on method arguments, return types, etc., see the full [API Documentation](http://zbentley.github.io/classeur-api-client/versions/latest).
 
-[`ClasseurClient#GetFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) can be used to retrieve single files:
+[`ClasseurClient#GetFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFile__anchor) can be used to retrieve single files:
 
 ```javascript
 const fs = require('fs');
@@ -53,7 +53,7 @@ myClient.getFile('some file ID', function(error, result) {
 });
 ```
 
-[`ClasseurClient#getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor) or [`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFolders__anchor) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
+[`ClasseurClient#getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor) or [`getFolders`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFolders__anchor) can be used to get more than one file or folder at a time (at the cost of one API hit, done in parallel, per file):
 
 ```javascript
 myClient.getFiles(['id1', 'id2', ... ], function(error, results) {
@@ -67,11 +67,11 @@ myClient.getFiles(['id1', 'id2', ... ], function(error, results) {
 });
 ```
 
-`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles('id1', 'id2', ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag).
+`getFiles` and `getFolders` are multisignature functions, which means they can also be called with lists of parameters, e.g. `GetFiles('id1', 'id2', ..., function(error, result) { ... })`. This does not depend on ES6 [rest parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
 
 ### Getting Metadata
 
-Metadata getters (e.g. [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getUserMetadata__anchor), or [`getFoldersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFoldersMetadata2__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client-ClasseurClient.html#getFiles__anchor). There are single versions:
+Metadata getters (e.g. [`getUserMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUserMetadata__anchor), or [`getFoldersMetadata`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFoldersMetadata__anchor)) work in much the same way as [`getFile`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFile__anchor) and [`getFiles`](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor). There are single versions:
 
 ```javascript
 myClient.getUserMetadata('some user id', function(error, result) {
