@@ -6,11 +6,9 @@ Node.js client for the REST API of http://classeur.io/
 
 # Documentation and Sources
 
-API documentation is available at [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
+Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
 
 Source code for this package is avaiable at [https://github.com/zbentley/classeur-api-client](https://github.com/zbentley/classeur-api-client).
-
-That documentation is generated via [JSDoc](http://usejsdoc.org/) information written alongside this module's code. Bugs or issues with the documentation should be reported in the same way as issues with the module's functionality.
 
 # Installation
 

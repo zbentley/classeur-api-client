@@ -13,3 +13,4 @@
 	- Support nonstandard hosts from integration config
 	- Grunt verify no busted symlinks
 - Badgez: built with grunt, npm package, travis, cov, nodei.co, stability
+- Test constants: just require them synchronously.

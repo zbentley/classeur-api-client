@@ -21,7 +21,6 @@
     "grunt-mocha-test": "^0.12.7",
     "grunt-template": "^0.2.3",
     "ink-docstrap": "^1.1.0",
-    "jsdoc": "^3.4.0",
     "mocha": "^2.3.4"
   },
   "homepage": "https://github.com/zbentley/classeur-api-client",

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
-* Node.js client for the REST API of [Classeur](http://classeur.io/)
+* Node.js client for the REST API of [Classeur](http://classeur.io/).
 *
 * @example <caption>Installation</caption>
 * npm install classeur-api-client
@@ -26,7 +26,7 @@ const _ = require('lodash'),
     functionUtils = require('./lib/function-utils'),
     errors = require('./lib/errors');
 
-// const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
 
 /**
  * Constructs a new API client.
@@ -171,7 +171,7 @@ class ClasseurClient {
                     id: ids.join(','),
                 }
             },
-            functionUtils.scrubArrayCallback(cb, wantArray)
+            functionUtils.scrubArrayCallback(cb, wantArray, ids.length)
         );
     }
 
@@ -179,7 +179,7 @@ class ClasseurClient {
         async.map(
             array,
             (item, cb) => { this.query(type + item, {}, cb) },
-            functionUtils.scrubArrayCallback(cb, wantArray)
+            functionUtils.scrubArrayCallback(cb, wantArray, array.length)
         );
     }
 

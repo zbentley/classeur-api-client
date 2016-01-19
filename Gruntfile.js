@@ -20,7 +20,7 @@ function branchDocumentationTasks(target) {
     const path = `doc/generated/versions/${target}`;
     return {
         jsdoc: {
-            src: ['classeur-api-client.js', 'lib/'],
+            src: ['*.js', 'lib/'],
             options: {
                 configure: 'doc/generator/jsdoc.json',
                 recurse: true,
@@ -82,6 +82,10 @@ module.exports = function(grunt) {
                 expand: true,
                 src: ['*.md', 'tutorials.json'],
                 dest: 'doc/generated/tutorials/',
+            },
+            'doc-nojekyll': {
+                src: ['doc/generator/index-placeholder.jsdoc'],
+                dest: 'doc/generated/.nojekyll'
             }
         },
         jsdoc: {
@@ -138,11 +142,13 @@ module.exports = function(grunt) {
         'template:index-root',
         // Copy the tutorials and their config file into `doc/generated/tutorials`.
         'copy:doc-index',
-        // Generate documentation for an empty project (`index-empty.jsdoc`)
+        // Generate documentation for an empty project (`index-placeholder.jsdoc`)
         // using the version index template as the README. This makes a decent
         // landing page without having to manually write any markup or menus.
         // Laziness trumps elegance.
         'jsdoc:index',
+        // Disable jekyll so symlinking works.
+        'copy:doc-nojekyll',
         // Re-render the version index template (it's no longer needed for the
         // landing page generation) with relative links that can be used by the
         // per-version documentation.
