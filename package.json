@@ -23,7 +23,7 @@
     "ink-docstrap": "^1.1.0",
     "mocha": "^2.3.4"
   },
-  "homepage": "https://github.com/zbentley/classeur-api-client",
+  "homepage": "http://zbentley.github.io/classeur-api-client/versions/latest",
   "keywords": [
     "classeur",
     "rest",

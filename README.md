@@ -8,7 +8,7 @@ If you just want to download content out of Classeur, or if you want to see this
 
 # Documentation and Sources
 
-Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
+Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
 
 Source code for this package is avaiable at [https://github.com/zbentley/classeur-api-client](https://github.com/zbentley/classeur-api-client).
 

@@ -7,6 +7,7 @@
 - Figure out which node versions are supported.
 - Documentation
 	- 3 things are needed to release now: version index change, release notes, and symlink. There should be only one.
+	- Indexes for readmes/big markdown files. Doctoc?
 - Tests
 	- CI system
 	- Empty and full folders explicit tests
