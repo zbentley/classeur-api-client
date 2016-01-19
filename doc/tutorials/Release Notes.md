@@ -22,3 +22,8 @@
 
 ### 0.2.1
 - Fix broken package manifest.
+
+### 0.2.2
+- Add stacktraces to errors.
+- Fix minor bugs with handling of explicit 'undefined' results in callback result arrays.
+- Minor documentation improvements.

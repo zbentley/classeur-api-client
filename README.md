@@ -4,6 +4,8 @@ Node.js client for the REST API of http://classeur.io/
 
 [Classeur](http://classeur.io/) is an online writing and collaboration platform by the authors of [StackEdit](https://stackedit.io/). In addition to a web and desktop UI, it provides a read-only REST API. `classeur-api-client` is a simple object-oriented [Node.js](https://nodejs.org) library for interacting with that API.
 
+If you just want to download content out of Classeur, or if you want to see this module get used, you might be interested in my [classeur-downloader](http://zbentley.github.io/classeur-downloader/versions/latest) script and NPM module.
+
 # Documentation and Sources
 
 Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).

@@ -17,6 +17,7 @@
 * @see The [ClasseurClient]{@link module:classeur-api-client~ClasseurClient} class for API usage information.
 * @see The [README](index.html) for an overview and more usage examples.
 * @see The [source code]{@link https://github.com/zbentley/classeur-api-client} on GitHub.
+* @see [classeur-downloader]{@link http://zbentley.github.io/classeur-downloader/versions/latest} for an example use case for this module.
 * @module classeur-api-client
 */
 
