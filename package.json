@@ -24,6 +24,9 @@
     "mocha": "^2.3.4"
   },
   "homepage": "http://zbentley.github.io/classeur-api-client/versions/latest",
+  "engines" : {
+    "node" : ">=5.0"
+  },
   "keywords": [
     "classeur",
     "rest",
@@ -40,5 +43,5 @@
     "grunt": "grunt",
     "test": "grunt test:unit"
   },
-  "version": "0.2.3-development"
+  "version": "0.2.3"
 }
