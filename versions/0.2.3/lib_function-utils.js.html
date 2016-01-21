@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>classeur-api-client Source: lib/function-utils.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-api-client</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: lib/function-utils.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">'use strict';
+
+const _ = require('lodash'),
+    expect = require('chai').expect,
+    errors = require('./errors');
+
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+
+function oneFunctionArgWithLength(length, func) {
+    expect(func).to.be.a('function');
+    const fname = func.name;
+    expect(func).to.have.length.of.at.least(length, `Wrapped function ${fname} must accept at least ${length} arguments`);
+    return fname;
+}
+
+function argumentsWithCallback(arraylike, length, fname) {
+    let args = _.toArray(arraylike);
+    expect(args).to.have.length.of.at.least(length, `Function ${fname} called with ${args.length} arguments; requires at least ${length}`);
+    expect(args[args.length - 1]).to.be.a('function', `Function ${fname} cannot be called without a callback as its final argument`);
+    return args;
+}
+
+/**
+ * Standard `function(error, result) { ... }` callbacks that get automatically wrapped so that either `error` or `result` must be `null`.
+ * - **Write your callbacks like you normally would; they will be scrubbed automatically.** Code in scrubbed callbacks does not have to worry about cases in which both arguments passed to the callback will be non-`null`; at least one will always be `null` (callbacks that expect `null` as a result will still work).
+ * @callback ScrubbedCallback
+ * @memberof module:classeur-api-client
+ * @param {?(module:classeur-api-client.ServerError|module:classeur-api-client.ClientError)} error - An Error or error String, if an error occurred executing the function to which this callback was supplied, or `null` if the function was successful.
+ * - `error` will be a [ServerError]{@link module:classeur-api-client.ServerError} or [ClientError]{@link module:classeur-api-client.ClientError}, or `null` on success.
+ * - All functions in this module will supply a [ServerError]{@link module:classeur-api-client.ServerError} or [ClientError]{@link module:classeur-api-client.ClientError} (both of which are instances of [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)) to their callback; there is no need to check for stringy errors.
+ * - `error` will always be `null` (not `undefined` or another falsy value) if no error occurred.
+ * @param {?*} result - Result of the function to which this callback was supplied, or `null` if the function was unsuccessful.
+ * - For type information of `result`, see the documentation for the function to which the callback was passed.
+ * - `result` will be `null` even if the function was _partially_ successful, and was supposed to return an Array; partial result arrays are not supported.
+ */
+
+// The function that does the callback scrubbing.
+module.exports.scrubArrayCallback = function(cb, wantarray, length) {
+    return function(err, res) {
+        if ( ! err ) {
+            expect(res).to.be.instanceof(Array, 'Result is not an Array');
+            expect(res.length).to.equal(length, 'Result array size mismatch');
+            if ( ! wantarray ) {
+                res = res[0];
+            } else {
+                res = _.flatten(res);
+            }
+        }
+        cb(err || null, err ? null : res);
+    };
+}
+
+// Simulates function(a, b, c, ...args, cb), or function(a, b, c, [args], cb).
+module.exports.restOrArrayAndCallback = function(wrapped, thisArg) {
+    const fname = oneFunctionArgWithLength(2, wrapped);
+    return function() {
+        let args = argumentsWithCallback(arguments, 2, fname);
+        // Assumes the last two are an array and a callback.
+        const statics = args.splice(0, wrapped.length - 2),
+            cb = args.pop();
+
+        if ( ! ( args.length === 1 &amp;&amp; _.isArray(args[0]) ) ) {
+            args = [args];
+        }
+
+        _.bind(wrapped, thisArg)(...statics.concat(args, cb));
+    };
+}
+
+// Asserts that a function only takes a single, non-array argument and a
+// callback in addition to its other arguments.
+module.exports.singleElementAndCallback = function(wrapped, thisArg) {
+    const fname = oneFunctionArgWithLength(2, wrapped);
+    return function() {
+        let args = argumentsWithCallback(arguments, 2, fname);
+        const idx = args.length - 2;
+        expect(args[idx]).not.to.be.instanceof(Array, `Function ${fname} cannot be called with an array as the 2nd-to-last argument`);
+
+        args[idx] = [args[idx]];
+        _.bind(wrapped, thisArg)(...args);
+    };
+}
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Thu Jan 21st 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
