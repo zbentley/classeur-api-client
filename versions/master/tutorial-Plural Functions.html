@@ -46,7 +46,7 @@
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-Release Notes.html">Release Notes</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
 				</ul>
 			</li>
 			
@@ -83,11 +83,11 @@
 </header>
 
 <article>
-    <h1>Plural Functions</h1><p>In this module, there are several functions that operate over multiple things. For example, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor"><code>getFiles</code></a> operates over multiple file IDs, and <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor"><code>getUsersMetadata</code></a> operates over multiple user IDs and metadata objects.</p>
+    <h1>Plural Functions</h1><p>In this module, there are several functions that operate over multiple things. For example, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor">getFiles</a> operates over multiple file IDs, and <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor">getUsersMetadata</a> operates over multiple user IDs and metadata objects.</p>
 <p>Each such function can be called in one of two ways: with an array of things to operate on, or with a list of arguments. I call these 'Plural Functions'.</p>
 <p>Calling a function with one or the other signature does not affect its internal behavior or its return types in any way. Callbacks that expect an array of results will still receive that array, regardless of the signature used for the function to which a callback is passed.</p>
-<p>If you don't need to operate on multiple things, all plural functions have a single version, named without the plural (e.g. <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFile__anchor"><code>getFile</code></a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor"><code>getFiles</code></a>, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor"><code>getUserMetadata</code></a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUserMetadata__anchor"><code>getUsersMetadata</code></a>, etc.). The singular versions don't return arrays to their callbacks; they just return the single JSON object corresponding to the supplied ID.</p>
-<h3>Examples</h3><p><a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFolders__anchor"><code>getFolders</code></a> is a plural function. It has two signatures:</p>
+<p>If you don't need to operate on multiple things, all plural functions have a single version, named without the plural (e.g. <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFile__anchor">getFile</a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFiles__anchor">getFiles</a>, <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUsersMetadata__anchor">getUserMetadata</a> is the singular version of <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getUserMetadata__anchor">getUsersMetadata</a>, etc.). The singular versions don't return arrays to their callbacks; they just return the single JSON object corresponding to the supplied ID.</p>
+<h3>Examples</h3><p><a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.ClasseurClient.html#getFolders__anchor">getFolders</a> is a plural function. It has two signatures:</p>
 <ol>
 <li><p>One with arrays of IDs:</p>
 <pre class="prettyprint source lang-javascript"><code>getFolders(new Array(id1, id2, ...), function(error, results) { ... })</code></pre></li>
@@ -149,7 +149,7 @@ clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error,
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on Tue Jan 19th 2016
+		on Thu Jan 21st 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
