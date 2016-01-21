@@ -4,9 +4,13 @@
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Make a lower-level API that exposes Buffers etc.
 - Make an API that supports partial results?
-- Figure out which node versions are supported.
+- Support older versions of node (Babel on-demand?)
 - Documentation
-	- 3 things are needed to release now: version index change, release notes, and symlink. There should be only one.
+	- Automate releasing. The following steps can be templated/rolled into the build:
+		- GitHub release.
+		- Release notes update.
+		- Add version and link to documentation index.
+		- Update "latest stable" pointer in GitHub pages.
 	- Indexes for readmes/big markdown files. Doctoc?
 - Tests
 	- CI system

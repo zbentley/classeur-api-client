@@ -7,7 +7,7 @@
   },
   "templates": {
     "logoFile": "",
-    "cleverLinks": true,
+    "cleverLinks": false,
     "monospaceLinks": false,
     "dateFormat": "ddd MMM Do YYYY",
     "outputSourceFiles": true,
