@@ -19,3 +19,5 @@
 	- Grunt verify no busted symlinks
 - Badgez: built with grunt, npm package, travis, cov, nodei.co, stability
 - Test constants: just require them synchronously.
+- Fix assertions: second param to all ctors should be assertion text, not the param to the assertion end.
+- Remove old/warning packages.

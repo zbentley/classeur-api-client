@@ -6,8 +6,9 @@
   "dependencies": {
     "async": "^1.5.2",
     "chai": "^3.4.1",
+    "flashheart": "^2.5.1",
     "lodash": "^3.4.0 || ^4.0.0",
-    "restler": "^3.4.0"
+    "pkginfo": "^0.4.0"
   },
   "description": "Node.js client for the API of http://classeur.io/",
   "devDependencies": {
@@ -24,8 +25,8 @@
     "mocha": "^2.3.4"
   },
   "homepage": "http://zbentley.github.io/classeur-api-client/versions/latest",
-  "engines" : {
-    "node" : ">=5.0"
+  "engines": {
+    "node": ">=5.0"
   },
   "keywords": [
     "classeur",

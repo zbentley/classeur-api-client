@@ -26,13 +26,14 @@ function shouldAllBeFiles(array) {
     });
 }
 
-function APIObjectShouldNotExist(func) {
+function APIObjectShouldNotExist(type, func) {
     return function(done) {
         func(function(err, res){
             expect(res).to.not.exist;
             expect(err).to.be.instanceof(ApiClient.ServerError);
-            expect(err.status).to.equal(404);
-            expect(err.shortReason).to.equal('not_found');
+            expect(err.status).to.equal(403); //TODO, this should probably get changed to 404 again someday
+            expect(err.shortReason).to.equal('forbidden');
+            expect(err.reason).to.equal(`${type}_is_not_readable`);
             done();
         });
     };
@@ -45,6 +46,8 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
         this.slow(2000);
         this.timeout(10000);
     } else {
+        this.slow(100);
+        this.timeout(50);
         conn._client = new MockRestClient(constants.credentials);
     }
 
@@ -63,7 +66,10 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
                 return done();
             });
         });
-        it('handles nonexistent files correctly', APIObjectShouldNotExist(_.bind(conn.getFile, conn, constants.nonexistentId)));
+        it('handles nonexistent files correctly', APIObjectShouldNotExist(
+            'file',
+            _.bind(conn.getFile, conn, constants.nonexistentId))
+        );
     });
     describe('getFiles', function() {
         const testExistent = function(done) {
@@ -81,11 +87,17 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
         it('returns files correctly (array mode)', function (done) {
             conn.getFiles([constants.testFile, constants.testFile], testExistent(done));
         });
-        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, [constants.testFile, constants.nonexistentId])));
+        it('handles nonexistent files correctly (array mode)', APIObjectShouldNotExist(
+            'file',
+            _.bind(conn.getFiles, conn, [constants.testFile, constants.nonexistentId]))
+        );
         it('returns files correctly (list mode)', function (done) {
             conn.getFiles(constants.testFile, constants.testFile, testExistent(done));
         });
-        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFiles, conn, constants.testFile, constants.nonexistentId)));
+        it('handles nonexistent files correctly (list mode)', APIObjectShouldNotExist(
+            'file',
+            _.bind(conn.getFiles, conn, constants.testFile, constants.nonexistentId))
+        );
     });
     describe('getFolder', function() {
         it('returns folder correctly', function (done) {
@@ -97,7 +109,10 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
                 return done();
             });
         });
-        it('handles nonexistent folders correctly ', APIObjectShouldNotExist(_.bind(conn.getFolder, conn, constants.nonexistentId)));
+        it('handles nonexistent folders correctly ', APIObjectShouldNotExist(
+            'folder',
+            _.bind(conn.getFolder, conn, constants.nonexistentId))
+        );
     });
 
     describe('getFolders', function() {
@@ -116,11 +131,17 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
         it('returns folders correctly (array mode)', function (done) {
             conn.getFolders([constants.testFolder, constants.testFolder], testExistent(done));
         });
-        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, [constants.testFolder, constants.nonexistentId])));
+        it('handles nonexistent folders correctly (array mode)', APIObjectShouldNotExist(
+            'folder',
+            _.bind(conn.getFolders, conn, [constants.testFolder, constants.nonexistentId]))
+        );
         it('returns folders correctly (list mode)', function (done) {
             conn.getFolders(constants.testFolder, constants.testFolder, testExistent(done));
         });
-        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(_.bind(conn.getFolders, conn, constants.testFolder, constants.nonexistentId)));
+        it('handles nonexistent folders correctly (list mode)', APIObjectShouldNotExist(
+            'folder',
+            _.bind(conn.getFolders, conn, constants.testFolder, constants.nonexistentId))
+        );
     });
     describe('getUserMetadata', function() {
         it('returns user correctly', function (done) {
@@ -133,7 +154,10 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
         });
         // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
         // pending resolution of https://github.com/classeur/classeur/issues/74
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUserMetadata, conn, constants.nonexistentId)));
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(
+            'user',
+            _.bind(conn.getUserMetadata, conn, constants.nonexistentId))
+        );
     });
     describe('getUsersMetadata', function() {
         it('returns users correctly', function (done) {
@@ -148,7 +172,10 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
         });
         // Skipping due to buggy 'echo service'-like handling of bad metadata requests,
         // pending resolution of https://github.com/classeur/classeur/issues/74
-        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(_.bind(conn.getUsersMetadata, conn, constants.credentials.userId, constants.nonexistentId)));
+        it.skip('handles nonexistent users correctly', APIObjectShouldNotExist(
+            'user',
+            _.bind(conn.getUsersMetadata, conn, constants.credentials.userId, constants.nonexistentId))
+        );
     });
     describe('getUsers', function() {
         it('returns users correctly', function (done) {
@@ -162,7 +189,7 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
                     // TODO get admin permissions so this can be tested.
                     expect(err).to.be.instanceof(ApiClient.ServerError);
                     expect(err.status).to.equal(403);
-                    expect(err.reason).to.equal('Admin role required.');
+                    expect(err.reason).to.equal('access_denied');
                 }
                 return done();
             });

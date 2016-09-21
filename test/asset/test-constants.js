@@ -11,7 +11,7 @@ module.exports = {
     testFile: fromFile.existentFile,
     testFolder: fromFile.existentFolder,
     fileContentProperties: ['text', 'rev', 'properties', 'discussions'],
-    fileProperties: ['id', 'name', 'permission', 'userId', 'updated',  'content'],
+    fileProperties: ['id', 'name', 'userId', 'updated',  'content'],
     folderFilesProperties: ['id', 'name', 'updated', 'userId'],
     folderProperties: ['files', 'id', 'name', 'updated'],
     nonexistentId: 'nonexistent000000000'

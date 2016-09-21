@@ -12,10 +12,10 @@ function testErrors(errors) {
         it('Works with an Error object', function () {
             let param = new Error('foo');
             param.something = 'bar';
-            const err = new errors.ClientError('a', param);
+            const err = new errors.ClientError(param, 'a');
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
-            expect(err.message).to.be.equal('foo');
+            expect(err.message).to.be.equal('Client error: foo');
             expect(err.something).to.be.equal('bar');
         });
         it('Works with a useless object', function () {
@@ -23,32 +23,32 @@ function testErrors(errors) {
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
             expect(err.foo).to.equal(1);
-            expect(err.message).to.equal('');
+            expect(err.message).to.equal('Client error: a');
         });
         it('Works with a useful object', function () {
             const err = new errors.ClientError('a', { message: 'foo', bar: 2 });
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
             expect(err.bar).to.equal(2);
-            expect(err.message).to.equal('foo');
+            expect(err.message).to.equal('Client error: a');
         });
         it('Works with a non-object', function () {
             const err = new errors.ClientError('a', 'b');
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
-            expect(err.message).to.equal('b');
+            expect(err.message).to.equal('Client error: a');
         });
         it('Works with null', function () {
             const err = new errors.ClientError('a', null);
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
-            expect(err.message).to.equal('null'); // Default Error stringification.
+            expect(err.message).to.equal('Client error: a'); // Default Error stringification.
         });
         it('Works with undefined', function () {
             const err = new errors.ClientError('a');
             expect(err).to.be.instanceof(Error);
             expect(err).to.be.instanceof(errors.ClientError);
-            expect(err.message).to.equal('');
+            expect(err.message).to.equal('Client error: a');
         });
     });
 
