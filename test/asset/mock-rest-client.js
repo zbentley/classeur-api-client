@@ -2,10 +2,12 @@
 
 const _ = require('lodash'),
     constants = require('./test-constants.js'),
-    EventEmitter = require('events'),
+    STATUS_CODES = require('http').STATUS_CODES,
     SUCCESS = {
         statusCode: 200,
-        statusMessage: ''
+        headers: {
+            'content-type': 'application/json; charset=utf-8'
+        }
     };
 
 // const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
@@ -26,42 +28,26 @@ function stripIfStartsWith(str, target) {
     }
 }
 
+class MockError extends Error {
+    constructor(code, route, reason) {
+        super(`Received HTTP code ${code} for GET ${route}`)
+        this.statusCode = code
+        this.body = {
+            status: code,
+            error: STATUS_CODES[code].toLowerCase(),
+            reason: reason
+        }
+        this.headers = SUCCESS.headers
+    }
+}
+
 module.exports = class MockRestClient {
-    constructor(opts) {
-        this.parsers = {};
-        this.aborted = false;
-        this.userId = opts.userId;
-        this.apiKey = opts.apiKey;
+    successfulResponse(array, overlay, cb) {
+        let props = hashify(array)
+        cb(null, _.merge(props, overlay), SUCCESS)
     }
 
-    abort() {
-        this.aborted =  true;
-        this.deferredEmit('abort');
-    }
-
-    deferredEmit() {
-        process.nextTick(_.bind(_.spread(this.emitter.emit), this.emitter, arguments));
-    }
-
-    notFoundResponse() {
-        this.deferredEmit('fail', {
-            status: 404,
-            reason: 'File not found',
-            error: 'not_found'
-        }, {
-            statusCode: 404,
-            statusMessage: 'File not found'
-        });
-    }
-
-    successfulResponse(array, overlay) {
-        let props = hashify(array);
-        _.merge(props, overlay);
-        this.deferredEmit('success', props, SUCCESS);
-    }
-
-    get(uri, opts) {
-        this.emitter = new EventEmitter();
+    get(uri, opts, cb) {
         let id;
         uri = uri.replace(/.+?api[/]v1[/]/, '');
 
@@ -71,47 +57,38 @@ module.exports = class MockRestClient {
                     id: id,
                     content: hashify(constants.fileContentProperties)
                 };
-                this.successfulResponse(constants.fileProperties, overlay);
+                this.successfulResponse(constants.fileProperties, overlay, cb);
             } else {
-                this.notFoundResponse();
+                cb(new MockError(403, uri, "file_is_not_readable"), null, null)
             }
         } else if ( id = stripIfStartsWith(uri, 'folders/') ) {
             if ( id === constants.testFolder ) {
                 // TODO empty-vs-full folder tests here
-                this.successfulResponse(constants.folderProperties, { id: id, files: [] });
+                this.successfulResponse(constants.folderProperties, { id: id, files: [] }, cb);
             } else {
-                this.notFoundResponse();
+                cb(new MockError(403, uri, "folder_is_not_readable"), null, null)
             }
         } else if ( _.startsWith(uri, 'metadata/folders') ) {
             throw new Error('No tests for this function yet!');
         } else if ( _.startsWith(uri, 'metadata/files') ) {
             throw new Error('No tests for this function yet!');
         } else if ( _.startsWith(uri, 'metadata/users') ) {
-            const ids = opts.query.id.split(',');
-            let response;
-            if ( _.uniq(ids).length === 1 && _.uniq(ids)[0] === constants.credentials.userId ) {
-                response = _.map(ids, function(item) {
-                    return {
-                        id: item,
-                        name: 'name'
-                    };
-                });
+            id = opts.qs.id[0]
+            if ( id === constants.credentials.userId ) {
+                cb(null, [{
+                    id: id,
+                    name: 'name'
+                }], SUCCESS)
             } else {
-                response = _.map(ids, function(item) {
-                    return { id: item };
-                });
-                // TODO uncomment the below when user-not-found works correctly
-                // notFoundResponse(cb);
+                cb(new MockError(403, uri, "user_not_found"), null, null)
             }
-            this.deferredEmit('success', response, SUCCESS);
         } else if ( _.startsWith(uri, 'users') ) {
-            this.deferredEmit('success', [{
-                id: constants.credentials.userId,
+            cb(null, [{
+               id: constants.credentials.userId,
                 name: 'name'
-            }], SUCCESS);
+            }], SUCCESS)
         } else {
             throw new Error(`Unrecognized query: ${uri}, ${args}`);
         }
-        return this.emitter;
     };
 };

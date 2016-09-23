@@ -182,7 +182,7 @@ class ClasseurClient {
     multiMetadataQuery(field, ids, cb) {
         async.map(
             ids,
-            _.bind(this.metadataQuery, this, field),
+            _.partial(functionUtils.singleElementAndCallback(this.metadataQuery, this), field),
             functionUtils.scrubArrayCallback(cb, true, ids.length)
         )
     }
@@ -214,8 +214,10 @@ class ClasseurClient {
     query(path, args, cb) {
         this._client.get(this.root + path, args, (error, body, response) => {
             if ( error ) {
+                // p(error)
+                // p(body)
+                // p(response)
                 if ( error.statusCode ) {
-
                     cb(new errors.ServerError(error, body, response), null)
                 }
                 else {
@@ -224,6 +226,7 @@ class ClasseurClient {
             }
             else {
                 // p(body)
+                // p(response)
                 cb(null, body);
             }
         });
