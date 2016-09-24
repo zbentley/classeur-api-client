@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>classeur-api-client Tutorial: Plural Functions</title>
 
 	<!--[if lt IE 9]>
@@ -39,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
 				</ul>
 			</li>
 			
@@ -51,16 +52,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -106,8 +109,9 @@ clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error,
 })</code></pre><p>Both snippets do exactly the same thing.</p>
 <p>The above examples use ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow functions</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">template strings</a>. Follow those links if either syntax is unfamiliar to you.</p>
 <h3>Why?</h3><p>Functions on a general-purpose, public API should follow the 'don't make me think' school of usability design.</p>
-<p>While (in my impression) conventions for various projects/frameworks/environments lean in favor of passing Arrays of arguments to functions rather than variadic argument sections, that convention is far from universal (and the introduction of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest parameters</a> makes it poteltially likely to change).</p>
-<p>APIs and utility code in general should not dictate coding style more than absolutely necessary. It should document behavior as clearly as possible, and then get out of the way and let users code in whatever style is most familiar and useful to them. When you import a new module, read the manual, and start writing code, the last thing you want is to write a function call and then stop, scratch your head, and wonder 'does this take an array or an argument list?' Even if the documentation (or failure of tests) clearly indicates one or the other, the very act of stopping development, wondering if something is correct, and then getting sidetracked while you research or test your assumption functions a lot like a hardware interrupt; it's something that should be avoided if possible. Developers have only so much time and cognitive bandwidth; why waste it worrying on which of several equally-semantically-sensible call syntaxes to use when the answer can be 'whatever you want' without loss of functionality?</p>
+<p>While (in my impression) conventions for various projects/frameworks/environments lean in favor of passing Arrays of arguments to functions rather than variadic argument sections, that convention is far from universal (and the introduction of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest parameters</a> makes it potentially likely to change).</p>
+<p>API/utility code should not dictate coding style more than absolutely necessary. It should document behavior as clearly as possible, and then get out of the way and let users code in whatever style is most familiar and useful to them. When you import a new module, read the manual, and start writing code, the last thing you want is to write a function call and then stop, scratch your head, and wonder 'does this take an array or an argument list?'</p>
+<p>Even if the documentation (or failure of tests) clearly indicates one or the other, the very act of stopping development, wondering if something is correct, and then getting sidetracked while you research or test your assumption functions a lot like a hardware interrupt; it's something that should be avoided if possible. Developers have only so much time and cognitive bandwidth; why waste it worrying on which of several equally-semantically-sensible call syntaxes to use when the answer can be 'whatever you want' without loss of functionality?</p>
 <h3>Does this require <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">ES6 Rest Parameters</a>?</h3><p>No. It just simulates them. Once rest parameters are more widely supported, that might change.</p>
 <p>As of this writing, <a href="https://nodejs.org/en/docs/es6/#which-features-are-behind-the-es_staging-flag">rest parameters are not enabled in NodeJS by default without additional flags</a>.</p>
 </article>
@@ -124,20 +128,22 @@ clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error,
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -147,9 +153,9 @@ clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error,
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
 	
-		on Thu Jan 21st 2016
+		on Sat Sep 24th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -157,7 +163,9 @@ clientInstance.getFolders(['folder id 1', 'folder id 2', 'folder id 3'], (error,
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -167,7 +175,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -203,8 +211,7 @@ $( function () {
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -230,11 +237,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>

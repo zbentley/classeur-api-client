@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>classeur-api-client Module: classeur-api-client</title>
 
 	<!--[if lt IE 9]>
@@ -39,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
 				</ul>
 			</li>
 			
@@ -51,16 +52,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -191,6 +194,9 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
             <dt><a href="module-classeur-api-client.ClientError.html">ClientError</a></dt>
             <dd></dd>
         
+            <dt><a href="module-classeur-api-client.ErrorBase.html">ErrorBase</a></dt>
+            <dd></dd>
+        
             <dt><a href="module-classeur-api-client.ServerError.html">ServerError</a></dt>
             <dd></dd>
         </dl>
@@ -211,7 +217,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".File">
-    <h4>File</h4>
+    <h4 id=".File">File</h4>
 
     
 </dt>
@@ -441,7 +447,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".FileContent">
-    <h4>FileContent</h4>
+    <h4 id=".FileContent">FileContent</h4>
 
     
 </dt>
@@ -647,7 +653,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".FileMetadata">
-    <h4>FileMetadata</h4>
+    <h4 id=".FileMetadata">FileMetadata</h4>
 
     
 </dt>
@@ -877,7 +883,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".Folder">
-    <h4>Folder</h4>
+    <h4 id=".Folder">Folder</h4>
 
     
 </dt>
@@ -1107,7 +1113,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".FolderFileEntry">
-    <h4>FolderFileEntry</h4>
+    <h4 id=".FolderFileEntry">FolderFileEntry</h4>
 
     
 </dt>
@@ -1313,7 +1319,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".FolderMetadata">
-    <h4>FolderMetadata</h4>
+    <h4 id=".FolderMetadata">FolderMetadata</h4>
 
     
 </dt>
@@ -1718,7 +1724,7 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
                 
 <hr>
 <dt class="name" id=".UserMetadata">
-    <h4>UserMetadata</h4>
+    <h4 id=".UserMetadata">UserMetadata</h4>
 
     
 </dt>
@@ -1897,20 +1903,22 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -1920,9 +1928,9 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
 	
-		on Thu Jan 21st 2016
+		on Sat Sep 24th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -1930,7 +1938,9 @@ myClient.getFile(&#x27;some file id&#x27;, function(error, result) {
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -1940,7 +1950,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -1976,8 +1986,7 @@ $( function () {
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -2003,11 +2012,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>

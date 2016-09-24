@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>classeur-api-client Class: ServerError</title>
 
 	<!--[if lt IE 9]>
@@ -39,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
 				</ul>
 			</li>
 			
@@ -51,16 +52,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -87,7 +90,8 @@
         ServerError
         </h2>
         
-            <div class="class-description"><p>Object representation of an error that occurred on the server while performing a REST API operation.</p></div>
+            <div class="class-description"><p>Object representation of an error that occurred on the server while performing a REST API operation.
+This is a thin wrapper around a <a href="https://github.com/bbc/flashheart">flashheart</a> error object, and exists as a separate class only to deliniate server-caused errors from client-caused errors.</p></div>
         
     
 </header>
@@ -159,7 +163,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-23">line 23</a>
+				 <a href="lib_errors.js.html#sunlight-1-line-101">line 101</a>
 			</li>
 		</ul>
 	</dd>
@@ -167,6 +171,13 @@
 
 	
 
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="https://github.com/bbc/flashheart#errors">flashheart documentation</a> for more info on possible Error contents.</p></li>
+			</ul>
+	</dd>
 	
 
 	
@@ -191,9 +202,9 @@
     <pre class="sunlight-highlight-javascript">const ServerError = require(&#x27;classeur-api-client&#x27;).ServerError;
 myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
     if ( error instanceof ServerError ) {
-        console.log(error.message); // e.g. &#x27;Server error (400): bad request&#x27;
-        console.log(error.reason); // e.g. &#x27;File name is too short&#x27;
-        console.log(error.status); // e.g. 400
+        console.log(error.message); // e.g. &#x27;Server error: Received HTTP code 403 for GET https:// ...&#x27;
+        console.log(error.reason); // e.g. &#x27;file_is_not_readable&#x27;
+        console.log(error.status); // e.g. 403
         throw error;
     }
 });</pre>
@@ -212,7 +223,7 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
 
 
     <ul>
-        <li><p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a></p></li>
+        <li><p><a href="./module-classeur-api-client.ErrorBase.html">ErrorBase</a></p></li>
     </ul>
 
 
@@ -232,17 +243,15 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
         <dl>
             
 <hr>
-<dt class="name" id="data">
-    <h4><span class="type-signature">&lt;readonly> </span>data<span class="type-signature"> :Object</span></h4>
+<dt class="name" id="headers">
+    <h4 id="headers"><span class="type-signature">&lt;readonly> </span>headers<span class="type-signature"> :Object</span></h4>
 
-    
-    <p class="summary">The JSON-decoded data send back from the server with the error.</p>
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>JSON decoding failures will raise a <a href="module-classeur-api-client.ClientError.html">module:classeur-api-client.ClientError</a> instead.</p>
+        <p>If headers were returned from the server with the error, this object will contain their contents. It is supplied directly by the flashheart REST client library.</p>
     </div>
     
 
@@ -278,15 +287,6 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
     
 
 	
-	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
-	
-    <dd>
-        <ul class="dummy">
-            <li>This is usually not useful; the properties `reason`, `status`, and `shortReason` are usually all that is contained in `data`, and they are directly readable.</li>
-        </ul>
-    </dd>
-    
-    
 
 	
 
@@ -304,180 +304,7 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
 		<ul class="dummy">
 			<li>
 				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-50">line 50</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="reason">
-    <h4><span class="type-signature">&lt;readonly> </span>reason<span class="type-signature"> :String</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Information sent back by the server indicating why a request failed. This is usually the best source for detailed failure/debugging information.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">String</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-64">line 64</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="request">
-    <h4><span class="type-signature">&lt;readonly> </span>request<span class="type-signature"> :Request</span></h4>
-
-    
-    <p class="summary">The HTTP request object that caused the error.</p>
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>A request object as returned by the <code>get</code> method of <a href="https://github.com/danwrong/restler">restler</a>.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Request</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
-	
-    <dd>
-        <ul class="dummy">
-            <li>This is usually not useful.</li>
-        </ul>
-    </dd>
-    
-    
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-41">line 41</a>
+				 <a href="lib_errors.js.html#sunlight-1-line-108">line 108</a>
 			</li>
 		</ul>
 	</dd>
@@ -489,7 +316,7 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
 	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><p>The <a href="https://github.com/danwrong/restler/blob/master/lib/restler.js">restler source</a> for the Request constructor.</p></li>
+			<li><p>The <a href="https://github.com/bbc/flashheart#errors">flashheart documentation</a> for more information about this field's contents.</p></li>
 			</ul>
 	</dd>
 	
@@ -504,90 +331,8 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
         
             
 <hr>
-<dt class="name" id="shortReason">
-    <h4><span class="type-signature">&lt;readonly> </span>shortReason<span class="type-signature"> :String</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>English version of <a href="module-classeur-api-client.ServerError.html#status">ServerError#status</a>.
-Usually a short word or phrase explaining what a given error code means in HTTP convention.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">String</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-72">line 72</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
 <dt class="name" id="status">
-    <h4><span class="type-signature">&lt;readonly> </span>status<span class="type-signature"> :Number</span></h4>
+    <h4 id="status"><span class="type-signature">&lt;readonly> </span>status<span class="type-signature"> :Number</span></h4>
 
     
 </dt>
@@ -647,7 +392,7 @@ Usually a short word or phrase explaining what a given error code means in HTTP 
 		<ul class="dummy">
 			<li>
 				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-57">line 57</a>
+				 <a href="lib_errors.js.html#sunlight-1-line-123">line 123</a>
 			</li>
 		</ul>
 	</dd>
@@ -693,20 +438,22 @@ Usually a short word or phrase explaining what a given error code means in HTTP 
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -716,9 +463,9 @@ Usually a short word or phrase explaining what a given error code means in HTTP 
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
 	
-		on Thu Jan 21st 2016
+		on Sat Sep 24th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -726,7 +473,9 @@ Usually a short word or phrase explaining what a given error code means in HTTP 
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -736,7 +485,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -772,8 +521,7 @@ $( function () {
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -799,11 +547,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>

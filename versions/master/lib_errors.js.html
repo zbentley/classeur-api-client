@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>classeur-api-client Source: lib/errors.js</title>
 
 	<!--[if lt IE 9]>
@@ -39,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
 				</ul>
 			</li>
 			
@@ -51,16 +52,18 @@
 			</li>
 			
 		</ul>
-		<div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        
 	</div>
 
 </div>
@@ -83,91 +86,142 @@
         <pre
             class="sunlight-highlight-javascript linenums">'use strict';
 
-const _ = require('lodash');
+const _ = require('lodash'),
+	expect = require('chai').expect;
 
-// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
 
 /**
- * Object representation of an error that occurred on the server while performing a REST API operation.
+ * Base class for [`ClientError`]{@link module:classeur-api-client.ClientError} and [`ServerError`]{@link module:classeur-api-client.ServerError} objects.
  * @deprecated  You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
  * @extends [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
  * @memberof module:classeur-api-client
+ */
+class ErrorBase extends Error {
+	/** @lends module:classeur-api-client.ErrorBase */
+	constructor(error, data, response) {
+		if ( _.isString(error) ) {
+			error = new Error(error)
+		}
+		else {
+			expect(error).to.be.instanceof(Error)
+		}
+		super(error)
+		let message = _.replace(this.message, /^\s*Error:\s*/, '')
+		_.merge(this, data)
+		_.merge(this, error)
+		this.message = message
+
+		if (response) {
+			/**
+			 * JSON decoding failures will raise a {@link module:classeur-api-client.ClientError} instead.
+			 * This field is only present if its value could be derived from the error object returned from the REST client.
+			 * @summary The JSON-decoded response sent back from the server with the error.
+			 * @deprecated  This is usually not useful; the properties `reason` and `status` are usually of more interest than `response`, and they are directly readable from instances of this class.
+			 * @type {Object?}
+			 * @instance
+			 * @readonly
+			 */
+			this.response = response;
+		}
+
+		if ( data ) {
+			/**
+			 * JSON decoding failures will raise a {@link module:classeur-api-client.ClientError} instead.
+			 * This field is only present if its value could be derived from the error object returned from the REST client.
+			 * @summary The JSON-decoded response-data sent back from the server with the error.
+			 * @deprecated  This is usually not useful; the properties `reason` and `status` are usually all that is contained in `data`, and they are directly readable from instances of this class.
+			 * @type {Object?}
+			 * @instance
+			 * @readonly
+			 */
+			this.data = data
+		}
+
+		if ( _.property('body.reason')(error) ) {
+			/**
+			 * This is usually the best source for detailed failure/debugging information.
+			 * This field is only present if its value could be derived from the error object returned from the REST client.
+			 * @summary Information sent back by the server indicating why a request failed. 
+			 * @type {String?}
+			 * @instance
+			 * @readonly
+			 */
+			this.reason = error.body.reason
+		}
+		
+		if ( _.property('body.error')(error) ) {
+		 	/**
+		 	 * This field is only present if its value could be derived from the error object returned from the REST client.
+			 * Usually a short word or phrase explaining what a given error code means in HTTP convention.
+		 	 * @summary English version of [ServerError#status]{@link module:classeur-api-client.ServerError#status}.
+		 	 * @type {String?}
+		 	 * @instance
+		 	 * @readonly
+		 	 */
+		 	this.shortReason = error.body.error
+		}
+	}
+}
+
+// Bizarre link formatting for the @extends argument is due to jsdoc parser limitations:
+// it doesn't support spaces in @extends, even if those spaces are in a @link location field.
+/**
+ * Object representation of an error that occurred on the server while performing a REST API operation.
+ * This is a thin wrapper around a [flashheart](https://github.com/bbc/flashheart) error object, and exists as a separate class only to deliniate server-caused errors from client-caused errors.
+ * @deprecated  You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
+ * @extends [ErrorBase](./module-classeur-api-client.ErrorBase.html)
+ * @memberof module:classeur-api-client
+ * @see The [flashheart documentation](https://github.com/bbc/flashheart#errors) for more info on possible Error contents.
  * @example
  * const ServerError = require('classeur-api-client').ServerError;
  * myClient.getFile('nonexistent', (error) => {
  *     if ( error instanceof ServerError ) {
- *         console.log(error.message); // e.g. 'Server error (400): bad request'
- *         console.log(error.reason); // e.g. 'File name is too short'
- *         console.log(error.status); // e.g. 400
+ *         console.log(error.message); // e.g. 'Server error: Received HTTP code 403 for GET https:// ...'
+ *         console.log(error.reason); // e.g. 'file_is_not_readable'
+ *         console.log(error.status); // e.g. 403
  *         throw error;
  *     }
  * });
  */
-class ServerError extends Error {
+class ServerError extends ErrorBase {
 	/** @lends module:classeur-api-client.ServerError */
-	constructor(request, data, response) {
-		response = response || '';
-		super(`Server error (${data.status || response.statusCode || undefined}): ${data.reason || response.statusMessage || undefined}`);
-		if (response) {
-			this.response = response;
-		}
+	constructor(error, body, response) {
+		expect(error).to.have.property("statusCode")
+		expect(error.statusCode).to.be.number
+		super(error, body, response)
+		this.message = "Server error: " + this.message
+		/**
+		 * If headers were returned from the server with the error, this object will contain their contents. It is supplied directly by the flashheart REST client library.
+		 * @memberOf module:classeur-api-client.ServerError
+		 * @member {Object} headers
+		 * @instance
+		 * @readonly
+		 * @see The [flashheart documentation]{@link https://github.com/bbc/flashheart#errors} for more information about this field's contents.
+		 */
 
-		/**
-		 * A request object as returned by the `get` method of [restler](https://github.com/danwrong/restler).
-		 * @summary The HTTP request object that caused the error.
-		 * @deprecated  This is usually not useful.
-		 * @type {Request}
-		 * @instance
-		 * @readonly
-		 * @see The [restler source]{@link https://github.com/danwrong/restler/blob/master/lib/restler.js} for the Request constructor.
-		 */
-		this.request = request;
-		/**
-		 * JSON decoding failures will raise a {@link module:classeur-api-client.ClientError} instead.
-		 * @summary The JSON-decoded data send back from the server with the error.
-		 * @deprecated  This is usually not useful; the properties `reason`, `status`, and `shortReason` are usually all that is contained in `data`, and they are directly readable.
-		 * @type {Object}
-		 * @instance
-		 * @readonly
-		 */
-		this.data = data;
 		/**
 		 * HTTP status code of the error.
 		 * @type {Number}
 		 * @instance
 		 * @readonly
 		 */
-		this.status = data.status || response.statusCode || null;
-		/**
-		 * Information sent back by the server indicating why a request failed. This is usually the best source for detailed failure/debugging information.
-		 * @type {String}
-		 * @instance
-		 * @readonly
-		 */
-		this.reason = data.reason || response.statusMessage || null;
-		/**
-		 * English version of [ServerError#status]{@link module:classeur-api-client.ServerError#status}.
-		 * Usually a short word or phrase explaining what a given error code means in HTTP convention.
-		 * @type {String}
-		 * @instance
-		 * @readonly
-		 */
-		this.shortReason = data.error || null;
+		this.status = error.statusCode		
 	}
 };
 
 /**
  * Object representation of an error that occurred on the client during or after the processing REST API operation.
- * Example causes if a client error (and valid values for the `message` property) inclide:
+ * Example causes if a client error (and valid values for the `message` property) include:
  * - Request aborted
  * - Request timed out
  * - Corrupt/non-JSON-decodable content received
  *
- * ClientError instances sometimes wrap Restler errors. That means that, in addition to the properties listed below, ClientError instances can contain any properties that Restler attaches to its Error objects for `error`, `abort`, and `timeout` events.
+ * ClientError instances are usually thin wrappers around [flashheart](https://github.com/bbc/flashheart) error objects, and exist only to deliniate server-caused errors from client-caused errors. ClientErrors may not contain all/most error fields supplied by flashheart, though, since ClientErrors may occur before error metadata is returned from the server.
  * @deprecated You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
- * @extends [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+ * @extends [ErrorBase](./module-classeur-api-client.ErrorBase.html)
  * @memberof module:classeur-api-client
- * @see The [restler documentation](https://github.com/danwrong/restler) for more info on possible Error contents.
+ * @see The [flashheart documentation](https://github.com/bbc/flashheart#errors) for more info on possible Error contents.
  * @example
  * const ClientError = require('classeur-api-client').ClientError;
  * myClient.getFile('nonexistent', (error) => {
@@ -177,38 +231,21 @@ class ServerError extends Error {
  *     }
  * });
  */
-class ClientError extends Error {
+class ClientError extends ErrorBase {
 	/** @lends module:classeur-api-client.ClientError*/
-	constructor(request, maybeError) {
-		if ( _.isError(maybeError) ) {
-			super(maybeError.message);
-			_.merge(this, maybeError);
-		} else if ( _.isPlainObject(maybeError) ) {
-			super(maybeError.message);
-			delete maybeError.message;
-			_.merge(this, maybeError);
-		} else {
-			super(maybeError);
-		}
-		/**
-		 * If a timeout occurred, this property will be set to the timeout threshold that was exceeded (in milliseconds). This property will only be set if a ClientError occurred due to a timeout.
-		 * @memberOf module:classeur-api-client.ClientError
-		 * @member {Number?} timeout
-		 * @instance
-		 * @readonly
-		 * @see The [restler source]{@link https://github.com/danwrong/restler/blob/master/lib/restler.js} for the Request constructor.
-		 */
+	constructor(error, body, response, clntimeout) {
+		super(error, body, response)
+		this.message = "Client error: " + this.message
 
-		/**
-		 * A request object as returned by the `get` method of [restler](https://github.com/danwrong/restler).
-		 * @summary The HTTP request object that caused the error.
-		 * @deprecated  This is usually not useful.
-		 * @type {Request}
-		 * @instance
-		 * @readonly
-		 * @see The [restler source]{@link https://github.com/danwrong/restler/blob/master/lib/restler.js} for the Request constructor.
-		 */
-		this.request = request;
+		if ( this.message.includes("ETIMEDOUT") ) {
+			/**
+			 * If a timeout occurred, this property will be set to the timeout threshold that was exceeded, in milliseconds. This property will only be set if a ClientError occurred due to a timeout.
+			 * @type {Number?}
+			 * @instance
+			 * @readonly
+			 */
+		    this.timeout = clntimeout
+		}
 	}
 };
 
@@ -231,20 +268,22 @@ module.exports.ClientError = ClientError;</pre>
 </div>
 </div>
 
-<div class="modal fade" id="searchResults">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search results</h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
 
@@ -254,9 +293,9 @@ module.exports.ClientError = ClientError;</pre>
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
 	
-		on Thu Jan 21st 2016
+		on Sat Sep 24th 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -264,7 +303,9 @@ module.exports.ClientError = ClientError;</pre>
 
 <script src="scripts/docstrap.lib.js"></script>
 <script src="scripts/toc.js"></script>
-<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
 
 <script>
 $( function () {
@@ -274,7 +315,7 @@ $( function () {
 		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 	} );
 
-	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
 		var $this = $( this );
 
 		var example = $this.find( "code" );
@@ -310,8 +351,7 @@ $( function () {
 	} );
 	$( "#toc" ).toc( {
 		anchorName  : function ( i, heading, prefix ) {
-			var id = $( heading ).attr( "id" );
-			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+			return $( heading ).attr( "id" ) || ( prefix + i );
 		},
 		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
 		showAndHide : false,
@@ -337,11 +377,13 @@ $( function () {
 <!--Google Analytics-->
 
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		SearcherDisplay.init();
-	});
-</script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
 
 </body>
 </html>

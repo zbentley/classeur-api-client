@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>classeur-api-client Class: ClientError</title>
+	<title>classeur-api-client Class: ErrorBase</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: ClientError</h1>
+	<h1 class="page-title">Class: ErrorBase</h1>
 <section>
 
 <header>
@@ -87,17 +87,10 @@
         <h2>
             <span class="ancestors"><a href="module-classeur-api-client.html">classeur-api-client</a>.</span>
         
-        ClientError
+        ErrorBase
         </h2>
         
-            <div class="class-description"><p>Object representation of an error that occurred on the client during or after the processing REST API operation.
-Example causes if a client error (and valid values for the <code>message</code> property) include:</p>
-<ul>
-<li>Request aborted</li>
-<li>Request timed out</li>
-<li>Corrupt/non-JSON-decodable content received</li>
-</ul>
-<p>ClientError instances are usually thin wrappers around <a href="https://github.com/bbc/flashheart">flashheart</a> error objects, and exist only to deliniate server-caused errors from client-caused errors. ClientErrors may not contain all/most error fields supplied by flashheart, though, since ClientErrors may occur before error metadata is returned from the server.</p></div>
+            <div class="class-description"><p>Base class for <a href="module-classeur-api-client.ClientError.html"><code>ClientError</code></a> and <a href="module-classeur-api-client.ServerError.html"><code>ServerError</code></a> objects.</p></div>
         
     
 </header>
@@ -109,7 +102,7 @@ Example causes if a client error (and valid values for the <code>message</code> 
         
 <hr>
 <dt>
-    <h4 class="name" id="ClientError"><span class="type-signature"></span>new ClientError()</h4>
+    <h4 class="name" id="ErrorBase"><span class="type-signature"></span>new ErrorBase()</h4>
     
     
 </dt>
@@ -169,7 +162,7 @@ Example causes if a client error (and valid values for the <code>message</code> 
 		<ul class="dummy">
 			<li>
 				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-148">line 148</a>
+				 <a href="lib_errors.js.html#sunlight-1-line-14">line 14</a>
 			</li>
 		</ul>
 	</dd>
@@ -177,13 +170,6 @@ Example causes if a client error (and valid values for the <code>message</code> 
 
 	
 
-	
-	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li><p>The <a href="https://github.com/bbc/flashheart#errors">flashheart documentation</a> for more info on possible Error contents.</p></li>
-			</ul>
-	</dd>
 	
 
 	
@@ -203,18 +189,6 @@ Example causes if a client error (and valid values for the <code>message</code> 
     
 
     
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">const ClientError = require(&#x27;classeur-api-client&#x27;).ClientError;
-myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
-    if ( error instanceof ClientError ) {
-        console.log(error.message); // e.g. &#x27;JSON decoding failed!&#x27;
-        throw error;
-    }
-});</pre>
-
-
-    
 </dd>
 
     
@@ -227,7 +201,7 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
 
 
     <ul>
-        <li><p><a href="./module-classeur-api-client.ErrorBase.html">ErrorBase</a></p></li>
+        <li><p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a></p></li>
     </ul>
 
 
@@ -247,15 +221,18 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
         <dl>
             
 <hr>
-<dt class="name" id="timeout">
-    <h4 id="timeout"><span class="type-signature">&lt;readonly, nullable> </span>timeout<span class="type-signature"> :Number</span></h4>
+<dt class="name" id="data">
+    <h4 id="data"><span class="type-signature">&lt;readonly, nullable> </span>data<span class="type-signature"> :Object</span></h4>
 
+    
+    <p class="summary">The JSON-decoded response-data sent back from the server with the error.</p>
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>If a timeout occurred, this property will be set to the timeout threshold that was exceeded, in milliseconds. This property will only be set if a ClientError occurred due to a timeout.</p>
+        <p>JSON decoding failures will raise a <a href="module-classeur-api-client.ClientError.html">module:classeur-api-client.ClientError</a> instead.
+This field is only present if its value could be derived from the error object returned from the REST client.</p>
     </div>
     
 
@@ -264,7 +241,100 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
         <ul>
             <li>
                 
-<span class="param-type">Number</span>
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
+	
+    <dd>
+        <ul class="dummy">
+            <li>This is usually not useful; the properties `reason` and `status` are usually all that is contained in `data`, and they are directly readable from instances of this class.</li>
+        </ul>
+    </dd>
+    
+    
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-52">line 52</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="reason">
+    <h4 id="reason"><span class="type-signature">&lt;readonly, nullable> </span>reason<span class="type-signature"> :String</span></h4>
+
+    
+    <p class="summary">Information sent back by the server indicating why a request failed.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>This is usually the best source for detailed failure/debugging information.
+This field is only present if its value could be derived from the error object returned from the REST client.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">String</span>
 
 
 
@@ -308,7 +378,184 @@ myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
 		<ul class="dummy">
 			<li>
 				<a href="lib_errors.js.html">lib/errors.js</a>,
-				 <a href="lib_errors.js.html#sunlight-1-line-161">line 161</a>
+				 <a href="lib_errors.js.html#sunlight-1-line-64">line 64</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="response">
+    <h4 id="response"><span class="type-signature">&lt;readonly, nullable> </span>response<span class="type-signature"> :Object</span></h4>
+
+    
+    <p class="summary">The JSON-decoded response sent back from the server with the error.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>JSON decoding failures will raise a <a href="module-classeur-api-client.ClientError.html">module:classeur-api-client.ClientError</a> instead.
+This field is only present if its value could be derived from the error object returned from the REST client.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
+	
+    <dd>
+        <ul class="dummy">
+            <li>This is usually not useful; the properties `reason` and `status` are usually of more interest than `response`, and they are directly readable from instances of this class.</li>
+        </ul>
+    </dd>
+    
+    
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-39">line 39</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="shortReason">
+    <h4 id="shortReason"><span class="type-signature">&lt;readonly, nullable> </span>shortReason<span class="type-signature"> :String</span></h4>
+
+    
+    <p class="summary">English version of <a href="module-classeur-api-client.ServerError.html#status">ServerError#status</a>.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>This field is only present if its value could be derived from the error object returned from the REST client.
+Usually a short word or phrase explaining what a given error code means in HTTP convention.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">String</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-76">line 76</a>
 			</li>
 		</ul>
 	</dd>
