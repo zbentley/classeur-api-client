@@ -112,4 +112,4 @@ File a GitHub issue on the [main repository](https://github.com/zbentley/classeu
 
 # Release Notes
 
-Release notes are available [here](http://zbentley.github.io/classeur-api-client/versions/latest), under the "Release Notes" heading.
+Release notes are available [here](http://zbentley.github.io/classeur-api-client/versions/latest/tutorial-VersionIndex.html), under the "Release Notes" heading.
