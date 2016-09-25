@@ -1,4 +1,6 @@
-'use strict';
+'use strict'
+
+require('pkginfo')(module)
 
 function versionIndexTemplate(path) {
     return {
@@ -10,14 +12,14 @@ function versionIndexTemplate(path) {
         files: {
             'doc/generated/tutorials/VersionIndex.md': ['doc/generator/VersionIndex.md.tpl'],
         }
-    };
+    }
 }
 
 function branchDocumentationTasks(target) {
-    const version = '<%= pkg.version %>',
-        name = '<%= pkg.name %>';
-    target = target || version;
-    const path = `doc/generated/versions/${target}`;
+    const version = exports.version,
+        name = exports.name
+    target = target || version
+    const path = `doc/generated/versions/${target}`
     return {
         jsdoc: {
             src: ['*.js', 'lib/'],
@@ -43,27 +45,26 @@ function branchDocumentationTasks(target) {
             options: {
                 base: 'doc/generated',
                 add: true,
-                message: `Generated on <%= grunt.template.today('yyyy-mm-dd HH:MM') %> (doc: ${target}; pkg: ${version})`,
+                message: `Generated on <%= grunt.template.today('yyyy-mm-dd HH:MM') %> (doc: ${target} pkg: ${version})`,
             },
             src: ['**']
         }
-    };
+    }
 }
 
 module.exports = function(grunt) {
-    const packageInfo = grunt.file.readJSON('package.json'),
-        docTasksCurrent = branchDocumentationTasks(),
-        docTasksMaster = branchDocumentationTasks('master');
+    const docTasksCurrent = branchDocumentationTasks(),
+        docTasksMaster = branchDocumentationTasks('master')
 
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-jsdoc');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-gh-pages');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-template');
+    grunt.loadNpmTasks('grunt-mocha-test')
+    grunt.loadNpmTasks('grunt-jsdoc')
+    grunt.loadNpmTasks('grunt-contrib-clean')
+    grunt.loadNpmTasks('grunt-gh-pages')
+    grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-template')
 
     grunt.initConfig({
-        pkg: packageInfo,
+        pkg: exports,
         template: {
             'index-root': versionIndexTemplate('./'),
             'index-version': versionIndexTemplate('../../')
@@ -113,7 +114,7 @@ module.exports = function(grunt) {
             unit: {
                 options: {
                     require: () => {
-                        delete global._ZB_INTEGRATION_TEST;
+                        delete global._ZB_INTEGRATION_TEST
                     }
                 },
                 src: ['test/**/*.js']
@@ -121,13 +122,13 @@ module.exports = function(grunt) {
             integration: {
                 options: {
                     require: () => {
-                        global._ZB_INTEGRATION_TEST = true;
+                        global._ZB_INTEGRATION_TEST = true
                     }
                 },
                 src: ['test/**/*.js']
             }
         }
-    });
+    })
 
     grunt.registerTask('doc:index', [
         // Remove all generated files.
@@ -147,31 +148,31 @@ module.exports = function(grunt) {
         // landing page generation) with relative links that can be used by the
         // per-version documentation.
         'template:index-version'
-    ]);
+    ])
     grunt.registerTask('doc:master', [
         'doc:index',
         'jsdoc:master',
         'copy:doc-master',
         'clean:doc-master',
         'clean:doc-tutorials'
-    ]);
+    ])
     grunt.registerTask('doc:current-version', [
         'doc:index',
         'jsdoc:current-version',
         'copy:doc-current-version',
         'clean:doc-current-version',
         'clean:doc-tutorials'
-    ]);
+    ])
     grunt.registerTask('doc:master:push', [
         'doc:master',
         'gh-pages:master',
         'clean:doc-all'
-    ]);
+    ])
     grunt.registerTask('doc:current-version:push', [
         'doc:current-version',
         'gh-pages:current-version',
         'clean:doc-all'
-    ]);
-    grunt.registerTask('test:unit', 'mochaTest:unit');
-    grunt.registerTask('test:integration', 'mochaTest:integration');
-};
+    ])
+    grunt.registerTask('test:unit', 'mochaTest:unit')
+    grunt.registerTask('test:integration', 'mochaTest:integration')
+}
