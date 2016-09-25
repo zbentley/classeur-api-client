@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>classeur-api-client Index</title>
+	<title>classeur-api-client Class: ClientError</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +29,20 @@
 	</div>
 	<div class="navbar-collapse collapse" id="topNavigation">
 		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
 			
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
@@ -65,89 +79,263 @@
 		<div id="main">
 			
 
-	
-	
+	<h1 class="page-title">Class: ClientError</h1>
+<section>
 
-
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
-<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
-<p>Select a version of this library below to get started.</p>
-<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<p>Each link below will take you to the README for the given package version:</p>
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="module-classeur-api-client.html">classeur-api-client</a>.</span>
+        
+        ClientError
+        </h2>
+        
+            <div class="class-description"><p>Object representation of an error that occurred on the client during or after the processing REST API operation.
+Example causes if a client error (and valid values for the <code>message</code> property) include:</p>
 <ul>
-<li><a href="./versions/latest/index.html">latest stable</a></li>
-<li><a href="./versions/0.0.1/index.html">0.0.1</a></li>
-<li><a href="./versions/0.1.1/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
-<li><a href="./versions/0.1.1/index.html">0.1.1</a></li>
-<li><a href="./versions/0.2.0/index.html">0.2.0</a></li>
-<li><a href="./versions/0.2.1/index.html">0.2.1</a></li>
-<li><a href="./versions/0.2.2/index.html">0.2.2</a></li>
-<li><a href="./versions/0.2.3/index.html">0.2.3</a></li>
-<li><a href="./versions/0.3.0/index.html">0.3.0</a></li>
-<li><a href="./versions/master/index.html">development/unstable (master)</a></li>
+<li>Request aborted</li>
+<li>Request timed out</li>
+<li>Corrupt/non-JSON-decodable content received</li>
 </ul>
-<h1>Release Notes</h1><h3>0.1.0</h3><ul>
-<li>Initial release.</li>
-</ul>
-<h3>0.1.1</h3><ul>
-<li>Documentation fixes.</li>
-<li>Added documentation build system.</li>
-</ul>
-<h3>0.2.0</h3><ul>
-<li>Fully automate documentation build system.</li>
-<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
-<li>Error behavior enhancements:<ul>
-<li>Handle JSON parsing/malformed-content errors.</li>
-<li>Typed error objects are now returned from all HTTP interactions.</li>
-<li>Add documentation for error behavior.</li>
-</ul>
-</li>
-<li>Use Chai for type assertions at runtime rather than a separate library.</li>
-<li>Clean up code.</li>
-<li>Improve test coverage and accuracy.</li>
-<li>Update lodash dependency.</li>
-<li>Update documentation.</li>
-</ul>
-<h3>0.2.1</h3><ul>
-<li>Fix broken package manifest.</li>
-</ul>
-<h3>0.2.2</h3><ul>
-<li>Add stacktraces to errors.</li>
-<li>Fix minor bugs with handling of explicit 'undefined' results in callback result arrays.</li>
-<li>Minor documentation improvements.</li>
-</ul>
-<h3>0.2.3</h3><ul>
-<li>Make NodeJS 5/ES6 requirement explicit.</li>
-<li>Misc documentation fixes for readability.</li>
-</ul>
-<h3>0.3.0</h3><ul>
-<li>Fixed #2: 400 &quot;content type not recognized&quot; errors no longer occur.</li>
-<li>Reworked error API to be less confusing and more flexible.</li>
-<li>Switched to a maintained REST client: <a href="https://github.com/bbc/flashheart">flashheart</a>.</li>
-<li>Added CI.</li>
-<li>Fixed several documentation issues.</li>
-</ul></article>
-    </section>
+<p>ClientError instances are usually thin wrappers around <a href="https://github.com/bbc/flashheart">flashheart</a> error objects, and exist only to deliniate server-caused errors from client-caused errors. ClientErrors may not contain all/most error fields supplied by flashheart, though, since ClientErrors may occur before error metadata is returned from the server.</p></div>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="ClientError"><span class="type-signature"></span>new ClientError()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+	<dt class="important tag-deprecated method-doc-label method-doc-details-label">Deprecated:</dt>
+	
+    <dd>
+        <ul class="dummy">
+            <li>You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.</li>
+        </ul>
+    </dd>
+    
+    
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-152">line 152</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="https://github.com/bbc/flashheart#errors">flashheart documentation</a> for more info on possible Error contents.</p></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">const ClientError = require(&#x27;classeur-api-client&#x27;).ClientError;
+myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
+    if ( error instanceof ClientError ) {
+        console.log(error.message); // e.g. &#x27;JSON decoding failed!&#x27;
+        throw error;
+    }
+});</pre>
+
+
+    
+</dd>
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><p><a href="./module-classeur-api-client.ErrorBase.html">ErrorBase</a></p></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id="timeout">
+    <h4 id="timeout"><span class="type-signature">&lt;readonly, nullable> </span>timeout<span class="type-signature"> :Number</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>If a timeout occurred, this property will be set to the timeout threshold that was exceeded, in milliseconds. This property will only be set if a ClientError occurred due to a timeout.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Number</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_errors.js.html">lib/errors.js</a>,
+				 <a href="lib_errors.js.html#sunlight-1-line-165">line 165</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
