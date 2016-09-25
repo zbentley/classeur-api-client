@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>classeur-api-client Tutorial: Other Versions</title>
+	<title>classeur-api-client Tutorial: Developer's Guide</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +29,20 @@
 	</div>
 	<div class="navbar-collapse collapse" id="topNavigation">
 		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
 			
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
@@ -68,73 +82,29 @@
 <header>
     
 
-    <h2>Other Versions</h2>
+    <h2>Developer's Guide</h2>
 </header>
 
 <article>
-    <h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
-<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
-<p>Select a version of this library below to get started.</p>
-<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<p>Each link below will take you to the README for the given package version:</p>
-<ul>
-<li><a href="./versions/latest/index.html">latest stable</a></li>
-<li><a href="./versions/0.0.1/index.html">0.0.1</a></li>
-<li><a href="./versions/0.1.1/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
-<li><a href="./versions/0.1.1/index.html">0.1.1</a></li>
-<li><a href="./versions/0.2.0/index.html">0.2.0</a></li>
-<li><a href="./versions/0.2.1/index.html">0.2.1</a></li>
-<li><a href="./versions/0.2.2/index.html">0.2.2</a></li>
-<li><a href="./versions/0.2.3/index.html">0.2.3</a></li>
-<li><a href="./versions/0.3.0/index.html">0.3.0</a></li>
-<li><a href="./versions/0.3.1/index.html">0.3.1</a></li>
-<li><a href="./versions/master/index.html">development/unstable (master)</a></li>
-</ul>
-<h1>Release Notes</h1><h3>0.1.0</h3><ul>
-<li>Initial release.</li>
-</ul>
-<h3>0.1.1</h3><ul>
-<li>Documentation fixes.</li>
-<li>Added documentation build system.</li>
-</ul>
-<h3>0.2.0</h3><ul>
-<li>Fully automate documentation build system.</li>
-<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
-<li>Error behavior enhancements:<ul>
-<li>Handle JSON parsing/malformed-content errors.</li>
-<li>Typed error objects are now returned from all HTTP interactions.</li>
-<li>Add documentation for error behavior.</li>
+    <h1>Developer's Guide</h1><p>Pull requests are welcome! Pull the <a href="https://github.com/zbentley/classeur-api-client">source code</a> and hack away.</p>
+<h2>Unit Tests</h2><p>To run unit tests, do <code>npm test</code> or <code>grunt test:unit</code>.</p>
+<h2>Integration Tests</h2><p>To run integration tests, that actually talk to the API, do the following:</p>
+<ol>
+<li>Add information to <code>test/asset/private/integration-test-resources.json</code>.<ul>
+<li>In addition to your Classeur user ID and API key, add the ID of an existent file for <code>existentFile</code> and an existent folder <em>with at least one file in it</em> to <code>existentFolder</code>.</li>
 </ul>
 </li>
-<li>Use Chai for type assertions at runtime rather than a separate library.</li>
-<li>Clean up code.</li>
-<li>Improve test coverage and accuracy.</li>
-<li>Update lodash dependency.</li>
-<li>Update documentation.</li>
+<li>Run the tests against the real API: <code>grunt test:integration</code>.<ul>
+<li>The tests are the same when run as unit tests or integration tests; the only difference is whether they run against a stubbed REST client or a real one.</li>
 </ul>
-<h3>0.2.1</h3><ul>
-<li>Fix broken package manifest.</li>
-</ul>
-<h3>0.2.2</h3><ul>
-<li>Add stacktraces to errors.</li>
-<li>Fix minor bugs with handling of explicit 'undefined' results in callback result arrays.</li>
-<li>Minor documentation improvements.</li>
-</ul>
-<h3>0.2.3</h3><ul>
-<li>Make NodeJS 5/ES6 requirement explicit.</li>
-<li>Misc documentation fixes for readability.</li>
-</ul>
-<h3>0.3.0</h3><ul>
-<li>Fixed #2: 400 &quot;content type not recognized&quot; errors no longer occur.</li>
-<li>Reworked error API to be less confusing and more flexible.</li>
-<li>Switched to a maintained REST client: <a href="https://github.com/bbc/flashheart">flashheart</a>.</li>
-<li>Added CI.</li>
-</ul>
-<h3>0.3.1</h3><ul>
-<li>Fixed several documentation issues.</li>
-<li>Removed debug dependencies that could cause some uncommon npm installations to fail.</li>
-<li>Improved documentation builder/auto publisher.</li>
-</ul>
+</li>
+</ol>
+<h2>Documentation</h2><h3>Building the Main Documentation</h3><p>Documentation is generated, and, optionally, pushed to GitHub pages via a <a href="gruntjs.com">grunt</a>-based build process. Generated documentation is placed in <code>doc/generated</code>. <strong>The <code>doc/generated</code> folder will be removed and re-created as part of any documentation build.</strong></p>
+<p>To generate documentation from the <a href="http://usejsdoc.org/">JSDoc</a> in the code, do <code>grunt doc:master</code> or <code>grunt doc:current-version</code>. The names of the two functions are a bit deceptive: both will generate documentation from the branch and version of the module from which you are running <code>grunt</code>. The difference is that the former places the documentation into the <code>doc/generated/master</code> file, and the latter places it in the <code>doc/generated/$version</code> file, where <code>$version</code> is the NPM package version from <code>package.json</code>.</p>
+<h3>Building the Version Index Documentation</h3><p><code>grunt doc:index</code> can be used to build just the documentation landing page, which contains links to multiple module versions' documentation. <code>grunt doc:index</code> is implied as part of all other <code>grunt doc</code> tasks.</p>
+<p>The index will live in <code>doc/generated/index.html</code>. Unless you build a version's documentation in addition to the index, links in the index will not work.</p>
+<h3>Pushing Documentation to GitHub Pages</h3><p>You can add <code>:push</code> to either the <code>doc:master</code> or <code>doc:current-version</code> Grunt task to push the resulting documentation product to GitHub pages, e.g. <code>grunt doc:master:push</code>.</p>
+<p>Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or <code>master</code>-named) folder you are targeting, depending on which Grunt task you're pushing with.</p>
 </article>
 
 </section>

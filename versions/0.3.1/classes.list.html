@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>classeur-api-client Tutorial: Other Versions</title>
+	<title>classeur-api-client Classes</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +29,20 @@
 	</div>
 	<div class="navbar-collapse collapse" id="topNavigation">
 		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
 			
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
@@ -60,90 +74,122 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
-			<section class="tutorial-section">
+			
+
+	<h1 class="page-title">Classes</h1>
+<section>
 
 <header>
     
-
-    <h2>Other Versions</h2>
+        <h2>
+        
+        </h2>
+        
+    
 </header>
 
+
 <article>
-    <h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
-<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
-<p>Select a version of this library below to get started.</p>
-<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<p>Each link below will take you to the README for the given package version:</p>
-<ul>
-<li><a href="./versions/latest/index.html">latest stable</a></li>
-<li><a href="./versions/0.0.1/index.html">0.0.1</a></li>
-<li><a href="./versions/0.1.1/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
-<li><a href="./versions/0.1.1/index.html">0.1.1</a></li>
-<li><a href="./versions/0.2.0/index.html">0.2.0</a></li>
-<li><a href="./versions/0.2.1/index.html">0.2.1</a></li>
-<li><a href="./versions/0.2.2/index.html">0.2.2</a></li>
-<li><a href="./versions/0.2.3/index.html">0.2.3</a></li>
-<li><a href="./versions/0.3.0/index.html">0.3.0</a></li>
-<li><a href="./versions/0.3.1/index.html">0.3.1</a></li>
-<li><a href="./versions/master/index.html">development/unstable (master)</a></li>
-</ul>
-<h1>Release Notes</h1><h3>0.1.0</h3><ul>
-<li>Initial release.</li>
-</ul>
-<h3>0.1.1</h3><ul>
-<li>Documentation fixes.</li>
-<li>Added documentation build system.</li>
-</ul>
-<h3>0.2.0</h3><ul>
-<li>Fully automate documentation build system.</li>
-<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
-<li>Error behavior enhancements:<ul>
-<li>Handle JSON parsing/malformed-content errors.</li>
-<li>Typed error objects are now returned from all HTTP interactions.</li>
-<li>Add documentation for error behavior.</li>
-</ul>
-</li>
-<li>Use Chai for type assertions at runtime rather than a separate library.</li>
-<li>Clean up code.</li>
-<li>Improve test coverage and accuracy.</li>
-<li>Update lodash dependency.</li>
-<li>Update documentation.</li>
-</ul>
-<h3>0.2.1</h3><ul>
-<li>Fix broken package manifest.</li>
-</ul>
-<h3>0.2.2</h3><ul>
-<li>Add stacktraces to errors.</li>
-<li>Fix minor bugs with handling of explicit 'undefined' results in callback result arrays.</li>
-<li>Minor documentation improvements.</li>
-</ul>
-<h3>0.2.3</h3><ul>
-<li>Make NodeJS 5/ES6 requirement explicit.</li>
-<li>Misc documentation fixes for readability.</li>
-</ul>
-<h3>0.3.0</h3><ul>
-<li>Fixed #2: 400 &quot;content type not recognized&quot; errors no longer occur.</li>
-<li>Reworked error API to be less confusing and more flexible.</li>
-<li>Switched to a maintained REST client: <a href="https://github.com/bbc/flashheart">flashheart</a>.</li>
-<li>Added CI.</li>
-</ul>
-<h3>0.3.1</h3><ul>
-<li>Fixed several documentation issues.</li>
-<li>Removed debug dependencies that could cause some uncommon npm installations to fail.</li>
-<li>Improved documentation builder/auto publisher.</li>
-</ul>
+    <div class="container-overview">
+    
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-classeur-api-client.ClasseurClient.html">ClasseurClient</a></dt>
+            <dd></dd>
+        
+            <dt><a href="module-classeur-api-client.ClientError.html">ClientError</a></dt>
+            <dd></dd>
+        
+            <dt><a href="module-classeur-api-client.ErrorBase.html">ErrorBase</a></dt>
+            <dd></dd>
+        
+            <dt><a href="module-classeur-api-client.ServerError.html">ServerError</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </article>
 
 </section>
+
+
+
 
 		</div>
 	</div>
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
