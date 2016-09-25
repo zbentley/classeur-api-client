@@ -18,8 +18,9 @@ function versionIndexTemplate(path) {
 function branchDocumentationTasks(target) {
     const version = exports.version,
         name = exports.name
-    target = target || version
+        target = target || version
     const path = `doc/generated/versions/${target}`
+
     return {
         jsdoc: {
             src: ['*.js', 'lib/'],
@@ -35,7 +36,7 @@ function branchDocumentationTasks(target) {
             }
         },
         copy: {
-            cwd: `${path}/${name}/${version}`,
+            cwd: `${path}/${name}/${target}`,
             expand: true,
             src: '**',
             dest: path,
