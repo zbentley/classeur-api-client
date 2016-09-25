@@ -21,6 +21,7 @@ Each link below will take you to the README for the given package version:
 - [0.2.2](<%- path %>versions/0.2.2/index.html)
 - [0.2.3](<%- path %>versions/0.2.3/index.html)
 - [0.3.0](<%- path %>versions/0.3.0/index.html)
+- [0.3.1](<%- path %>versions/0.3.1/index.html)
 - [development/unstable (master)](<%- path %>versions/master/index.html)
 
 # Release Notes
@@ -62,4 +63,8 @@ Each link below will take you to the README for the given package version:
 - Reworked error API to be less confusing and more flexible.
 - Switched to a maintained REST client: [flashheart](https://github.com/bbc/flashheart).
 - Added CI.
+
+### 0.3.1
 - Fixed several documentation issues.
+- Removed debug dependencies that could cause some uncommon npm installations to fail.
+- Improved documentation builder/auto publisher.
