@@ -1,7 +1,7 @@
 # classeur-api-client
 
 Node.js client for the REST API of http://classeur.io/
-[![build status](https://travis-ci.org/zbentley/classeur-api-client#) [![npm version](https://badge.fury.io/js/classeur-api-client.svg)](https://badge.fury.io/js/classeur-api-client)
+[![build status](https://travis-ci.org/zbentley/classeur-api-client#)](https://travis-ci.org/zbentley/classeur-api-client#)  [![npm version](https://badge.fury.io/js/classeur-api-client.svg)](https://badge.fury.io/js/classeur-api-client)
 
 [Classeur](http://classeur.io/) is an online writing and collaboration platform by the creators of [StackEdit](https://stackedit.io/). In addition to a web and desktop UI, it provides a read-only REST API. `classeur-api-client` is a simple object-oriented [Node.js](https://nodejs.org) library for interacting with that API.
 
