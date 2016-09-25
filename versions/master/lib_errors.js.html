@@ -86,10 +86,9 @@
         <pre
             class="sunlight-highlight-javascript linenums">'use strict';
 
-const _ = require('lodash'),
-	expect = require('chai').expect;
+const _ = require('lodash')
 
-const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
 
 /**
  * Base class for [`ClientError`]{@link module:classeur-api-client.ClientError} and [`ServerError`]{@link module:classeur-api-client.ServerError} objects.
@@ -103,9 +102,10 @@ class ErrorBase extends Error {
 		if ( _.isString(error) ) {
 			error = new Error(error)
 		}
-		else {
-			expect(error).to.be.instanceof(Error)
+		if ( ! _.isError(error) ) {
+			throw new Error(`Expected string or Error object, got ${error} instead`)
 		}
+
 		super(error)
 		let message = _.replace(this.message, /^\s*Error:\s*/, '')
 		_.merge(this, data)
@@ -187,10 +187,14 @@ class ErrorBase extends Error {
 class ServerError extends ErrorBase {
 	/** @lends module:classeur-api-client.ServerError */
 	constructor(error, body, response) {
-		expect(error).to.have.property("statusCode")
-		expect(error.statusCode).to.be.number
+		if ( ! _.property('statusCode')(error) ) {
+			throw new Error(`Expected error object to have 'statusCode' property: ${error}`)
+		}
+		if ( ! _.isNumber(error.statusCode) ) {
+			throw new Error(`Expected error.statusCode to be numeric, got ${error.statusCode} instead`)
+		}
 		super(error, body, response)
-		this.message = "Server error: " + this.message
+		this.message = 'Server error: ' + this.message
 		/**
 		 * If headers were returned from the server with the error, this object will contain their contents. It is supplied directly by the flashheart REST client library.
 		 * @memberOf module:classeur-api-client.ServerError
@@ -235,9 +239,9 @@ class ClientError extends ErrorBase {
 	/** @lends module:classeur-api-client.ClientError*/
 	constructor(error, body, response, clntimeout) {
 		super(error, body, response)
-		this.message = "Client error: " + this.message
+		this.message = 'Client error: ' + this.message
 
-		if ( this.message.includes("ETIMEDOUT") ) {
+		if ( this.message.includes('ETIMEDOUT') ) {
 			/**
 			 * If a timeout occurred, this property will be set to the timeout threshold that was exceeded, in milliseconds. This property will only be set if a ClientError occurred due to a timeout.
 			 * @type {Number?}
