@@ -84,15 +84,15 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">'use strict';
+            class="sunlight-highlight-javascript linenums">'use strict'
 
 const _ = require('lodash')
 
-// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
 
 /**
  * Base class for [`ClientError`]{@link module:classeur-api-client.ClientError} and [`ServerError`]{@link module:classeur-api-client.ServerError} objects.
- * @deprecated  You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
+ * @deprecated  You should never need to construct one of these directly they will be provided to callbacks for REST API operations as the first argument if they occur.
  * @extends [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
  * @memberof module:classeur-api-client
  */
@@ -117,12 +117,12 @@ class ErrorBase extends Error {
 			 * JSON decoding failures will raise a {@link module:classeur-api-client.ClientError} instead.
 			 * This field is only present if its value could be derived from the error object returned from the REST client.
 			 * @summary The JSON-decoded response sent back from the server with the error.
-			 * @deprecated  This is usually not useful; the properties `reason` and `status` are usually of more interest than `response`, and they are directly readable from instances of this class.
+			 * @deprecated  This is usually not useful the properties `reason` and `status` are usually of more interest than `response`, and they are directly readable from instances of this class.
 			 * @type {Object?}
 			 * @instance
 			 * @readonly
 			 */
-			this.response = response;
+			this.response = response
 		}
 
 		if ( data ) {
@@ -130,7 +130,7 @@ class ErrorBase extends Error {
 			 * JSON decoding failures will raise a {@link module:classeur-api-client.ClientError} instead.
 			 * This field is only present if its value could be derived from the error object returned from the REST client.
 			 * @summary The JSON-decoded response-data sent back from the server with the error.
-			 * @deprecated  This is usually not useful; the properties `reason` and `status` are usually all that is contained in `data`, and they are directly readable from instances of this class.
+			 * @deprecated  This is usually not useful the properties `reason` and `status` are usually all that is contained in `data`, and they are directly readable from instances of this class.
 			 * @type {Object?}
 			 * @instance
 			 * @readonly
@@ -169,20 +169,20 @@ class ErrorBase extends Error {
 /**
  * Object representation of an error that occurred on the server while performing a REST API operation.
  * This is a thin wrapper around a [flashheart](https://github.com/bbc/flashheart) error object, and exists as a separate class only to deliniate server-caused errors from client-caused errors.
- * @deprecated  You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
+ * @deprecated  You should never need to construct one of these directly they will be provided to callbacks for REST API operations as the first argument if they occur.
  * @extends [ErrorBase](./module-classeur-api-client.ErrorBase.html)
  * @memberof module:classeur-api-client
  * @see The [flashheart documentation](https://github.com/bbc/flashheart#errors) for more info on possible Error contents.
  * @example
- * const ServerError = require('classeur-api-client').ServerError;
+ * const ServerError = require('classeur-api-client').ServerError
  * myClient.getFile('nonexistent', (error) => {
  *     if ( error instanceof ServerError ) {
- *         console.log(error.message); // e.g. 'Server error: Received HTTP code 403 for GET https:// ...'
- *         console.log(error.reason); // e.g. 'file_is_not_readable'
- *         console.log(error.status); // e.g. 403
- *         throw error;
+ *         console.log(error.message) // e.g. 'Server error: Received HTTP code 403 for GET https:// ...'
+ *         console.log(error.reason) // e.g. 'file_is_not_readable'
+ *         console.log(error.status) // e.g. 403
+ *         throw error
  *     }
- * });
+ * })
  */
 class ServerError extends ErrorBase {
 	/** @lends module:classeur-api-client.ServerError */
@@ -212,7 +212,7 @@ class ServerError extends ErrorBase {
 		 */
 		this.status = error.statusCode		
 	}
-};
+}
 
 /**
  * Object representation of an error that occurred on the client during or after the processing REST API operation.
@@ -222,18 +222,18 @@ class ServerError extends ErrorBase {
  * - Corrupt/non-JSON-decodable content received
  *
  * ClientError instances are usually thin wrappers around [flashheart](https://github.com/bbc/flashheart) error objects, and exist only to deliniate server-caused errors from client-caused errors. ClientErrors may not contain all/most error fields supplied by flashheart, though, since ClientErrors may occur before error metadata is returned from the server.
- * @deprecated You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.
+ * @deprecated You should never need to construct one of these directly they will be provided to callbacks for REST API operations as the first argument if they occur.
  * @extends [ErrorBase](./module-classeur-api-client.ErrorBase.html)
  * @memberof module:classeur-api-client
  * @see The [flashheart documentation](https://github.com/bbc/flashheart#errors) for more info on possible Error contents.
  * @example
- * const ClientError = require('classeur-api-client').ClientError;
+ * const ClientError = require('classeur-api-client').ClientError
  * myClient.getFile('nonexistent', (error) => {
  *     if ( error instanceof ClientError ) {
- *         console.log(error.message); // e.g. 'JSON decoding failed!'
- *         throw error;
+ *         console.log(error.message) // e.g. 'JSON decoding failed!'
+ *         throw error
  *     }
- * });
+ * })
  */
 class ClientError extends ErrorBase {
 	/** @lends module:classeur-api-client.ClientError*/
@@ -251,10 +251,10 @@ class ClientError extends ErrorBase {
 		    this.timeout = clntimeout
 		}
 	}
-};
+}
 
-module.exports.ServerError = ServerError;
-module.exports.ClientError = ClientError;</pre>
+module.exports.ServerError = ServerError
+module.exports.ClientError = ClientError</pre>
     </article>
 </section>
 

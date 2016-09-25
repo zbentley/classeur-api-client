@@ -147,7 +147,7 @@ Example causes if a client error (and valid values for the <code>message</code> 
 	
     <dd>
         <ul class="dummy">
-            <li>You should never need to construct one of these directly; they will be provided to callbacks for REST API operations as the first argument if they occur.</li>
+            <li>You should never need to construct one of these directly they will be provided to callbacks for REST API operations as the first argument if they occur.</li>
         </ul>
     </dd>
     
@@ -205,13 +205,13 @@ Example causes if a client error (and valid values for the <code>message</code> 
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">const ClientError = require(&#x27;classeur-api-client&#x27;).ClientError;
+    <pre class="sunlight-highlight-javascript">const ClientError = require(&#x27;classeur-api-client&#x27;).ClientError
 myClient.getFile(&#x27;nonexistent&#x27;, (error) =&gt; {
     if ( error instanceof ClientError ) {
-        console.log(error.message); // e.g. &#x27;JSON decoding failed!&#x27;
-        throw error;
+        console.log(error.message) // e.g. &#x27;JSON decoding failed!&#x27;
+        throw error
     }
-});</pre>
+})</pre>
 
 
     
