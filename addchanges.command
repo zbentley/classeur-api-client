@@ -1,0 +1,1 @@
+git add -A && git reset HEAD test/asset/private/integration-test-resources.json 2>&1 >> /dev/null && git status

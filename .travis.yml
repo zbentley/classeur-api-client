@@ -1,8 +1,11 @@
 language: node_js
 node_js:
-  - iojs
+  - node
   - 6
   - 6.5
   - 6.1
   - 6.0
   - 5
+before_script:
+  - npm install -g grunt-cli
+script: grunt test:unit && grunt doc:master && grunt doc:index && grunt doc:latest
