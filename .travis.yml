@@ -8,4 +8,4 @@ node_js:
   - 5
 before_script:
   - npm install -g grunt-cli
-script: grunt test:unit && grunt doc:master && grunt doc:index && grunt doc:current-version && grunt doc:clean
+script: grunt test:unit && grunt doc:master && grunt doc:index && grunt doc:current-version && grunt clean:doc-all
