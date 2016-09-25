@@ -34,3 +34,15 @@ The index will live in `doc/generated/index.html`. Unless you build a version's 
 You can add `:push` to either the `doc:master` or `doc:current-version` Grunt task to push the resulting documentation product to GitHub pages, e.g. `grunt doc:master:push`.
 
 Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or `master`-named) folder you are targeting, depending on which Grunt task you're pushing with.
+
+### Releasing New Versions
+
+To get everything in sync with NPM and GitHub, do the following (I'll automate all/most of this away someday):
+
+1. Code and test new release.
+2. Tag release with npm: `npm release major|minor|patch`.
+3. Build, check and publish `master` documentation.
+4. Build, check and publish `current-version` documentation.
+5. Check out the pages branch (`git checkout gh-pages; git pull`) and update the symlink in `versions/latest` to point to the latest release. Push your changes.
+6. Do `npm publish`. Wait a bit, and verify that everything is working/legible/visible.
+7. Create a GitHub release, autogenerating a tag named after the new version, linking to the release notes on the "Other Versions" tutorial in GitHub pages.
