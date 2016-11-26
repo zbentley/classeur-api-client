@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>classeur-api-client Tutorial: Other Versions</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-api-client</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.html">classeur-api-client</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-api-client.ClasseurClient.html">classeur-api-client.ClasseurClient</a></li><li><a href="module-classeur-api-client.ClientError.html">classeur-api-client.ClientError</a></li><li><a href="module-classeur-api-client.ErrorBase.html">classeur-api-client.ErrorBase</a></li><li><a href="module-classeur-api-client.ServerError.html">classeur-api-client.ServerError</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-Plural Functions.html">Plural Functions</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			<section class="tutorial-section">
+
+<header>
+    
+
+    <h2>Other Versions</h2>
+</header>
+
+<article>
+    <h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
+<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-api-client">https://github.com/zbentley/classeur-api-client</a>.</p>
+<p>Select a version of this library below to get started.</p>
+<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
+<p>Each link below will take you to the README for the given package version:</p>
+<ul>
+<li><a href="../../versions/latest/index.html">latest stable</a></li>
+<li><a href="../../versions/0.0.1/index.html">0.0.1</a></li>
+<li><a href="../../versions/0.1.1/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
+<li><a href="../../versions/0.1.1/index.html">0.1.1</a></li>
+<li><a href="../../versions/0.2.0/index.html">0.2.0</a></li>
+<li><a href="../../versions/0.2.1/index.html">0.2.1</a></li>
+<li><a href="../../versions/0.2.2/index.html">0.2.2</a></li>
+<li><a href="../../versions/0.2.3/index.html">0.2.3</a></li>
+<li><a href="../../versions/0.3.0/index.html">0.3.0</a></li>
+<li><a href="../../versions/0.3.1/index.html">0.3.1</a></li>
+<li><a href="../../versions/0.3.2/index.html">0.3.2</a></li>
+<li><a href="../../versions/0.3.3/index.html">0.3.3</a></li>
+<li><a href="../../versions/master/index.html">development/unstable (master)</a></li>
+</ul>
+<h1>Release Notes</h1><h3>0.1.0</h3><ul>
+<li>Initial release.</li>
+</ul>
+<h3>0.1.1</h3><ul>
+<li>Documentation fixes.</li>
+<li>Added documentation build system.</li>
+</ul>
+<h3>0.2.0</h3><ul>
+<li>Fully automate documentation build system.</li>
+<li>Switch to <a href="https://github.com/danwrong/restler">Restler</a> for HTTP interaction.</li>
+<li>Error behavior enhancements:<ul>
+<li>Handle JSON parsing/malformed-content errors.</li>
+<li>Typed error objects are now returned from all HTTP interactions.</li>
+<li>Add documentation for error behavior.</li>
+</ul>
+</li>
+<li>Use Chai for type assertions at runtime rather than a separate library.</li>
+<li>Clean up code.</li>
+<li>Improve test coverage and accuracy.</li>
+<li>Update lodash dependency.</li>
+<li>Update documentation.</li>
+</ul>
+<h3>0.2.1</h3><ul>
+<li>Fix broken package manifest.</li>
+</ul>
+<h3>0.2.2</h3><ul>
+<li>Add stacktraces to errors.</li>
+<li>Fix minor bugs with handling of explicit 'undefined' results in callback result arrays.</li>
+<li>Minor documentation improvements.</li>
+</ul>
+<h3>0.2.3</h3><ul>
+<li>Make NodeJS 5/ES6 requirement explicit.</li>
+<li>Misc documentation fixes for readability.</li>
+</ul>
+<h3>0.3.0</h3><ul>
+<li>Fixed #2: 400 &quot;content type not recognized&quot; errors no longer occur.</li>
+<li>Reworked error API to be less confusing and more flexible.</li>
+<li>Switched to a maintained REST client: <a href="https://github.com/bbc/flashheart">flashheart</a>.</li>
+<li>Added CI.</li>
+</ul>
+<h3>0.3.1</h3><ul>
+<li>Fixed several documentation issues.</li>
+<li>Removed debug dependencies that could cause some uncommon npm installations to fail.</li>
+<li>Improved documentation builder/auto publisher.</li>
+</ul>
+<h3>0.3.2</h3><ul>
+<li>Added back the ability to get content of files (gradual deprecation of the V1 API broke it; using parts of the V2 API now). See GitHub issue #3 for more info.</li>
+</ul>
+<h3>0.3.3</h3><ul>
+<li>Removal of a debug print statement.</li>
+</ul>
+</article>
+
+</section>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on Sat Nov 26th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
