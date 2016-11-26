@@ -6,7 +6,7 @@ const _ = require('lodash'),
     expect = require('chai').expect,
     constants = require('./asset/test-constants');
 
-const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
+// const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
 
 // Nasty global interaction as a way to get flags into the Mocha tests. It could
 // just as easily use environment variables.
@@ -53,7 +53,7 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
 
     describe('constructor', function() {
         it('defaults host correctly', function () {
-            expect(conn.root).to.equal('https://app.classeur.io/api/v1/');
+            expect(conn.root).to.equal('https://app.classeur.io/api/');
         });
     });
     describe('getFile', function() {
@@ -73,17 +73,17 @@ describe(`ClasseurClient (${TEST_TYPE} tests)`, function() {
     });
     describe('getFiles', function() {
         const testExistent = function(done) {
-                return function(err, res) {
-                    expect(err).to.not.exist;
-                    expect(res).to.be.instanceof(Array);
-                    expect(res).to.have.length(2);
-                    expect(res[0].id).to.equal(constants.testFile);
-                    expect(res[0]).to.deep.equal(res[1]);
-                    shouldHaveProperties(res[0], constants.fileProperties);
-                    shouldHaveProperties(res[0].content, constants.fileContentProperties);
-                    return done();
-                };
+            return function(err, res) {
+                expect(err).to.not.exist;
+                expect(res).to.be.instanceof(Array);
+                expect(res).to.have.length(2);
+                expect(res[0].id).to.equal(constants.testFile);
+                expect(res[0]).to.deep.equal(res[1]);
+                shouldHaveProperties(res[0], constants.fileProperties);
+                shouldHaveProperties(res[0].content, constants.fileContentProperties);
+                return done();
             };
+        };
         it('returns files correctly (array mode)', function (done) {
             conn.getFiles([constants.testFile, constants.testFile], testExistent(done));
         });

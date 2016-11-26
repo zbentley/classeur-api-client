@@ -1,10 +1,9 @@
 - Promisify: steal code from https://github.com/normalize/native-or-bluebird
 - Lint/hint
-- Return object instances with getters etc (tests can be simplified)
+- Make OO: Return object instances from getters, rather than flat "objects". Tests can use instanceof then.
 - Assert metadata objects have more than just "id" property or throw a "not found"
 - Make a lower-level API that exposes Buffers etc.
 - Make an API that supports partial results?
-- Support older versions of node (Babel on-demand?)
 - Documentation
 	- Automate releasing. The following steps can be templated/rolled into the build:
 		- GitHub release.
@@ -16,7 +15,7 @@
 	- Empty and full folders explicit tests
 	- Support nonstandard hosts from integration config
 	- Grunt verify no busted symlinks
-- Badgez: built with grunt, npm package, travis, cov, nodei.co, stability
+- Badgez: built with grunt, cov, nodei.co, stability
 - Fix assertions: second param to all ctors should be assertion text, not the param to the assertion end.
 - Document v1/v2 compatibility.
 - Remove most of functionutils

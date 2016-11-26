@@ -35,7 +35,7 @@ const _ = require('lodash'),
         flashheart.createClient().userAgent
     )
 
-// const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
+const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
 
 /**
  * Constructs a new API client.
@@ -58,7 +58,7 @@ class ClasseurClient {
                 }
             }
         })
-        this.root = `https://${host}/api/v1/`
+        this.root = `https://${host}/api/`
     }
 
     /**
@@ -71,7 +71,13 @@ class ClasseurClient {
      * - `result` will be an Array of [File]{@link module:classeur-api-client.File}  objects, or `null` on error.
      */
     getFiles() {
-        functionUtils.restOrArrayAndCallback(this.multiQuery, this)('files/', true, ...arguments)
+        functionUtils.restOrArrayAndCallback(function(array, cb) {
+            async.map(
+                array,
+                (item, mcb) => { p(item); this.getFile(item, mcb) },
+                functionUtils.scrubArrayCallback(cb, true, array.length)
+            )
+        }, this)(...arguments)
     }
 
     /**
@@ -81,7 +87,30 @@ class ClasseurClient {
      * - `result` will be a [File]{@link module:classeur-api-client.File} object, or `null` on error.
      */
     getFile(id, cb) {
-        functionUtils.singleElementAndCallback(this.multiQuery, this)('files/', false, id, cb)
+        async.parallel(
+            [
+                (mcb) => { this.query('files/' + id, { v2: true }, mcb) },
+                (mcb) => { this.query('files/' + id + '/contentRevs/last', { v2: true }, mcb) }
+            ],
+            functionUtils.scrubArrayCallback((err, result) => {
+                if ( result ) {
+                    let content = result[0], metadata = result[1]
+                    if ( _.has(result[1], "text") ) {
+                        content = result[1]
+                        metadata = result[0]
+                    }
+                    metadata.content = content
+                    result = metadata
+                }
+                // If content failed first, correct the error string so that
+                // integration tests see the same thing consistently.
+                else if ( err.reason === "content_is_not_readable" ) {
+                    err.reason = "file_is_not_readable"
+                }
+                
+                cb(err,result)
+            }, true, 2)
+        )
     }
 
     /**
@@ -212,7 +241,9 @@ class ClasseurClient {
     }
 
     query(path, args, cb) {
-        this._client.get(this.root + path, args, (error, body, response) => {
+        const stem = this.root + ( args.v2 ? "v2/" : "v1/" )
+        delete args.v2
+        this._client.get(stem + path, args, (error, body, response) => {
             if ( error ) {
                 if ( error.statusCode ) {
                     cb(new errors.ServerError(error, body, response), null)

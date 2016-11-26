@@ -49,17 +49,30 @@ module.exports = class MockRestClient {
 
     get(uri, opts, cb) {
         let id;
-        uri = uri.replace(/.+?api[/]v1[/]/, '');
+        uri = uri.replace(/.+?api[/]v[12][/]/, '');
 
         if ( id = stripIfStartsWith(uri, 'files/') ) {
-            if ( id === constants.testFile ) {
-                const overlay = {
-                    id: id,
-                    content: hashify(constants.fileContentProperties)
-                };
-                this.successfulResponse(constants.fileProperties, overlay, cb);
+            if ( _.endsWith(id, '/contentRevs/last') ) {
+                id = id.replace('/contentRevs/last', '')
+                if ( id === constants.testFile ) {
+                    const overlay = {
+                        id: id,
+                        content: hashify(constants.fileContentProperties)
+                    };
+                    this.successfulResponse(constants.fileContentProperties, overlay, cb);
+                } else {
+                    cb(new MockError(403, uri, "file_is_not_readable"), null, null)
+                }
             } else {
-                cb(new MockError(403, uri, "file_is_not_readable"), null, null)
+                if ( id === constants.testFile ) {
+                    const overlay = {
+                        id: id,
+                        content: hashify(constants.fileProperties)
+                    };
+                    this.successfulResponse(constants.fileProperties, overlay, cb);
+                } else {
+                    cb(new MockError(403, uri, "file_is_not_readable"), null, null)
+                }
             }
         } else if ( id = stripIfStartsWith(uri, 'folders/') ) {
             if ( id === constants.testFolder ) {
@@ -88,7 +101,7 @@ module.exports = class MockRestClient {
                 name: 'name'
             }], SUCCESS)
         } else {
-            throw new Error(`Unrecognized query: ${uri}, ${args}`);
+            throw new Error(`Unrecognized query: ${uri}, ${opts}`);
         }
     };
 };
