@@ -93,8 +93,12 @@
 <p>Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or <code>master</code>-named) folder you are targeting, depending on which Grunt task you're pushing with.</p>
 <h3>Releasing New Versions</h3><p>To get everything in sync with NPM and GitHub, do the following (I'll automate all/most of this away someday):</p>
 <ol>
-<li>Code and test new release.</li>
-<li>Tag release with npm: <code>npm release major|minor|patch</code>.</li>
+<li>Code and test new release.<ul>
+<li>Be sure to remove or comment out uses of <code>eyes.js</code>, e.g. by searching for and commenting <code>require('eyes')</code>.</li>
+<li>Be sure to revert any user API keys checked into the test assets in <code>test/asset/private</code>. The <code>addchanges.command</code> script can help with that.</li>
+</ul>
+</li>
+<li>Tag release with npm: <code>npm version major|minor|patch</code>.</li>
 <li>Build, check and publish <code>master</code> documentation.</li>
 <li>Build, check and publish <code>current-version</code> documentation.</li>
 <li>Check out the pages branch (<code>git checkout gh-pages; git pull</code>) and update the symlink in <code>versions/latest</code> to point to the latest release. Push your changes.</li>
