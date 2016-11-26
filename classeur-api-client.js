@@ -35,7 +35,7 @@ const _ = require('lodash'),
         flashheart.createClient().userAgent
     )
 
-const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
 
 /**
  * Constructs a new API client.

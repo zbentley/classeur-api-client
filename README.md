@@ -7,7 +7,7 @@ Node.js client for the REST API of http://classeur.io/
 
 If you just want to download content out of Classeur, or if you want to see this module get used, you might be interested in my [classeur-downloader](http://zbentley.github.io/classeur-downloader/versions/latest) script and NPM module.
 
-# Documentation and Sources
+# Documentation
 
 Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
 

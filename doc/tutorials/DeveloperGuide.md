@@ -40,6 +40,8 @@ Before pushing, the build system will delete and re-create the index documentati
 To get everything in sync with NPM and GitHub, do the following (I'll automate all/most of this away someday):
 
 1. Code and test new release.
+	- Be sure to remove or comment out uses of `eyes.js`, e.g. by searching for and commenting `require('eyes')`.
+	- Be sure to revert any user API keys checked into the test assets in `test/asset/private`. The `addchanges.command` script can help with that.
 2. Tag release with npm: `npm release major|minor|patch`.
 3. Build, check and publish `master` documentation.
 4. Build, check and publish `current-version` documentation.
