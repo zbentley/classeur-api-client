@@ -42,7 +42,7 @@ To get everything in sync with NPM and GitHub, do the following (I'll automate a
 1. Code and test new release.
 	- Be sure to remove or comment out uses of `eyes.js`, e.g. by searching for and commenting `require('eyes')`.
 	- Be sure to revert any user API keys checked into the test assets in `test/asset/private`. The `addchanges.command` script can help with that.
-2. Tag release with npm: `npm release major|minor|patch`.
+2. Tag release with npm: `npm version major|minor|patch`.
 3. Build, check and publish `master` documentation.
 4. Build, check and publish `current-version` documentation.
 5. Check out the pages branch (`git checkout gh-pages; git pull`) and update the symlink in `versions/latest` to point to the latest release. Push your changes.

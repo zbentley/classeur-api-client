@@ -74,7 +74,7 @@ class ClasseurClient {
         functionUtils.restOrArrayAndCallback(function(array, cb) {
             async.map(
                 array,
-                (item, mcb) => { p(item); this.getFile(item, mcb) },
+                (item, mcb) => { this.getFile(item, mcb) },
                 functionUtils.scrubArrayCallback(cb, true, array.length)
             )
         }, this)(...arguments)

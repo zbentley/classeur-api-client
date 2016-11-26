@@ -22,6 +22,8 @@ Each link below will take you to the README for the given package version:
 - [0.2.3](<%- path %>versions/0.2.3/index.html)
 - [0.3.0](<%- path %>versions/0.3.0/index.html)
 - [0.3.1](<%- path %>versions/0.3.1/index.html)
+- [0.3.2](<%- path %>versions/0.3.2/index.html)
+- [0.3.3](<%- path %>versions/0.3.3/index.html)
 - [development/unstable (master)](<%- path %>versions/master/index.html)
 
 # Release Notes
@@ -71,3 +73,6 @@ Each link below will take you to the README for the given package version:
 
 ### 0.3.2
 - Added back the ability to get content of files (gradual deprecation of the V1 API broke it; using parts of the V2 API now). See GitHub issue #3 for more info.
+
+### 0.3.3
+- Removal of a debug print statement.
