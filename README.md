@@ -1,5 +1,7 @@
 # classeur-api-client
 
+*Archived*: this project, and Classeur itself, are in various states of deactivated and spun down, so this GitHub repository has been archived.
+
 Node.js client for the REST API of http://classeur.io/
 [![Build Status](https://travis-ci.org/zbentley/classeur-api-client.svg?branch=master)](https://travis-ci.org/zbentley/classeur-api-client)  [![npm version](https://badge.fury.io/js/classeur-api-client.svg)](https://www.npmjs.com/package/classeur-api-client)
 
